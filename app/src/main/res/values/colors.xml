@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="Black">#FF000000</color>
+    <color name="White">#FFFFFFFF</color>
+
+    <color name="Cream">#F3F5B8</color>
+    <color name="Mindaro">#D9ED92</color>
+    <color name="Light_green">#B5E48C</color>
+    <color name="Light_green2">#99D98C</color>
+    <color name="Emerald">#76C893</color>
+    <color name="Keppel">#52B69A</color>
+    <color name="Verdigris">#34A0A4</color>
+    <color name="Bondi_blue">#168AAD</color>
+    <color name="Cerulean">#1A759F</color>
+    <color name="Lapis_Lazuli">#1E6091</color>
+    <color name="Indigo_dye">#184E77</color>
+    <color name="Penn_Blue">#051A4C</color>
+
+    <color name="Rich_black">#001217</color>
+    <color name="Rich_black2">#03071E</color>
+    <color name="Chocolate_cosmos">#370617</color>
+    <color name="Rosewood">#6A040F</color>
+    <color name="Penn_red">#9D0208</color>
+    <color name="Engineering_orange">#D00000</color>
+    <color name="Sinopia">#DC2F02</color>
+    <color name="Persimmon">#E85D04</color>
+    <color name="Princeton_orange">#F48C06</color>
+    <color name="Orange">#FAA307</color>
+    <color name="Selective_yellow">#FFBA08</color>
+    <color name="Icterine">#FFFB92</color>
+
+
+</resources>
