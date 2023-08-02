@@ -5,34 +5,34 @@ data class Tile(val value: Int = 0) {
     fun isEmpty() = value == 0
 
     fun getFontColor() = when (value) {
-        0 -> R.color.Rich_black
-        2 -> R.color.Rich_black2
-        4 -> R.color.Chocolate_cosmos
-        8 -> R.color.Rosewood
-        16 -> R.color.Penn_red
-        32 -> R.color.Engineering_orange
-        64 -> R.color.Sinopia
-        128 -> R.color.Persimmon
-        256 -> R.color.Princeton_orange
-        512 -> R.color.Orange
-        1024 -> R.color.Selective_yellow
-        2048 -> R.color.Icterine
-        else -> R.color.White
+        0 -> R.color.font_0
+        2 -> R.color.font_2
+        4 -> R.color.font_4
+        8 -> R.color.font_8
+        16 -> R.color.font_16
+        32 -> R.color.font_32
+        64 -> R.color.font_64
+        128 -> R.color.font_128
+        256 -> R.color.font_256
+        512 -> R.color.font_512
+        1024 -> R.color.font_1024
+        2048 -> R.color.font_2048
+        else -> R.color.white
     }
 
-    fun getTitleColor(): Int = when (value) {
-        0 -> R.color.Cream
-        2 -> R.color.Mindaro
-        4 -> R.color.Light_green
-        8 -> R.color.Light_green2
-        16 -> R.color.Emerald
-        32 -> R.color.Keppel
-        64 -> R.color.Verdigris
-        128 -> R.color.Bondi_blue
-        256 -> R.color.Cerulean
-        512 -> R.color.Lapis_Lazuli
-        1024 -> R.color.Indigo_dye
-        2048 -> R.color.Penn_Blue
-        else -> R.color.Black
+    fun getTileColor(): Int = when (value) {
+        0 -> R.color.tile_0
+        2 -> R.color.tile_2
+        4 -> R.color.tile_4
+        8 -> R.color.tile_8
+        16 -> R.color.tile_16
+        32 -> R.color.tile_32
+        64 -> R.color.tile_64
+        128 -> R.color.tile_128
+        256 -> R.color.tile_256
+        512 -> R.color.tile_512
+        1024 -> R.color.tile_1024
+        2048 -> R.color.tile_2048
+        else -> R.color.black
     }
 }
