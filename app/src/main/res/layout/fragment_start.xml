@@ -5,15 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/wood_background"
     tools:context=".screens.StartFragment">
 
     <ImageView
         android:id="@+id/startButton"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:padding="12dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/start"
+        android:src="@drawable/play_button_selector"
+        android:contentDescription="@string/start"
 
         app:layout_constraintBottom_toBottomOf="parent"
 

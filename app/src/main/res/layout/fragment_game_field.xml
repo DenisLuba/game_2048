@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/wood_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".screens.GameFieldFragment">
@@ -36,9 +37,12 @@
 
     <ImageView
         android:id="@+id/homeButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/home"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="8dp"
+        android:layout_marginStart="-8dp"
+        android:src="@drawable/home_button_selector"
+        android:contentDescription="@string/home"
         android:clickable="true"
         android:focusable="true"
 
@@ -50,13 +54,14 @@
 
     <ImageView
         android:id="@+id/undoButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/undo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/undo_button_selector"
+        android:contentDescription="@string/undo"
         android:clickable="true"
         android:focusable="true"
-
-        android:layout_marginEnd="20dp"
 
         app:layout_constraintBottom_toBottomOf="@+id/homeButton"
         app:layout_constraintEnd_toStartOf="@+id/restartButton"
@@ -64,9 +69,12 @@
 
     <ImageView
         android:id="@+id/restartButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/restart"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="8dp"
+        android:layout_marginEnd="-8dp"
+        android:src="@drawable/restart_button_selector"
+        android:contentDescription="@string/restart"
         android:clickable="true"
         android:focusable="true"
 

@@ -3,6 +3,26 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="primary">#8834A0A4</color>
+    <color name="primary_dark">#8834A0A4</color>
+    <color name="text_color_primary">#BB370617</color>
+    <color name="navigation_bar_color">#8834A0A4</color>
+    <color name="window_background">#FFFFFF</color>
+
+    <color name="icons">#BB370617</color>
+    <color name="icons_fill">#55370617</color>
+    <color name="icons_clicked">#FF370617</color>
+    <color name="icons_fill_clicked">#BB370617</color>
+
+    <color name="start">#BB370617</color>
+    <color name="start_fill">#55370617</color>
+    <color name="start_clicked">#FF370617</color>
+    <color name="start_fill_clicked">#BB370617</color>
+
+    <color name="wood_texture_color">#33370617</color>
+    <color name="light_wood_color">#5552B69A</color>
+    <color name="dark_wood_color">#5534A0A4</color>
+
     <color name="tile_0">#F3F5B8</color>
     <color name="tile_2">#D9ED92</color>
     <color name="tile_4">#B5E48C</color>
