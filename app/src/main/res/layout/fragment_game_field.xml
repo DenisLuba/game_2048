@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.GameFieldFragment">
+
+
+    <TableLayout
+        android:id="@+id/gameField"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </TableLayout>
+
+    <ImageView
+        android:id="@+id/homeButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/home"
+        android:clickable="true"
+        android:focusable="true"
+
+        app:layout_constraintVertical_bias="0.8"
+
+        app:layout_constraintBottom_toTopOf="@+id/gameField"
+        app:layout_constraintStart_toStartOf="@+id/gameField"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/undoButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/undo"
+        android:clickable="true"
+        android:focusable="true"
+
+        android:layout_marginEnd="20dp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/homeButton"
+        app:layout_constraintEnd_toStartOf="@+id/restartButton"
+        app:layout_constraintTop_toTopOf="@+id/homeButton" />
+
+    <ImageView
+        android:id="@+id/restartButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/restart"
+        android:clickable="true"
+        android:focusable="true"
+
+        app:layout_constraintBottom_toBottomOf="@+id/homeButton"
+        app:layout_constraintEnd_toEndOf="@+id/gameField"
+        app:layout_constraintTop_toTopOf="@+id/homeButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

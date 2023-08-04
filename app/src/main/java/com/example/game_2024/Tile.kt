@@ -1,6 +1,6 @@
 package com.example.game_2024
 
-data class Tile(val value: Int = 0) {
+data class Tile(var value: Int = 0) {
 
     fun isEmpty() = value == 0
 
