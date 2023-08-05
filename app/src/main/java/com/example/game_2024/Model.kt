@@ -59,8 +59,8 @@ class Model {
                 it.component2().value = 0
                 maxTile = max(it.component1().value, maxTile)
                 score += it.component1().value
-                it.component1()
-            } else it.component1()
+            }
+            it.component1()
         }.let {
             compressTiles(tiles)
             isChanged
