@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var navHostFragment: NavHostFragment
     lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
-    private lateinit var model: Model
+    private lateinit var viewModel: ViewModel2024
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
@@ -23,12 +23,12 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
 //        model = ViewModelProvider(this).get(Model::class.java)
-        model = ViewModelProvider(this, ModelFactory(application, ))[Model::class.java]
+        viewModel = ViewModelProvider(this, ModelFactory(application, ))[ViewModel2024::class.java]
     }
 
     override fun onStart() {
         super.onStart()
-        model.liveData.observe(this) {
+        viewModel.liveData.observe(this) {
 
         }
     }
