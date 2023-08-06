@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/startButton"
-        android:layout_width="100dp"
+        android:layout_width="@dimen/start_button_size"
         android:layout_height="100dp"
         android:padding="12dp"
         android:clickable="true"

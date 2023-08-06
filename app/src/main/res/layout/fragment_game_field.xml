@@ -9,14 +9,81 @@
     tools:context=".screens.GameFieldFragment">
 
 
-    <TableLayout
-        android:id="@+id/gameField"
-        android:layout_width="320dp"
-        android:layout_height="320dp"
+    <ImageView
+        android:id="@+id/homeButton"
+        android:layout_width="@dimen/icons_size"
+        android:layout_height="@dimen/icons_size"
+        android:padding="8dp"
+        android:layout_marginStart="-8dp"
+        android:src="@drawable/home_button_selector"
+        android:contentDescription="@string/home"
+        android:clickable="true"
+        android:focusable="true"
+
+        app:layout_constraintVertical_bias="0.96"
+
+        app:layout_constraintBottom_toTopOf="@+id/frameGameField"
+        app:layout_constraintStart_toStartOf="@+id/gameField"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/undoButton"
+        android:layout_width="@dimen/icons_size"
+        android:layout_height="@dimen/icons_size"
+        android:padding="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/undo_button_selector"
+        android:contentDescription="@string/undo"
+        android:clickable="true"
+        android:focusable="true"
+
+        app:layout_constraintBottom_toBottomOf="@+id/homeButton"
+        app:layout_constraintEnd_toStartOf="@+id/restartButton"
+        app:layout_constraintTop_toTopOf="@+id/homeButton" />
+
+    <ImageView
+        android:id="@+id/restartButton"
+        android:layout_width="@dimen/icons_size"
+        android:layout_height="@dimen/icons_size"
+        android:padding="9dp"
+        android:layout_marginEnd="-8dp"
+        android:src="@drawable/restart_button_selector"
+        android:contentDescription="@string/restart"
+        android:clickable="true"
+        android:focusable="true"
+
+        app:layout_constraintBottom_toBottomOf="@+id/homeButton"
+        app:layout_constraintEnd_toEndOf="@+id/gameField"
+        app:layout_constraintTop_toTopOf="@+id/homeButton" />
+
+    <FrameLayout
+        android:id="@+id/frameGameField"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/frame_game_field_color"
+
+        app:layout_constraintWidth_percent="0.84"
+        app:layout_constraintDimensionRatio="H,1"
+        app:layout_constraintVertical_bias="0.6"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TableLayout
+        android:id="@+id/gameField"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/teeth_texture"
+
+        android:layout_margin="4dp"
+
+        app:layout_constraintBottom_toBottomOf="@id/frameGameField"
+        app:layout_constraintEnd_toEndOf="@id/frameGameField"
+        app:layout_constraintStart_toStartOf="@id/frameGameField"
+        app:layout_constraintTop_toTopOf="@id/frameGameField">
 
         <TableRow
             android:layout_width="match_parent"
@@ -34,52 +101,5 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </TableLayout>
-
-    <ImageView
-        android:id="@+id/homeButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="8dp"
-        android:layout_marginStart="-8dp"
-        android:src="@drawable/home_button_selector"
-        android:contentDescription="@string/home"
-        android:clickable="true"
-        android:focusable="true"
-
-        app:layout_constraintVertical_bias="0.8"
-
-        app:layout_constraintBottom_toTopOf="@+id/gameField"
-        app:layout_constraintStart_toStartOf="@+id/gameField"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/undoButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="8dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/undo_button_selector"
-        android:contentDescription="@string/undo"
-        android:clickable="true"
-        android:focusable="true"
-
-        app:layout_constraintBottom_toBottomOf="@+id/homeButton"
-        app:layout_constraintEnd_toStartOf="@+id/restartButton"
-        app:layout_constraintTop_toTopOf="@+id/homeButton" />
-
-    <ImageView
-        android:id="@+id/restartButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="8dp"
-        android:layout_marginEnd="-8dp"
-        android:src="@drawable/restart_button_selector"
-        android:contentDescription="@string/restart"
-        android:clickable="true"
-        android:focusable="true"
-
-        app:layout_constraintBottom_toBottomOf="@+id/homeButton"
-        app:layout_constraintEnd_toEndOf="@+id/gameField"
-        app:layout_constraintTop_toTopOf="@+id/homeButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

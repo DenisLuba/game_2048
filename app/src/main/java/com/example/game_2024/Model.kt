@@ -1,29 +1,25 @@
 package com.example.game_2024
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import kotlin.math.max
 import kotlin.random.Random
 
-class Model {
+class Model(fieldHeight: Int = 4, fieldWidth: Int = 4) {
 
-    var score: Int
-    var maxTile: Int
+    var score: Int = 0
+    var maxTile: Int = 0
+    private var isSaveNeeded = true
 
-    private val gameTiles: List<List<Tile>> by lazy {
-        List(FIELD_HEIGHT) { MutableList(FIELD_WIDTH) { Tile() } }
-    }
+    private val gameField: List<MutableList<Tile>> =
+        List(fieldHeight) { MutableList(fieldWidth) { Tile() } }
+    private val flippedGameField: List<MutableList<Tile>> =
+        List(fieldWidth) { MutableList(fieldHeight) { Tile() } }
 
     init {
-        score = 0
-        maxTile = 0
         resetGameTiles()
     }
 
     private fun resetGameTiles() {
-        gameTiles.forEach{ list -> list.map { it.value = 0 } }
+        gameField.forEach { list -> list.map { it.value = 0 } }
         repeat(2) { addRandomTile() }
     }
 
@@ -35,11 +31,54 @@ class Model {
         }
     }
 
-    private fun getEmptyTiles(): List<Tile> = gameTiles.flatten().filter { it.isEmpty() }
-    companion object {
-        private const val FIELD_WIDTH = 4
-        private const val FIELD_HEIGHT = 4
+    private fun getEmptyTiles(): List<Tile> = gameField.flatten().filter { it.isEmpty() }
+
+
+//    Moving
+
+    fun left(field: List<MutableList<Tile>> = gameField) {
+        if (isSaveNeeded) saveState(field)
+        var isChanged = false
+        var wasCompressed: Boolean
+        var wasMerged: Boolean
+
+        for (tiles in field) {
+            wasCompressed = compressTiles(tiles)
+            wasMerged = mergeTiles(tiles)
+            if (wasCompressed || wasMerged) isChanged = true
+        }
+
+        if (isChanged) addRandomTile()
+        isSaveNeeded = true
     }
+
+    fun right() {
+        saveState(gameField)
+        flipField(gameField, flippedGameField)
+        flipField(flippedGameField, gameField)
+        left()
+        flipField(gameField, flippedGameField)
+        flipField(flippedGameField, gameField)
+    }
+
+    fun up() {
+        flipField(gameField, flippedGameField)
+        flipField(flippedGameField, gameField)
+        flipField(gameField, flippedGameField)
+        left(flippedGameField)
+        flipField(flippedGameField, gameField)
+    }
+
+    fun down() {
+        flipField(gameField, flippedGameField)
+        left(flippedGameField)
+        flipField(flippedGameField, gameField)
+        flipField(gameField, flippedGameField)
+        flipField(flippedGameField, gameField)
+    }
+
+
+//    Extra methods for moving
 
     private fun compressTiles(tiles: MutableList<Tile>): Boolean =
         tiles.filter { !it.isEmpty() }
@@ -52,6 +91,7 @@ class Model {
 
     private fun mergeTiles(tiles: MutableList<Tile>): Boolean {
         var isChanged = false
+
         return tiles.windowed(2) {
             if (it.component1().value == it.component2().value) {
                 isChanged = true
@@ -66,4 +106,41 @@ class Model {
             isChanged
         }
     }
+
+    private fun flipField(
+        from: List<MutableList<Tile>>,
+        to: List<MutableList<Tile>>
+    ) {
+        for (i in from.indices)
+            for (j in from[i].indices)
+                to[j][from.lastIndex - i].value = from[i][j].value
+    }
+
+
+//    Save state
+
+    private fun saveState(tiles: List<MutableList<Tile>>) {
+
+    }
 }
+
+//fun main() {
+//    val model = Model(4, 3)
+//    model.gameField = listOf(
+//        mutableListOf(Tile(), Tile(2), Tile(2)),
+//        mutableListOf(Tile(4), Tile(2), Tile(4)),
+//        mutableListOf(Tile(), Tile(), Tile(2)),
+//        mutableListOf(Tile(4), Tile(2), Tile(2))
+//    )
+//
+//    printArr(model.gameField)
+//    println()
+//
+//    model.down()
+//
+//    printArr(model.gameField)
+//}
+//
+//fun printArr(array: List<MutableList<Tile>>) {
+//    array.forEach { println(it.map { tile -> tile.value }.joinToString(" ")) }
+//}
