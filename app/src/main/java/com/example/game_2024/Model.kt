@@ -9,7 +9,7 @@ class Model(fieldHeight: Int = 4, fieldWidth: Int = 4) {
     var maxTile: Int = 0
     private var isSaveNeeded = true
 
-    private val gameField: List<MutableList<Tile>> =
+    val gameField: List<MutableList<Tile>> =
         List(fieldHeight) { MutableList(fieldWidth) { Tile() } }
     private val flippedGameField: List<MutableList<Tile>> =
         List(fieldWidth) { MutableList(fieldHeight) { Tile() } }
@@ -116,6 +116,19 @@ class Model(fieldHeight: Int = 4, fieldWidth: Int = 4) {
                 to[j][from.lastIndex - i].value = from[i][j].value
     }
 
+    fun canMove(): Boolean {
+        for (i in gameField.indices) {
+            for (j in gameField[i].indices) {
+                if (
+                    gameField[i][j].isEmpty()
+                    || (i > 0 && gameField[i][j].value == gameField[i - 1][j].value)
+                    || (j > 0 && gameField[i][j].value == gameField[i][j - 1].value)
+                ) return true
+            }
+        }
+        return false
+    }
+
 
 //    Save state
 
@@ -139,6 +152,15 @@ class Model(fieldHeight: Int = 4, fieldWidth: Int = 4) {
 //    model.down()
 //
 //    printArr(model.gameField)
+//    println(model.canMove())
+//
+//    model.gameField = listOf(
+//        mutableListOf(Tile(1), Tile(2), Tile(3)),
+//        mutableListOf(Tile(4), Tile(5), Tile(6)),
+//        mutableListOf(Tile(6), Tile(7), Tile(8)),
+//        mutableListOf(Tile(9), Tile(10), Tile(11))
+//    )
+//    println(model.canMove())
 //}
 //
 //fun printArr(array: List<MutableList<Tile>>) {
