@@ -1,10 +1,13 @@
 package com.example.game_2024
 
+import android.app.Activity
+import androidx.core.content.ContextCompat
+
 data class Tile(var value: Int = 0) {
 
     fun isEmpty() = value == 0
 
-    fun getFontColor() = when (value) {
+    fun getFontColor(): Int = when (value) {
         0 -> R.color.font_0
         2 -> R.color.font_2
         4 -> R.color.font_4

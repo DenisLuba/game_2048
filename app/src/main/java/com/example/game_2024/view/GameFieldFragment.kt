@@ -1,7 +1,15 @@
 package com.example.game_2024.view
 
 import android.content.res.Resources
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,11 +18,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TableLayout.LayoutParams
 import android.widget.TextView
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.marginBottom
-import androidx.core.view.marginStart
-import androidx.core.view.marginTop
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.game_2024.view_model.ModelFactory
@@ -34,16 +39,21 @@ class GameFieldFragment : Fragment() {
     private var isGameWon = false
     private var isGameLost = false
 
-    private var fieldSize = 4
+    private var dimensions = intArrayOf()
     private lateinit var viewModel: ViewModel2024
     private lateinit var gameField: List<List<Tile>>
+
     private var score = 0
     private var maxTile = 0
-    private var tileSize = 0
-    private var fontSize = 0
-    private var margin = 0
+
+    private val widthRelativeToScreen = 0.84
+    private val heightRelativeToScreen = 1.092
+    private var tileSize = 0.0
+    private var fontSize = 0.0
+    private var margin = 0.0
 
     private lateinit var linearLayout: LinearLayout
+    private lateinit var linearLayoutBase: LinearLayout
     private lateinit var textView: TextView
     private val params = LinearLayout.LayoutParams(
         LayoutParams.MATCH_PARENT,
@@ -53,18 +63,26 @@ class GameFieldFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fieldSize = arguments?.getInt(MainActivity.FIELD_SIZE) ?: 4
+        dimensions = arguments?.getIntArray(MainActivity.DIMENSIONS) ?: intArrayOf(4, 4)
         viewModel = ViewModelProvider(
             this,
-            ModelFactory(requireActivity().application, fieldSize)
+            ModelFactory(requireActivity().application, dimensions)
         )[ViewModel2024::class.java]
 
         gameField = viewModel.getGameField().map { list -> list.map { Tile(it) } }
         score = viewModel.getScore()
         maxTile = viewModel.getMaxTile()
-        tileSize = (((Resources.getSystem().displayMetrics.widthPixels * 0.84).toInt() / fieldSize) / 4) * 4
+
+        val displaySize = Resources.getSystem().displayMetrics.widthPixels
+        val widthOfFrame = displaySize * widthRelativeToScreen
+        val heightOfFrame = displaySize * heightRelativeToScreen
+
+        tileSize = if ((dimensions[0].toDouble() / dimensions[1].toDouble()) > 1.3)
+            (heightOfFrame * 20) / (dimensions[0] * 22)
+        else (widthOfFrame * 20) / (dimensions[1] * 22)
+
         fontSize = tileSize / 6
-        margin = if (tileSize >= 40) (fontSize / 40) * 4 else 4
+        margin = if (tileSize >= 40) tileSize / 40 else 4.0
     }
 
     override fun onCreateView(
@@ -73,6 +91,7 @@ class GameFieldFragment : Fragment() {
     ): View {
         binding = FragmentGameFieldBinding.inflate(inflater)
         setField()
+
         return binding.root
     }
 
@@ -90,26 +109,58 @@ class GameFieldFragment : Fragment() {
     }
 
     private fun setField() {
-        for (i in 0 until fieldSize) {
+
+        val heightOfField = dimensions.component1()
+        val widthOfField = dimensions.component2()
+
+        linearLayoutBase = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            weightSum = heightOfField.toFloat()
+            foregroundGravity = Gravity.CENTER
+
+            layoutParams = LinearLayout.LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        for (i in 0 until heightOfField) {
             linearLayout = LinearLayout(context).apply {
-                weightSum = fieldSize.toFloat()
-                layoutParams = params
+                weightSum = widthOfField.toFloat()
+                layoutParams = params.apply {
+                    gravity = Gravity.CENTER
+                }
             }
-            for (j in 0 until fieldSize) {
+            for (j in 0 until widthOfField) {
                 textView = TextView(context).apply {
                     text = gameField[i][j].value.toString()
                     gravity = Gravity.CENTER
                     textSize = fontSize.toFloat()
+                    width = tileSize.toInt()
+                    height = tileSize.toInt()
                     setTextColor(gameField[i][j].getFontColor())
-                    setBackgroundColor(gameField[i][j].getTileColor())
                     background = ResourcesCompat.getDrawable(resources, R.drawable.tile, null)
+
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                        background.colorFilter = BlendModeColorFilter(gameField[i][j].getTileColor(), BlendMode.SRC_OVER)
+//                    } else {
+//                        background.setColorFilter(gameField[i][j].getTileColor(), PorterDuff.Mode.SRC_ATOP)
+//                    }
+
                     layoutParams = params.apply {
-                        setMargins(2 * margin, margin, 2 * margin, margin)
+                        requestLayout()
+                        setMargins(
+                            margin.toInt(),
+                            margin.toInt(),
+                            margin.toInt(),
+                            margin.toInt()
+                        )
                     }
                 }
                 linearLayout.addView(textView)
             }
-            binding.gameField.addView(linearLayout)
+            linearLayoutBase.addView(linearLayout)
         }
+        binding.gameField.addView(linearLayoutBase)
     }
 }

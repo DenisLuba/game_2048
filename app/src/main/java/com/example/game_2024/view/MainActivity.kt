@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object{
-        const val FIELD_SIZE = "DIMENSIONS"
+        const val DIMENSIONS = "DIMENSIONS"
+
     }
 }

@@ -12,7 +12,10 @@ import com.example.game_2024.databinding.FragmentStartBinding
 class StartFragment : Fragment() {
 
     private lateinit var binding: FragmentStartBinding
-    private var fieldSize = 8
+
+    private val maxHeight = 26
+    private val maxWidth = 20
+    private var dimensions = intArrayOf(2, 2)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +30,7 @@ class StartFragment : Fragment() {
 
         binding.startButton.setOnClickListener {
 
-            val bundle = bundleOf(MainActivity.FIELD_SIZE to fieldSize)
+            val bundle = bundleOf(MainActivity.DIMENSIONS to dimensions)
             (activity as MainActivity)
                 .navController
                 .navigate(R.id.action_startFragment_to_gameFieldFragment, bundle)

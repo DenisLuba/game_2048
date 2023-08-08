@@ -5,12 +5,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.game_2024.model.Model
 
-class ViewModel2024(application: Application, fieldSize: Int): AndroidViewModel(application) {
-    //class ViewModel2024: ViewModel() {
+class ViewModel2024(application: Application, dimensions: IntArray): AndroidViewModel(application) {
 
-    val liveData = MutableLiveData<Int>() // may be not Int
+    val liveData = MutableLiveData<Int>()
 
-    private val model = Model(fieldSize)
+    private val model = Model(dimensions.component1(), dimensions.component2())
 
     fun getGameField(): List<List<Int>> = model.gameField
 

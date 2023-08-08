@@ -3,7 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-<!--    Themes    -->
+    <!--    Themes    -->
 
     <!--    Panels    -->
     <color name="primary">#4B7778</color>
@@ -18,8 +18,7 @@
     <color name="dark_wood_color_window">#4B7778</color>
 
 
-
-<!--    StartFragment    -->
+    <!--    StartFragment    -->
 
     <!--    Buttons    -->
     <color name="start_stroke">#BB370617</color>
@@ -36,8 +35,7 @@
     <color name="dark_wood_color_start">#E6BBD3</color>
 
 
-
-<!--    GameFieldFragment    -->
+    <!--    GameFieldFragment    -->
 
     <!--    Buttons    -->
     <color name="icons_stroke">#BB370617</color>
@@ -55,10 +53,9 @@
 
     <color name="frame_game_field_color">#886C0429</color>
 
-<!--    Tiles    -->
-
-    <color name="tile_0">#F3F5B8</color>
-    <color name="tile_2">#D9ED92</color>
+    <!--    Tiles    -->
+    <color name="tile_0">#FFF3F5B8</color>
+    <color name="tile_2">#FFD9ED92</color>
     <color name="tile_4">#B5E48C</color>
     <color name="tile_8">#99D98C</color>
     <color name="tile_16">#76C893</color>
@@ -70,10 +67,7 @@
     <color name="tile_1024">#184E77</color>
     <color name="tile_2048">#051A4C</color>
 
-
-
-<!--    Fonts of tiles    -->
-
+    <!--    Fonts of tiles    -->
     <color name="font_0">#001217</color>
     <color name="font_2">#03071E</color>
     <color name="font_4">#370617</color>
