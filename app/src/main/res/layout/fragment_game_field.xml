@@ -6,7 +6,7 @@
     android:background="@drawable/wood_background_game"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.GameFieldFragment">
+    tools:context=".view.GameFieldFragment">
 
 
     <ImageView
@@ -23,7 +23,7 @@
         app:layout_constraintVertical_bias="0.96"
 
         app:layout_constraintBottom_toTopOf="@+id/frameGameField"
-        app:layout_constraintStart_toStartOf="@+id/gameField"
+        app:layout_constraintStart_toStartOf="@+id/gameFieldLayout"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -53,7 +53,7 @@
         android:focusable="true"
 
         app:layout_constraintBottom_toBottomOf="@+id/homeButton"
-        app:layout_constraintEnd_toEndOf="@+id/gameField"
+        app:layout_constraintEnd_toEndOf="@+id/gameFieldLayout"
         app:layout_constraintTop_toTopOf="@+id/homeButton" />
 
     <FrameLayout
@@ -72,12 +72,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TableLayout
-        android:id="@+id/gameField"
+    <LinearLayout
+        android:id="@+id/gameFieldLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/teeth_texture"
-
         android:layout_margin="4dp"
 
         app:layout_constraintBottom_toBottomOf="@id/frameGameField"
@@ -85,21 +84,17 @@
         app:layout_constraintStart_toStartOf="@id/frameGameField"
         app:layout_constraintTop_toTopOf="@id/frameGameField">
 
-        <TableRow
+        <LinearLayout
+            android:id="@+id/gameField"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        </LinearLayout>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </TableLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

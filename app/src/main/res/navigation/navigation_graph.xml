@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/gameFieldFragment"
-        android:name="com.example.game_2024.screens.GameFieldFragment"
+        android:name="com.example.game_2024.view.GameFieldFragment"
         android:label="fragment_game_field"
         tools:layout="@layout/fragment_game_field" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.example.game_2024.screens.StartFragment"
+        android:name="com.example.game_2024.view.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start" >
         <action
