@@ -9,15 +9,18 @@ class Model(height: Int = 4, width: Int = 4) {
     var maxTile: Int = 0
     private var isSaveNeeded = true
 
-    val gameField: List<MutableList<Int>> = List(height) { MutableList(width) { 0 } }
+    var gameField: List<MutableList<Int>> = List(height) { MutableList(width) { 0 } }
     private val flippedGameField: List<MutableList<Int>> = List(width) { MutableList(height) { 0 } }
 
     init {
         resetGameTiles()
     }
 
-    private fun resetGameTiles() {
-        gameField.forEach { list -> list.map { 0 } }
+    fun resetGameTiles() {
+        for (list in gameField)
+            for (i in list.indices)
+                list[i] = 0
+
         repeat(2) { addRandomTile(gameField) }
     }
 
@@ -25,94 +28,167 @@ class Model(height: Int = 4, width: Int = 4) {
         val tiles: MutableList<IntArray?> = getEmptyTiles(field).toMutableList()
         if (tiles.isNotEmpty()) {
             val randomTile = Random.nextInt(tiles.size)
-            val row = tiles[randomTile]?.component1() ?: -1
-            val column = tiles[randomTile]?.component2() ?: -1
+            val row = tiles[randomTile]?.component1() ?: return
+            val column = tiles[randomTile]?.component2() ?: return
             val num = if (Random.nextInt(10) < 9) 2 else 4
             field[row][column] = num
         }
     }
 
-    private fun getEmptyTiles(field: List<MutableList<Int>>): List<IntArray?> = field.mapIndexed { row, list -> list.mapIndexed { column, num -> if (num == 0) intArrayOf(row, column) else null } }.flatten().filterNotNull()
+    private fun getEmptyTiles(field: List<MutableList<Int>>): List<IntArray?> =
+        field.mapIndexed { row, list ->
+            list.mapIndexed { column, num ->
+                if (num == 0) intArrayOf(
+                    row,
+                    column
+                ) else null
+            }
+        }.flatten().filterNotNull()
 
 //    Moving
 
-    fun left(field: List<MutableList<Int>>) {
-        if (isSaveNeeded) saveState(field)
+    fun left() {
+        if (gameField[0].size <= 1) return
         var isChanged = false
-        var wasCompressed: Boolean
-        var wasMerged: Boolean
-
-        for (tiles in field) {
-            wasCompressed = compressTiles(tiles)
-            wasMerged = mergeTiles(tiles)
-            if (wasCompressed || wasMerged) isChanged = true
+        var i: Int
+        var j: Int
+        for (tiles in gameField) { // compress each list from the main list to the left
+            i = 0
+            j = 1
+            while (j <= tiles.lastIndex) {
+                if (tiles[j] != 0) {
+                    if (tiles[i] == 0) {
+                        tiles[i] = tiles[j]
+                        tiles[j] = 0
+                        isChanged = true
+                    } else if (tiles[i] == tiles[j]) {
+                        tiles[i] = tiles[i] shl 1
+                        i++
+                        tiles[j] = 0
+                        isChanged = true
+                    } else if (j > i + 1) {
+                        tiles[i + 1] = tiles[j]
+                        i++
+                        tiles[j] = 0
+                        isChanged = true
+                    } else i++
+                }
+                j++
+            }
         }
-
-        if (isChanged) addRandomTile(field)
-        isSaveNeeded = true
+        if (isChanged) { // if there were changes, then add a random tile and save the state
+            addRandomTile(gameField)
+            saveState(gameField)
+        }
     }
 
     fun right() {
-        saveState(gameField)
-        flipField(gameField, flippedGameField)
-        flipField(flippedGameField, gameField)
-        left(gameField)
-        flipField(gameField, flippedGameField)
-        flipField(flippedGameField, gameField)
-    }
-
-    fun up() {
-        flipField(gameField, flippedGameField)
-        flipField(flippedGameField, gameField)
-        flipField(gameField, flippedGameField)
-        left(flippedGameField)
-        flipField(flippedGameField, gameField)
+        if (gameField[0].size <= 1) return
+        var isChanged = false
+        var i: Int
+        var j: Int
+        for (tiles in gameField) { // compress each list from the main list to the right
+            i = tiles.lastIndex
+            j = i - 1
+            while (j >= 0) {
+                if (tiles[j] != 0) {
+                    if (tiles[i] == 0) {
+                        tiles[i] = tiles[j]
+                        tiles[j] = 0
+                        isChanged = true
+                    } else if (tiles[i] == tiles[j]) {
+                        tiles[i] = tiles[i] shl 1
+                        i--
+                        tiles[j] = 0
+                        isChanged = true
+                    } else if (j < i - 1) {
+                        tiles[i - 1] = tiles[j]
+                        i--
+                        tiles[j] = 0
+                        isChanged = true
+                    } else i--
+                }
+                j--
+            }
+        }
+        if (isChanged) { // if there were changes, then add a random tile and save the state
+            addRandomTile(gameField)
+            saveState(gameField)
+        }
     }
 
     fun down() {
-        flipField(gameField, flippedGameField)
-        left(flippedGameField)
-        flipField(flippedGameField, gameField)
-        flipField(gameField, flippedGameField)
-        flipField(flippedGameField, gameField)
-    }
-
-
-//    Extra methods for moving
-
-    private fun compressTiles(tiles: MutableList<Int>): Boolean =
-        tiles.filter { it != 0 }
-            .plus(tiles.filter { it == 0 })
-            .let {
-                val isChanged = it != tiles
-                for (i in tiles.indices) tiles[i] = it[i]
-                isChanged
-            }
-
-    private fun mergeTiles(tiles: MutableList<Int>): Boolean {
+        if (gameField.size <= 1) return
         var isChanged = false
-
-        for (i in tiles.indices) {
-            if ((i + 1) < tiles.size && tiles[i] == tiles[i + 1] && tiles[i] != 0) {
-                tiles[i] *= 2
-                tiles[i + 1] = 0
-                maxTile = max(tiles[i], maxTile)
-                score += tiles[i]
-                isChanged = true
-                compressTiles(tiles)
+        var y: Int
+        var j: Int
+        for (x in 0..gameField[0].lastIndex) {
+            y = gameField.lastIndex
+            j = y - 1
+            while (j >= 0) {
+                if (gameField[j][x] != 0) {
+                    if (gameField[y][x] == 0) {
+                        gameField[y][x] = gameField[j][x]
+                        gameField[j][x] = 0
+                        isChanged = true
+                    } else if (gameField[y][x] == gameField[j][x]) {
+                        gameField[y][x] = gameField[y][x] shl 1
+                        y--
+                        gameField[j][x] = 0
+                        isChanged = true
+                    } else if (j < y - 1) {
+                        gameField[y - 1][x] = gameField[j][x]
+                        y--
+                        gameField[j][x] = 0
+                        isChanged = true
+                    } else y--
+                }
+                j--
             }
         }
-        return isChanged
+        if (isChanged) { // if there were changes, then add a random tile and save the state
+            addRandomTile(gameField)
+            saveState(gameField)
+        }
     }
 
-    private fun flipField(
-        from: List<MutableList<Int>>,
-        to: List<MutableList<Int>>
-    ) {
-        for (i in from.indices)
-            for (j in from[i].indices)
-                to[j][from.lastIndex - i] = from[i][j]
+    fun up() {
+        if (gameField.size <= 1) return
+        var isChanged = false
+        var y: Int
+        var j: Int
+        for (x in 0..gameField[0].lastIndex) {
+            y = 0
+            j = 1
+            while (j <= gameField.lastIndex) {
+                if (gameField[j][x] != 0) {
+                    if (gameField[y][x] == 0) {
+                        gameField[y][x] = gameField[j][x]
+                        gameField[j][x] = 0
+                        isChanged = true
+                    } else if (gameField[y][x] == gameField[j][x]) {
+                        gameField[y][x] = gameField[y][x] shl 1
+                        y++
+                        gameField[j][x] = 0
+                        isChanged = true
+                    } else if (j > y + 1) {
+                        gameField[y + 1][x] = gameField[j][x]
+                        y++
+                        gameField[j][x] = 0
+                        isChanged = true
+                    } else y++
+                }
+                j++
+            }
+        }
+        if (isChanged) { // if there were changes, then add a random tile and save the state
+            addRandomTile(gameField)
+            saveState(gameField)
+        }
     }
+
+//    Other additional functions for moving
+
 
     fun canMove(): Boolean {
         for (i in gameField.indices) {
@@ -135,26 +211,74 @@ class Model(height: Int = 4, width: Int = 4) {
     }
 }
 
-//fun main() {
-//    val model = Model(3, 4)
-//    model.gameField = listOf(
-//        mutableListOf(0, 0, 2),
-//        mutableListOf(4, 2, 4),
-//        mutableListOf(0, 2, 2),
-//        mutableListOf(4, 2, 2)
-//    )
-//
-//    model.gameField.forEach(::println)
-//    println()
-//
-//    model.up()
-//
-//    model.gameField.forEach(::println)
-//    println(model.canMove())
-//
-//    model.up()
-//
-//    model.gameField.forEach(::println)
-//}
+fun main() {
+    val model = Model(3, 4)
+    model.gameField = listOf(
+        mutableListOf(0, 0, 4),
+        mutableListOf(4, 2, 4),
+        mutableListOf(2, 0, 2),
+        mutableListOf(4, 2, 2)
+    )
+
+    println("ARRAY")
+    model.gameField.forEach(::println)
+    println()
+
+    model.left()
+
+    println("LEFT")
+    model.gameField.forEach(::println)
+    println()
+
+    model.gameField = listOf(
+        mutableListOf(4, 0, 4),
+        mutableListOf(4, 2, 4),
+        mutableListOf(4, 0, 2),
+        mutableListOf(4, 2, 0)
+    )
+
+    println("ARRAY")
+    model.gameField.forEach(::println)
+    println()
+
+    model.right()
+
+    println("RIGHT")
+    model.gameField.forEach(::println)
+    println()
+
+    model.gameField = listOf(
+        mutableListOf(4, 0, 4),
+        mutableListOf(4, 2, 4),
+        mutableListOf(4, 0, 2),
+        mutableListOf(4, 2, 0)
+    )
+
+    println("ARRAY")
+    model.gameField.forEach(::println)
+    println()
+
+    model.down()
+    println("DOWN")
+    model.gameField.forEach(::println)
+    println()
+
+    model.gameField = listOf(
+        mutableListOf(4, 0, 0),
+        mutableListOf(4, 2, 4),
+        mutableListOf(4, 0, 2),
+        mutableListOf(4, 2, 2)
+    )
+
+    println("ARRAY")
+    model.gameField.forEach(::println)
+    println()
+
+    model.up()
+    println("UP")
+    model.gameField.forEach(::println)
+    println()
+
+}
 
 

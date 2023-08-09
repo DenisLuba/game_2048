@@ -1,15 +1,11 @@
 package com.example.game_2024.view
 
 import android.content.res.Resources
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
-import android.graphics.PorterDuff
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.ShapeDrawable
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,13 +14,12 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TableLayout.LayoutParams
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.game_2024.view_model.ModelFactory
 import com.example.game_2024.R
-import com.example.game_2024.Tile
 import com.example.game_2024.view_model.ViewModel2024
 import com.example.game_2024.databinding.FragmentGameFieldBinding
 
@@ -69,7 +64,7 @@ class GameFieldFragment : Fragment() {
             ModelFactory(requireActivity().application, dimensions)
         )[ViewModel2024::class.java]
 
-        gameField = viewModel.getGameField().map { list -> list.map { Tile(it) } }
+        setGameField()
         score = viewModel.getScore()
         maxTile = viewModel.getMaxTile()
 
@@ -90,8 +85,12 @@ class GameFieldFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGameFieldBinding.inflate(inflater)
-        setField()
-
+        setFieldView()
+        binding.restartButton.setOnClickListener {
+            viewModel.resetGame()
+            setGameField()
+            setFieldView()
+        }
         return binding.root
     }
 
@@ -108,7 +107,9 @@ class GameFieldFragment : Fragment() {
         viewModel.liveData.removeObserver(observer)
     }
 
-    private fun setField() {
+    private fun setFieldView() {
+
+        binding.gameField.removeAllViews()
 
         val heightOfField = dimensions.component1()
         val widthOfField = dimensions.component2()
@@ -139,13 +140,9 @@ class GameFieldFragment : Fragment() {
                     width = tileSize.toInt()
                     height = tileSize.toInt()
                     setTextColor(gameField[i][j].getFontColor())
-                    background = ResourcesCompat.getDrawable(resources, R.drawable.tile, null)
-
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//                        background.colorFilter = BlendModeColorFilter(gameField[i][j].getTileColor(), BlendMode.SRC_OVER)
-//                    } else {
-//                        background.setColorFilter(gameField[i][j].getTileColor(), PorterDuff.Mode.SRC_ATOP)
-//                    }
+                    background = ResourcesCompat.getDrawable(resources, R.drawable.tile, null).apply {
+                        this?.overrideColor(gameField[i][j].getTileColor())
+                    }
 
                     layoutParams = params.apply {
                         requestLayout()
@@ -162,5 +159,18 @@ class GameFieldFragment : Fragment() {
             linearLayoutBase.addView(linearLayout)
         }
         binding.gameField.addView(linearLayoutBase)
+    }
+
+    private fun setGameField() {
+        gameField = viewModel.getGameField().map { list -> list.map { Tile(it, requireContext()) } }
+    }
+
+    private fun Drawable.overrideColor(@ColorInt colorInt: Int) {
+        mutate()
+        when (this) {
+            is GradientDrawable -> setColor(colorInt)
+            is ShapeDrawable -> paint.color = colorInt
+            is ColorDrawable -> color = colorInt
+        }
     }
 }

@@ -16,4 +16,6 @@ class ViewModel2024(application: Application, dimensions: IntArray): AndroidView
     fun getScore(): Int = model.score
 
     fun getMaxTile(): Int = model.maxTile
+
+    fun resetGame(): Unit = model.resetGameTiles()
 }
