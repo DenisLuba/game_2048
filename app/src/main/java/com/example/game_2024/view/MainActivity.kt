@@ -23,6 +23,5 @@ class MainActivity : AppCompatActivity() {
 
     companion object{
         const val DIMENSIONS = "DIMENSIONS"
-
     }
 }

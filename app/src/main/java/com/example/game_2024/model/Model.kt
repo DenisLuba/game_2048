@@ -3,7 +3,17 @@ package com.example.game_2024.model
 import kotlin.math.max
 import kotlin.random.Random
 
-class Model(height: Int = 4, width: Int = 4) {
+class Model private constructor(height: Int = 4, width: Int = 4) {
+
+    companion object {
+        @Volatile
+        private var instance: Model? = null
+
+        fun getInstance(height: Int = 4, width: Int = 4) =
+            instance ?: synchronized(this) {
+                instance ?: Model(height, width).also { instance = it }
+            }
+    }
 
     var score: Int = 0
     var maxTile: Int = 0
@@ -212,7 +222,7 @@ class Model(height: Int = 4, width: Int = 4) {
 }
 
 fun main() {
-    val model = Model(3, 4)
+    val model = Model.getInstance(3, 4)
     model.gameField = listOf(
         mutableListOf(0, 0, 4),
         mutableListOf(4, 2, 4),

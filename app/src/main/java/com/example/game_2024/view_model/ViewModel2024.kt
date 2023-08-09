@@ -9,7 +9,7 @@ class ViewModel2024(application: Application, dimensions: IntArray): AndroidView
 
     val liveData = MutableLiveData<Int>()
 
-    private val model = Model(dimensions.component1(), dimensions.component2())
+    private val model = Model.getInstance(dimensions.component1(), dimensions.component2())
 
     fun getGameField(): List<List<Int>> = model.gameField
 
@@ -18,4 +18,14 @@ class ViewModel2024(application: Application, dimensions: IntArray): AndroidView
     fun getMaxTile(): Int = model.maxTile
 
     fun resetGame(): Unit = model.resetGameTiles()
+
+    fun canMove(): Boolean = model.canMove()
+
+    fun left() = model.left()
+
+    fun right() = model.right()
+
+    fun up() = model.up()
+
+    fun down() = model.down()
 }

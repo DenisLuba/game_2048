@@ -6,4 +6,5 @@
     <string name="restart">restart</string>
     <string name="home">home</string>
     <string name="start">start</string>
+    <string name="game_field">Game field</string>
 </resources>

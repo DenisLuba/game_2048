@@ -1,14 +1,18 @@
 package com.example.game_2024.view
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
+import android.util.Log
+import android.view.GestureDetector
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -22,6 +26,7 @@ import com.example.game_2024.view_model.ModelFactory
 import com.example.game_2024.R
 import com.example.game_2024.view_model.ViewModel2024
 import com.example.game_2024.databinding.FragmentGameFieldBinding
+import kotlin.math.abs
 
 class GameFieldFragment : Fragment() {
 
@@ -41,6 +46,10 @@ class GameFieldFragment : Fragment() {
     private var score = 0
     private var maxTile = 0
 
+    companion object {
+        private const val WINNING_TILE = 2048
+    }
+
     private val widthRelativeToScreen = 0.84
     private val heightRelativeToScreen = 1.092
     private var tileSize = 0.0
@@ -55,6 +64,12 @@ class GameFieldFragment : Fragment() {
         LayoutParams.MATCH_PARENT,
         1.0f
     )
+
+    private lateinit var gestureDetector: GestureDetector
+    private val touchListener: View.OnTouchListener = View.OnTouchListener { view, event ->
+        view.performClick()
+        gestureDetector.onTouchEvent(event)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,17 +95,16 @@ class GameFieldFragment : Fragment() {
         margin = if (tileSize >= 40) tileSize / 40 else 4.0
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        gestureDetector = GestureDetector(requireContext(), GestureListener(this))
         binding = FragmentGameFieldBinding.inflate(inflater)
         setFieldView()
-        binding.restartButton.setOnClickListener {
-            viewModel.resetGame()
-            setGameField()
-            setFieldView()
-        }
+        binding.restartButton.setOnClickListener { reset() }
+        binding.frameGameField.setOnTouchListener(touchListener)
         return binding.root
     }
 
@@ -105,6 +119,14 @@ class GameFieldFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         viewModel.liveData.removeObserver(observer)
+    }
+
+    private fun reset() {
+        viewModel.resetGame()
+        setGameField()
+        setFieldView()
+        isGameLost = false
+        isGameWon = false
     }
 
     private fun setFieldView() {
@@ -172,5 +194,52 @@ class GameFieldFragment : Fragment() {
             is ShapeDrawable -> paint.color = colorInt
             is ColorDrawable -> color = colorInt
         }
+    }
+
+    private class GestureListener(val fragment: GameFieldFragment) : GestureDetector.SimpleOnGestureListener() {
+
+        private val swipeMinDistance = 120
+        private val swipeThresholdVelocity = 200
+
+        override fun onDown(e: MotionEvent) = true
+
+        override fun onFling(
+            event1: MotionEvent,
+            event2: MotionEvent,
+            velocityX: Float,
+            velocityY: Float
+        ): Boolean {
+            if (event1.x - event2.x > swipeMinDistance
+                && abs(velocityX) > swipeThresholdVelocity) {
+                fragment.move { fragment.viewModel.left() }
+                Log.d("MyLogs", "Left, x = ${event1.x - event2.x}, velocity = $velocityX")
+            }
+            else if (event2.x - event1.x > swipeMinDistance
+                && abs(velocityX) > swipeThresholdVelocity) {
+                fragment.move { fragment.viewModel.right() }
+                Log.d("MyLogs", "Right, x = ${event2.x - event1.x}, velocity = $velocityX\"")
+            }
+            else if (event1.y - event2.y > swipeMinDistance
+                && abs(velocityY) > swipeThresholdVelocity) {
+                fragment.move { fragment.viewModel.up() }
+                Log.d("MyLogs", "Up, y = ${event1.y - event2.y}, velocity = $velocityY\"")
+            }
+            else if (event2.y - event1.y > swipeMinDistance
+                && abs(velocityY) > swipeThresholdVelocity) {
+                fragment.move { fragment.viewModel.down() }
+                Log.d("MyLogs", "Down, y = ${event2.y - event1.y}, velocity = $velocityY\"")
+            }
+
+            return true
+        }
+    }
+
+    private fun move(direction: () -> Unit ) {
+        direction.invoke()
+        setGameField()
+        setFieldView()
+        isGameLost = !viewModel.canMove()
+        maxTile = viewModel.getMaxTile()
+        if (maxTile == WINNING_TILE) isGameWon = true
     }
 }
