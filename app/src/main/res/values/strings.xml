@@ -7,4 +7,7 @@
     <string name="home">home</string>
     <string name="start">start</string>
     <string name="game_field">Game field</string>
+    <string name="scope_0">Score: 8</string>
+    <string name="high_scope_0">High score: 0</string>
+    <string name="score">Score: %1$d</string>
 </resources>

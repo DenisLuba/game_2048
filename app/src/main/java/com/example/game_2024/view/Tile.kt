@@ -3,7 +3,7 @@ package com.example.game_2024.view
 import android.content.Context
 import com.example.game_2024.R
 
-data class Tile(var value: Int = 0, val context: Context) {
+data class Tile(val context: Context, var value: Int = 0) {
 
     fun isEmpty() = value == 0
 

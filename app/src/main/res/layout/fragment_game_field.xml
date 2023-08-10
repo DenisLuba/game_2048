@@ -8,6 +8,31 @@
     android:layout_height="match_parent"
     tools:context=".view.GameFieldFragment">
 
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scope_0"
+        android:textSize="@dimen/score_font"
+
+        app:layout_constraintVertical_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.8"
+
+        app:layout_constraintBottom_toTopOf="@+id/homeButton"
+        app:layout_constraintEnd_toStartOf="@+id/high_score"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/high_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/high_scope_0"
+        android:textSize="@dimen/score_font"
+
+        app:layout_constraintBottom_toBottomOf="@+id/score"
+        app:layout_constraintEnd_toEndOf="@+id/frameGameField"
+        app:layout_constraintTop_toTopOf="@+id/score" />
 
     <ImageView
         android:id="@+id/homeButton"

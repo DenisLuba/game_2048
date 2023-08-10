@@ -2,5 +2,5 @@
 <resources>
     <dimen name="icons_size">56dp</dimen>
     <dimen name="start_button_size">100dp</dimen>
-
-</resources>
+    <dimen name="score_font">20sp</dimen>
+ </resources>

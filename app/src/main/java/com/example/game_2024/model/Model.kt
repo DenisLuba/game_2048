@@ -5,6 +5,10 @@ import kotlin.random.Random
 
 class Model private constructor(height: Int = 4, width: Int = 4) {
 
+//    **********************************************************************************************
+
+//    SINGLETON
+
     companion object {
         @Volatile
         private var instance: Model? = null
@@ -15,24 +19,38 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
             }
     }
 
+//    **********************************************************************************************
+
+//    Variables
+
     var score: Int = 0
     var maxTile: Int = 0
     private var isSaveNeeded = true
 
     var gameField: List<MutableList<Int>> = List(height) { MutableList(width) { 0 } }
-    private val flippedGameField: List<MutableList<Int>> = List(width) { MutableList(height) { 0 } }
+
+//    **********************************************************************************************
+
+//    Constructor
 
     init {
         resetGameTiles()
     }
 
+//    Methods
+
+    //    **********************************************************************************************
     fun resetGameTiles() {
         for (list in gameField)
             for (i in list.indices)
                 list[i] = 0
 
+        score = 0
+        maxTile = 0
         repeat(2) { addRandomTile(gameField) }
     }
+
+//    **********************************************************************************************
 
     private fun addRandomTile(field: List<MutableList<Int>>) {
         val tiles: MutableList<IntArray?> = getEmptyTiles(field).toMutableList()
@@ -45,6 +63,8 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
         }
     }
 
+//    **********************************************************************************************
+
     private fun getEmptyTiles(field: List<MutableList<Int>>): List<IntArray?> =
         field.mapIndexed { row, list ->
             list.mapIndexed { column, num ->
@@ -54,6 +74,8 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
                 ) else null
             }
         }.flatten().filterNotNull()
+
+//    **********************************************************************************************
 
 //    Moving
 
@@ -73,6 +95,8 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
                         isChanged = true
                     } else if (tiles[i] == tiles[j]) {
                         tiles[i] = tiles[i] shl 1
+                        score += tiles[i] // score
+                        maxTile = max(tiles[i], maxTile) // maxTile
                         i++
                         tiles[j] = 0
                         isChanged = true
@@ -108,6 +132,8 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
                         isChanged = true
                     } else if (tiles[i] == tiles[j]) {
                         tiles[i] = tiles[i] shl 1
+                        score += tiles[i] // score
+                        maxTile = max(tiles[i], maxTile) // maxTile
                         i--
                         tiles[j] = 0
                         isChanged = true
@@ -143,6 +169,8 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
                         isChanged = true
                     } else if (gameField[y][x] == gameField[j][x]) {
                         gameField[y][x] = gameField[y][x] shl 1
+                        score += gameField[y][x] // score
+                        maxTile = max(gameField[y][x], maxTile) // maxTile
                         y--
                         gameField[j][x] = 0
                         isChanged = true
@@ -178,6 +206,8 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
                         isChanged = true
                     } else if (gameField[y][x] == gameField[j][x]) {
                         gameField[y][x] = gameField[y][x] shl 1
+                        score += gameField[y][x] // score
+                        maxTile = max(gameField[y][x], maxTile) // maxTile
                         y++
                         gameField[j][x] = 0
                         isChanged = true
@@ -197,6 +227,8 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
         }
     }
 
+//    **********************************************************************************************
+
 //    Other additional functions for moving
 
 
@@ -213,6 +245,7 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
         return false
     }
 
+//    **********************************************************************************************
 
 //    Save state
 
@@ -220,6 +253,7 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
 
     }
 }
+
 
 fun main() {
     val model = Model.getInstance(3, 4)
@@ -233,61 +267,73 @@ fun main() {
     println("ARRAY")
     model.gameField.forEach(::println)
     println()
+    println("score = ${model.score}")
+    println("maxTile = ${model.maxTile}")
 
+    println()
     model.left()
-
     println("LEFT")
     model.gameField.forEach(::println)
     println()
+    println("score = ${model.score}")
+    println("maxTile = ${model.maxTile}")
 
-    model.gameField = listOf(
-        mutableListOf(4, 0, 4),
-        mutableListOf(4, 2, 4),
-        mutableListOf(4, 0, 2),
-        mutableListOf(4, 2, 0)
-    )
+//    model.gameField = listOf(
+//        mutableListOf(4, 0, 4),
+//        mutableListOf(4, 2, 4),
+//        mutableListOf(4, 0, 2),
+//        mutableListOf(4, 2, 0)
+//    )
+//
+//    println("ARRAY")
+//    model.gameField.forEach(::println)
+//    println()
 
-    println("ARRAY")
-    model.gameField.forEach(::println)
     println()
-
     model.right()
-
     println("RIGHT")
     model.gameField.forEach(::println)
     println()
+    println("score = ${model.score}")
+    println("maxTile = ${model.maxTile}")
 
-    model.gameField = listOf(
-        mutableListOf(4, 0, 4),
-        mutableListOf(4, 2, 4),
-        mutableListOf(4, 0, 2),
-        mutableListOf(4, 2, 0)
-    )
+//    model.gameField = listOf(
+//        mutableListOf(4, 0, 4),
+//        mutableListOf(4, 2, 4),
+//        mutableListOf(4, 0, 2),
+//        mutableListOf(4, 2, 0)
+//    )
+//
+//    println("ARRAY")
+//    model.gameField.forEach(::println)
+//    println()
 
-    println("ARRAY")
-    model.gameField.forEach(::println)
     println()
-
     model.down()
     println("DOWN")
     model.gameField.forEach(::println)
     println()
+    println("score = ${model.score}")
+    println("maxTile = ${model.maxTile}")
 
-    model.gameField = listOf(
-        mutableListOf(4, 0, 0),
-        mutableListOf(4, 2, 4),
-        mutableListOf(4, 0, 2),
-        mutableListOf(4, 2, 2)
-    )
+//    model.gameField = listOf(
+//        mutableListOf(4, 0, 0),
+//        mutableListOf(4, 2, 4),
+//        mutableListOf(4, 0, 2),
+//        mutableListOf(4, 2, 2)
+//    )
+//
+//    println("ARRAY")
+//    model.gameField.forEach(::println)
+//    println()
 
-    println("ARRAY")
-    model.gameField.forEach(::println)
     println()
-
     model.up()
     println("UP")
     model.gameField.forEach(::println)
     println()
+    println("score = ${model.score}")
+    println("maxTile = ${model.maxTile}")
 
 }
 

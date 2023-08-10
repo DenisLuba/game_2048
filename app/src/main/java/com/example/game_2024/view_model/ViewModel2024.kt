@@ -5,27 +5,60 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.game_2024.model.Model
 
-class ViewModel2024(application: Application, dimensions: IntArray): AndroidViewModel(application) {
+typealias move = () -> Unit
 
-    val liveData = MutableLiveData<Int>()
+class ViewModel2024(application: Application, dimensions: IntArray) :
+    AndroidViewModel(application) {
+
+//    Variables
+
+    private var score = 0
+    private var maxTile = 0
+    private var isWinner = false
+    private var noMovies = false
 
     private val model = Model.getInstance(dimensions.component1(), dimensions.component2())
 
-    fun getGameField(): List<List<Int>> = model.gameField
+//    **********************************************************************************************
 
-    fun getScore(): Int = model.score
+//    LIVEDATA
 
-    fun getMaxTile(): Int = model.maxTile
+    val liveDataField = MutableLiveData<List<MutableList<Int>>>().apply {
+        value = model.gameField
+    }
 
-    fun resetGame(): Unit = model.resetGameTiles()
+    val liveDataWinner = MutableLiveData<Boolean>()
+    val liveDataLost = MutableLiveData<Boolean>()
+    val liveDataScore = MutableLiveData<Int>().apply { value = 0 }
 
-    fun canMove(): Boolean = model.canMove()
+//    **********************************************************************************************
 
-    fun left() = model.left()
+//    Public functions
 
-    fun right() = model.right()
+    fun resetGame() = action { model.resetGameTiles() }
 
-    fun up() = model.up()
+    fun left() = action { model.left() }
 
-    fun down() = model.down()
+    fun right() = action { model.right() }
+
+    fun up() = action { model.up() }
+
+    fun down() = action { model.down() }
+
+//    **********************************************************************************************
+
+//    Additional function
+
+    private fun action(direction: move) {
+        direction.invoke()
+        liveDataField.value = model.gameField
+        liveDataScore.value = model.score
+        maxTile = model.maxTile
+        if (maxTile == WINNING_TILE) liveDataWinner.value = true
+        if (!model.canMove()) liveDataLost.value = true
+    }
+
+    companion object {
+        private const val WINNING_TILE = 2048
+    }
 }
