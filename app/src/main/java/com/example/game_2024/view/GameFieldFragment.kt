@@ -114,7 +114,9 @@ class GameFieldFragment : Fragment() {
 
         gestureDetector = GestureDetector(requireContext(), GestureListener(this))
         setFieldView()
+
         binding.restartButton.setOnClickListener { reset() }
+        binding.undoButton.setOnClickListener { rollback() }
         binding.frameGameField.setOnTouchListener(touchListener)
         return binding.root
     }
@@ -173,6 +175,12 @@ class GameFieldFragment : Fragment() {
 
     private fun reset() {
         viewModel.resetGame()
+        isGameLost = false
+        isGameWon = false
+    }
+
+    private fun rollback() {
+        viewModel.rollback()
         isGameLost = false
         isGameWon = false
     }

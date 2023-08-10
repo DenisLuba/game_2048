@@ -10,13 +10,6 @@ typealias move = () -> Unit
 class ViewModel2024(application: Application, dimensions: IntArray) :
     AndroidViewModel(application) {
 
-//    Variables
-
-    private var score = 0
-    private var maxTile = 0
-    private var isWinner = false
-    private var noMovies = false
-
     private val model = Model.getInstance(dimensions.component1(), dimensions.component2())
 
 //    **********************************************************************************************
@@ -37,6 +30,8 @@ class ViewModel2024(application: Application, dimensions: IntArray) :
 
     fun resetGame() = action { model.resetGameTiles() }
 
+    fun rollback() = action { model.rollback() }
+
     fun left() = action { model.left() }
 
     fun right() = action { model.right() }
@@ -53,8 +48,7 @@ class ViewModel2024(application: Application, dimensions: IntArray) :
         direction.invoke()
         liveDataField.value = model.gameField
         liveDataScore.value = model.score
-        maxTile = model.maxTile
-        if (maxTile == WINNING_TILE) liveDataWinner.value = true
+        if (model.maxTile == WINNING_TILE) liveDataWinner.value = true
         if (!model.canMove()) liveDataLost.value = true
     }
 

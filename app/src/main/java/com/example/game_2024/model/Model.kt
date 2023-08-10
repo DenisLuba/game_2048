@@ -3,7 +3,11 @@ package com.example.game_2024.model
 import kotlin.math.max
 import kotlin.random.Random
 
-class Model private constructor(height: Int = 4, width: Int = 4) {
+inline fun <T> arrayDequeOf(vararg elements: T) = ArrayDeque(elements.toList())
+inline fun <T> ArrayDeque<T>.push(element: T) = addLast(element) // returns Unit
+inline fun <T> ArrayDeque<T>.pop() = removeLastOrNull() // returns T?
+
+class Model private constructor(val height: Int = 4, val width: Int = 4) {
 
 //    **********************************************************************************************
 
@@ -29,6 +33,9 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
 
     var gameField: List<MutableList<Int>> = List(height) { MutableList(width) { 0 } }
 
+    private val previousStates: ArrayDeque<List<MutableList<Int>>> = arrayDequeOf()
+    private val previousScores: ArrayDeque<Int> = arrayDequeOf()
+
 //    **********************************************************************************************
 
 //    Constructor
@@ -38,17 +45,6 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
     }
 
 //    Methods
-
-    //    **********************************************************************************************
-    fun resetGameTiles() {
-        for (list in gameField)
-            for (i in list.indices)
-                list[i] = 0
-
-        score = 0
-        maxTile = 0
-        repeat(2) { addRandomTile(gameField) }
-    }
 
 //    **********************************************************************************************
 
@@ -75,12 +71,35 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
             }
         }.flatten().filterNotNull()
 
+    //    **********************************************************************************************
+    fun resetGameTiles() {
+        for (list in gameField)
+            for (i in list.indices)
+                list[i] = 0
+
+        previousStates.removeAll { true }
+        previousScores.removeAll { true }
+        isSaveNeeded = true
+        score = 0
+        maxTile = 0
+
+        repeat(2) { addRandomTile(gameField) }
+    }
+
 //    **********************************************************************************************
+
+    //    **********************************************************************************************
+    fun rollback() {
+        if (previousScores.isEmpty() || previousStates.isEmpty()) return
+        gameField = previousStates.pop() ?: gameField
+        score = previousScores.pop() ?: score
+    }
 
 //    Moving
 
     fun left() {
         if (gameField[0].size <= 1) return
+        if (isSaveNeeded) saveState(gameField)
         var isChanged = false
         var i: Int
         var j: Int
@@ -112,12 +131,13 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
         }
         if (isChanged) { // if there were changes, then add a random tile and save the state
             addRandomTile(gameField)
-            saveState(gameField)
+            isSaveNeeded = true
         }
     }
 
     fun right() {
         if (gameField[0].size <= 1) return
+        if (isSaveNeeded) saveState(gameField)
         var isChanged = false
         var i: Int
         var j: Int
@@ -149,12 +169,13 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
         }
         if (isChanged) { // if there were changes, then add a random tile and save the state
             addRandomTile(gameField)
-            saveState(gameField)
+            isSaveNeeded = true
         }
     }
 
     fun down() {
         if (gameField.size <= 1) return
+        if (isSaveNeeded) saveState(gameField)
         var isChanged = false
         var y: Int
         var j: Int
@@ -186,12 +207,13 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
         }
         if (isChanged) { // if there were changes, then add a random tile and save the state
             addRandomTile(gameField)
-            saveState(gameField)
+            isSaveNeeded = true
         }
     }
 
     fun up() {
         if (gameField.size <= 1) return
+        if (isSaveNeeded) saveState(gameField)
         var isChanged = false
         var y: Int
         var j: Int
@@ -223,7 +245,7 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
         }
         if (isChanged) { // if there were changes, then add a random tile and save the state
             addRandomTile(gameField)
-            saveState(gameField)
+            isSaveNeeded = true
         }
     }
 
@@ -250,7 +272,9 @@ class Model private constructor(height: Int = 4, width: Int = 4) {
 //    Save state
 
     private fun saveState(tiles: List<MutableList<Int>>) {
-
+        previousStates.push(tiles.map { it.toMutableList() }.toList())
+        previousScores.push(score)
+        isSaveNeeded = false
     }
 }
 
@@ -335,6 +359,30 @@ fun main() {
     println("score = ${model.score}")
     println("maxTile = ${model.maxTile}")
 
+    println()
+
+    val list1 = listOf(
+        mutableListOf(0, 0, 4),
+        mutableListOf(4, 2, 4),
+        mutableListOf(2, 0, 2),
+        mutableListOf(4, 2, 2)
+    )
+
+    val list2 = list1.map { it.toMutableList() }.toList()
+
+    println(list1 == list2)
+    println(list1 === list2)
+
+    list1.forEach(::println)
+    println()
+    list2.forEach(::println)
+    println()
+
+    list2[1][1] = 1000
+    list1.forEach(::println)
+    println()
+    list2.forEach(::println)
+    println()
 }
 
 
