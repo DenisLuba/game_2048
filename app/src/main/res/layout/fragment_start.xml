@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/wood_background_start"
-    tools:context=".view.StartFragment">
+    tools:context=".view.screens.StartFragment">
 
     <ImageView
         android:id="@+id/startButton"

@@ -1,4 +1,4 @@
-package com.example.game_2024.view
+package com.example.game_2024.view.screens
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
@@ -20,15 +20,19 @@ import android.widget.TableLayout.LayoutParams
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.game_2024.view_model.ModelFactory
 import com.example.game_2024.R
 import com.example.game_2024.view_model.ViewModel2024
 import com.example.game_2024.databinding.FragmentGameFieldBinding
+import com.example.game_2024.view.MainActivity
+import com.example.game_2024.view.Tile
+import com.example.game_2024.view.dialogs.ResetFragment
 import kotlin.math.abs
 
-class GameFieldFragment : Fragment() {
+class GameFieldFragment : Fragment(), ResetFragment.ResetFragmentListener {
 
     private lateinit var binding: FragmentGameFieldBinding
 
@@ -75,6 +79,8 @@ class GameFieldFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Log.d("MyTags", "onCreate")
+
         dimensions = arguments?.getIntArray(MainActivity.DIMENSIONS) ?: intArrayOf(4, 4)
         viewModel = ViewModelProvider(
             this,
@@ -83,10 +89,11 @@ class GameFieldFragment : Fragment() {
 
         gameField =
             List(dimensions[0]) { MutableList(dimensions[1]) { Tile(requireContext()) } } // initializing the playing field with zeros
-        viewModel.liveDataField.observe(
-            this,
-            fieldObserver
-        ) // installing an observer for the playing field
+
+        viewModel.liveDataField.observe(this, fieldObserver)
+        viewModel.liveDataWinner.observe(this, isWinnerObserver)
+        viewModel.liveDataLost.observe(this, isLostObserver)
+        viewModel.liveDataScore.observe(this, scoreObserver)
 
         val displaySize =
             Resources.getSystem().displayMetrics.widthPixels // width of display on pixels
@@ -110,14 +117,16 @@ class GameFieldFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        binding = FragmentGameFieldBinding.inflate(inflater)
+        Log.d("MyTags", "onCreateView")
 
+        binding = FragmentGameFieldBinding.inflate(inflater, container, false).apply {
+            restartButton.setOnClickListener { reset() }
+            undoButton.setOnClickListener { rollback() }
+            frameGameField.setOnTouchListener(touchListener)
+        }
         gestureDetector = GestureDetector(requireContext(), GestureListener(this))
         setFieldView()
 
-        binding.restartButton.setOnClickListener { reset() }
-        binding.undoButton.setOnClickListener { rollback() }
-        binding.frameGameField.setOnTouchListener(touchListener)
         return binding.root
     }
 
@@ -126,9 +135,6 @@ class GameFieldFragment : Fragment() {
     //    overrides methods
     override fun onStart() {
         super.onStart()
-        viewModel.liveDataWinner.observe(this, isWinnerObserver)
-        viewModel.liveDataLost.observe(this, isLostObserver)
-        viewModel.liveDataScore.observe(this, scoreObserver)
         binding.homeButton.setOnClickListener {
             (activity as MainActivity).navController.navigate(R.id.action_gameFieldFragment_to_startFragment)
         }
@@ -136,6 +142,8 @@ class GameFieldFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        Log.d("MyTags", "onStop")
+
         with(viewModel) {
             liveDataField.removeObserver(fieldObserver)
             liveDataWinner.removeObserver(isWinnerObserver)
@@ -147,7 +155,7 @@ class GameFieldFragment : Fragment() {
 //    **********************************************************************************************
 
 
-    //    OBSERVERS OF LIVEDATA
+    //    THEOBSERVERS FOR LIVEDATA
 
     private val fieldObserver: Observer<List<MutableList<Int>>> = Observer { field ->
         gameField.mapIndexed { i, list -> list.mapIndexed { j, tile -> tile.value = field[i][j] } }
@@ -174,9 +182,8 @@ class GameFieldFragment : Fragment() {
 //    **********************************************************************************************
 
     private fun reset() {
-        viewModel.resetGame()
-        isGameLost = false
-        isGameWon = false
+        val dialog = ResetFragment()
+        dialog.show(requireActivity().supportFragmentManager, "ResetFragment")
     }
 
     private fun rollback() {
@@ -188,6 +195,16 @@ class GameFieldFragment : Fragment() {
     private fun move(direction: () -> Unit) {
         if (isGameLost || isGameWon) return
         direction.invoke()
+    }
+
+//    **********************************************************************************************
+
+    //    for Reset Dialog
+
+    override fun onDialogResetPositiveClick(dialog: DialogFragment) {
+        viewModel.resetGame()
+        isGameLost = false
+        isGameWon = false
     }
 
 //    **********************************************************************************************

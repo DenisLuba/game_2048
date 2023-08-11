@@ -1,4 +1,4 @@
-package com.example.game_2024.view
+package com.example.game_2024.view.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.example.game_2024.R
 import com.example.game_2024.databinding.FragmentStartBinding
+import com.example.game_2024.view.MainActivity
 
 class StartFragment : Fragment() {
 
@@ -21,7 +22,7 @@ class StartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentStartBinding.inflate(inflater)
+        binding = FragmentStartBinding.inflate(inflater, container, false)
         return binding.root
     }
 

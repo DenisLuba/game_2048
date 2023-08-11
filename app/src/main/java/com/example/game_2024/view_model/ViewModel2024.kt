@@ -20,9 +20,9 @@ class ViewModel2024(application: Application, dimensions: IntArray) :
         value = model.gameField
     }
 
-    val liveDataWinner = MutableLiveData<Boolean>()
-    val liveDataLost = MutableLiveData<Boolean>()
-    val liveDataScore = MutableLiveData<Int>().apply { value = 0 }
+    val liveDataWinner = MutableLiveData<Boolean>().apply { value = model.maxTile == WINNING_TILE }
+    val liveDataLost = MutableLiveData<Boolean>().apply { value = !model.canMove() }
+    val liveDataScore = MutableLiveData<Int>().apply { value = model.score }
 
 //    **********************************************************************************************
 
@@ -48,8 +48,8 @@ class ViewModel2024(application: Application, dimensions: IntArray) :
         direction.invoke()
         liveDataField.value = model.gameField
         liveDataScore.value = model.score
-        if (model.maxTile == WINNING_TILE) liveDataWinner.value = true
-        if (!model.canMove()) liveDataLost.value = true
+        liveDataWinner.value = model.maxTile == WINNING_TILE
+        liveDataLost.value = !model.canMove()
     }
 
     companion object {
