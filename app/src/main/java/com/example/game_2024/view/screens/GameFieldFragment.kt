@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.GestureDetector
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -76,6 +75,8 @@ class GameFieldFragment : Fragment() {
 
 //    **********************************************************************************************
 
+    //    Overridden methods
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -106,17 +107,12 @@ class GameFieldFragment : Fragment() {
         fontSize = tileSize / 6
         margin = if (tileSize >= 40) (tileSize / 40).toInt() else 4 // margin between Tiles
 
-        setFragmentResultListener(ResetFragment.REQUEST_KEY) { _, bundle ->
+        childFragmentManager.setFragmentResultListener(ResetFragment.REQUEST_KEY, this) { _, bundle ->
             when (bundle.getString(ResetFragment.RESULT)) {
-                ResetFragment.YES -> {
-                    reset()
-                    Log.d("myTags", "RESET")
-                }
-//                ResetFragment.NO ->
+                ResetFragment.YES -> reset()
+//                ResetFragment.NO -> nothing
             }
         }
-
-        Log.d("myTags", "ONSTART")
     }
 
 //    **********************************************************************************************
@@ -142,7 +138,6 @@ class GameFieldFragment : Fragment() {
 
 //    **********************************************************************************************
 
-    //    overrides methods
     override fun onStart() {
         super.onStart()
         binding.homeButton.setOnClickListener {
@@ -150,9 +145,10 @@ class GameFieldFragment : Fragment() {
         }
     }
 
+//    **********************************************************************************************
+
     override fun onStop() {
         super.onStop()
-        Log.d("MyTags", "onStop")
 
         with(viewModel) {
             liveDataField.removeObserver(fieldObserver)
@@ -165,31 +161,29 @@ class GameFieldFragment : Fragment() {
 //    **********************************************************************************************
 
 
-    //    THE OBSERVERS FOR LIVEDATA
+    //    OBSERVERS FOR LIVEDATA
 
     private val fieldObserver: Observer<List<MutableList<Int>>> = Observer { field ->
         gameField.mapIndexed { i, list -> list.mapIndexed { j, tile -> tile.value = field[i][j] } }
         setFieldView()
-        Log.d("MyLogs", "fieldObserver")
     }
 
     private val isWinnerObserver: Observer<Boolean> = Observer {
         isGameWon = it
-        Log.d("MyLogs", "isGameWon = $isGameWon")
     }
 
     private val isLostObserver: Observer<Boolean> = Observer {
         isGameLost = it
-        Log.d("MyLogs", "isGameLost = $isGameLost")
     }
 
     private val scoreObserver: Observer<Int> = Observer {
         score = it
         binding.score.text = getString(R.string.score, score)
-        Log.d("MyLogs", "score = $score")
     }
 
 //    **********************************************************************************************
+
+    //    ACTIONS
 
     private fun reset() {
         viewModel.resetGame()
@@ -207,16 +201,6 @@ class GameFieldFragment : Fragment() {
         if (isGameLost || isGameWon) return
         direction.invoke()
     }
-
-//    **********************************************************************************************
-
-    //    for Reset Dialog
-
-//    override fun onDialogResetPositiveClick(dialog: DialogFragment) {
-//        viewModel.resetGame()
-//        isGameLost = false
-//        isGameWon = false
-//    }
 
 //    **********************************************************************************************
 

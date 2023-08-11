@@ -22,4 +22,5 @@
     <string name="dialog_restart">Restart?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="choose_the_size_of_the_playing_field">Choose the size of the playing field</string>
 </resources>

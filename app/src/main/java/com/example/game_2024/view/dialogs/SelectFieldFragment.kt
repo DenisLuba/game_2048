@@ -11,24 +11,19 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
 import com.example.game_2024.databinding.FragmentResetBinding
+import com.example.game_2024.databinding.FragmentSelectFieldBinding
 
-class ResetFragment : DialogFragment() {
+class SelectFieldFragment : DialogFragment() {
 
-    private lateinit var binding: FragmentResetBinding
+    private lateinit var binding: FragmentSelectFieldBinding
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            binding = FragmentResetBinding.inflate(layoutInflater).apply {
-                yesRestartButton.setOnClickListener {
-                    resetClick(YES)
-                    dismiss()
-                }
-                noRestartButton.setOnClickListener {
-                    resetClick(NO)
-                    dismiss()
-                }
+            binding = FragmentSelectFieldBinding.inflate(layoutInflater).apply {
+
+
             }
             builder.setView(binding.root)
                 .setCancelable(true)
@@ -36,26 +31,22 @@ class ResetFragment : DialogFragment() {
         } ?: throw IllegalStateException("FragmentActivity cannot be null")
     }
 
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
-    private fun resetClick(reply: String) {
+    private fun sendDimensions(dimensions: IntArray) {
         parentFragmentManager.setFragmentResult(
             REQUEST_KEY,
-            bundleOf(RESULT to reply)
+            bundleOf(RESULT to dimensions)
         )
     }
 
     companion object {
         const val REQUEST_KEY = "REQUEST_KEY"
         const val RESULT = "RESULT"
-        const val YES = "YES"
-        const val NO = "NO"
+
+        const val WIDTH = "WIDTH"
+        const val HEIGHT = "HEIGHT"
 
         @JvmStatic
-        fun newInstance() = ResetFragment()
+        fun newInstance() = SelectFieldFragment()
     }
 
 }
