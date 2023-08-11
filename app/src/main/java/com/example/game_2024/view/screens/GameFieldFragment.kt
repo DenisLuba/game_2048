@@ -20,7 +20,7 @@ import android.widget.TableLayout.LayoutParams
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.game_2024.view_model.ModelFactory
@@ -32,7 +32,7 @@ import com.example.game_2024.view.Tile
 import com.example.game_2024.view.dialogs.ResetFragment
 import kotlin.math.abs
 
-class GameFieldFragment : Fragment(), ResetFragment.ResetFragmentListener {
+class GameFieldFragment : Fragment() {
 
     private lateinit var binding: FragmentGameFieldBinding
 
@@ -79,8 +79,6 @@ class GameFieldFragment : Fragment(), ResetFragment.ResetFragmentListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d("MyTags", "onCreate")
-
         dimensions = arguments?.getIntArray(MainActivity.DIMENSIONS) ?: intArrayOf(4, 4)
         viewModel = ViewModelProvider(
             this,
@@ -107,6 +105,18 @@ class GameFieldFragment : Fragment(), ResetFragment.ResetFragmentListener {
 
         fontSize = tileSize / 6
         margin = if (tileSize >= 40) (tileSize / 40).toInt() else 4 // margin between Tiles
+
+        setFragmentResultListener(ResetFragment.REQUEST_KEY) { _, bundle ->
+            when (bundle.getString(ResetFragment.RESULT)) {
+                ResetFragment.YES -> {
+                    reset()
+                    Log.d("myTags", "RESET")
+                }
+//                ResetFragment.NO ->
+            }
+        }
+
+        Log.d("myTags", "ONSTART")
     }
 
 //    **********************************************************************************************
@@ -117,10 +127,10 @@ class GameFieldFragment : Fragment(), ResetFragment.ResetFragmentListener {
         savedInstanceState: Bundle?
     ): View {
 
-        Log.d("MyTags", "onCreateView")
-
         binding = FragmentGameFieldBinding.inflate(inflater, container, false).apply {
-            restartButton.setOnClickListener { reset() }
+            restartButton.setOnClickListener {
+                ResetFragment.newInstance().show(childFragmentManager, ResetFragment.REQUEST_KEY)
+            }
             undoButton.setOnClickListener { rollback() }
             frameGameField.setOnTouchListener(touchListener)
         }
@@ -155,7 +165,7 @@ class GameFieldFragment : Fragment(), ResetFragment.ResetFragmentListener {
 //    **********************************************************************************************
 
 
-    //    THEOBSERVERS FOR LIVEDATA
+    //    THE OBSERVERS FOR LIVEDATA
 
     private val fieldObserver: Observer<List<MutableList<Int>>> = Observer { field ->
         gameField.mapIndexed { i, list -> list.mapIndexed { j, tile -> tile.value = field[i][j] } }
@@ -182,8 +192,9 @@ class GameFieldFragment : Fragment(), ResetFragment.ResetFragmentListener {
 //    **********************************************************************************************
 
     private fun reset() {
-        val dialog = ResetFragment()
-        dialog.show(requireActivity().supportFragmentManager, "ResetFragment")
+        viewModel.resetGame()
+        isGameLost = false
+        isGameWon = false
     }
 
     private fun rollback() {
@@ -201,11 +212,11 @@ class GameFieldFragment : Fragment(), ResetFragment.ResetFragmentListener {
 
     //    for Reset Dialog
 
-    override fun onDialogResetPositiveClick(dialog: DialogFragment) {
-        viewModel.resetGame()
-        isGameLost = false
-        isGameWon = false
-    }
+//    override fun onDialogResetPositiveClick(dialog: DialogFragment) {
+//        viewModel.resetGame()
+//        isGameLost = false
+//        isGameWon = false
+//    }
 
 //    **********************************************************************************************
 
