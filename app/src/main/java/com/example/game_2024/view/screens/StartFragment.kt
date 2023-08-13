@@ -22,9 +22,10 @@ class StartFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        childFragmentManager.setFragmentResultListener(SelectFieldFragment.REQUEST_KEY, this) { _, bundle ->
-            dimensions = bundle.getIntArray(SelectFieldFragment.RESULT) ?: intArrayOf(4, 4)
-        }
+        SelectFieldFragment.setupListener(childFragmentManager, this) { dimensions = it }
+//        childFragmentManager.setFragmentResultListener(SelectFieldFragment.REQUEST_KEY, this) { _, bundle ->
+//            dimensions = bundle.getIntArray(SelectFieldFragment.RESULT) ?: intArrayOf(4, 4)
+//        }
     }
 
     override fun onCreateView(

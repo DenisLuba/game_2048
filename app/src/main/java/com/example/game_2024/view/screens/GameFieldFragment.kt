@@ -84,15 +84,15 @@ class GameFieldFragment : Fragment() {
         viewModel = ViewModelProvider(
             this,
             ModelFactory(requireActivity().application, dimensions)
-        )[ViewModel2024::class.java]
+        )[ViewModel2024::class.java].apply {
+            liveDataField.observe(this@GameFieldFragment, fieldObserver)
+            liveDataWinner.observe(this@GameFieldFragment, isWinnerObserver)
+            liveDataLost.observe(this@GameFieldFragment, isLostObserver)
+            liveDataScore.observe(this@GameFieldFragment, scoreObserver)
+        }
 
         gameField =
             List(dimensions[0]) { MutableList(dimensions[1]) { Tile(requireContext()) } } // initializing the playing field with zeros
-
-        viewModel.liveDataField.observe(this, fieldObserver)
-        viewModel.liveDataWinner.observe(this, isWinnerObserver)
-        viewModel.liveDataLost.observe(this, isLostObserver)
-        viewModel.liveDataScore.observe(this, scoreObserver)
 
         val displaySize =
             Resources.getSystem().displayMetrics.widthPixels // width of display on pixels
@@ -107,12 +107,7 @@ class GameFieldFragment : Fragment() {
         fontSize = tileSize / 6
         margin = if (tileSize >= 40) (tileSize / 40).toInt() else 4 // margin between Tiles
 
-        childFragmentManager.setFragmentResultListener(ResetFragment.REQUEST_KEY, this) { _, bundle ->
-            when (bundle.getString(ResetFragment.RESULT)) {
-                ResetFragment.YES -> reset()
-//                ResetFragment.NO -> nothing
-            }
-        }
+        ResetFragment.setupListener(childFragmentManager, this) { reset() }
     }
 
 //    **********************************************************************************************
@@ -124,25 +119,18 @@ class GameFieldFragment : Fragment() {
     ): View {
 
         binding = FragmentGameFieldBinding.inflate(inflater, container, false).apply {
-            restartButton.setOnClickListener {
-                ResetFragment.newInstance().show(childFragmentManager, ResetFragment.REQUEST_KEY)
-            }
+
             undoButton.setOnClickListener { rollback() }
             frameGameField.setOnTouchListener(touchListener)
+            homeButton.setOnClickListener {
+                (activity as MainActivity).navController.navigate(R.id.action_gameFieldFragment_to_startFragment)
+            }
+            restartButton.setOnClickListener { ResetFragment.show(childFragmentManager) }
         }
         gestureDetector = GestureDetector(requireContext(), GestureListener(this))
         setFieldView()
 
         return binding.root
-    }
-
-//    **********************************************************************************************
-
-    override fun onStart() {
-        super.onStart()
-        binding.homeButton.setOnClickListener {
-            (activity as MainActivity).navController.navigate(R.id.action_gameFieldFragment_to_startFragment)
-        }
     }
 
 //    **********************************************************************************************

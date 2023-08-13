@@ -9,7 +9,9 @@ import android.widget.LinearLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.LifecycleOwner
 import com.example.game_2024.databinding.FragmentResetBinding
 
 class ResetFragment : DialogFragment() {
@@ -49,13 +51,24 @@ class ResetFragment : DialogFragment() {
     }
 
     companion object {
-        const val REQUEST_KEY = "REQUEST_KEY"
-        const val RESULT = "RESULT"
-        const val YES = "YES"
-        const val NO = "NO"
+        @JvmStatic val REQUEST_KEY = "REQUEST_KEY"
+        @JvmStatic val RESULT = "RESULT"
+        @JvmStatic val YES = "YES"
+        @JvmStatic val NO = "NO"
 
         @JvmStatic
         fun newInstance() = ResetFragment()
+
+        fun show(manager: FragmentManager) = newInstance().show(manager, REQUEST_KEY)
+
+        fun setupListener(manager: FragmentManager, lifecycleOwner: LifecycleOwner, listener: () -> Unit) {
+            manager.setFragmentResultListener(REQUEST_KEY, lifecycleOwner) { _, bundle ->
+                when (bundle.getString(RESULT)) {
+                    YES -> listener.invoke()
+//                    NO -> nothing
+                }
+            }
+        }
     }
 
 }

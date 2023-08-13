@@ -10,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.LifecycleOwner
 import com.example.game_2024.databinding.FragmentResetBinding
 import com.example.game_2024.databinding.FragmentSelectFieldBinding
 
@@ -17,22 +18,31 @@ class SelectFieldFragment : DialogFragment() {
 
     private lateinit var binding: FragmentSelectFieldBinding
 
+    private var dimensions = intArrayOf(4, 4)
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+        dimensions = savedInstanceState?.getIntArray(RESULT) ?: intArrayOf(4, 4)
+
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            binding = FragmentSelectFieldBinding.inflate(layoutInflater).apply {
+            binding = FragmentSelectFieldBinding.inflate(layoutInflater)
 
-
-            }
             builder.setView(binding.root)
                 .setCancelable(true)
+                .setSingleChoiceItems()
             builder.create()
         } ?: throw IllegalStateException("FragmentActivity cannot be null")
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putIntArray(RESULT, dimensions)
+    }
+
     private fun sendDimensions(dimensions: IntArray) {
-        parentFragmentManager.setFragmentResult(
+        childFragmentManager.setFragmentResult(
             REQUEST_KEY,
             bundleOf(RESULT to dimensions)
         )
@@ -47,6 +57,15 @@ class SelectFieldFragment : DialogFragment() {
 
         @JvmStatic
         fun newInstance() = SelectFieldFragment()
+
+        fun show(manager: FragmentManager) = ResetFragment.newInstance()
+            .show(manager, ResetFragment.REQUEST_KEY)
+
+        fun setupListener(manager: FragmentManager, lifecycleOwner: LifecycleOwner, listener: (IntArray) -> Unit) {
+            manager.setFragmentResultListener(ResetFragment.REQUEST_KEY, lifecycleOwner) { _, bundle ->
+                listener.invoke(bundle.getIntArray(RESULT) ?: intArrayOf(4, 4))
+            }
+        }
     }
 
 }
