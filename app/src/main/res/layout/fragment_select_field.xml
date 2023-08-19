@@ -1,14 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.dialogs.SelectFieldFragment">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.dialogs.selectDimensions.SelectFieldFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/leftBorderImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:src="@drawable/baseline_border_vertical_24"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewWidth"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:itemCount="5"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
-</FrameLayout>
+        app:layout_constraintEnd_toEndOf="@+id/leftBorderImageView"
+        app:layout_constraintStart_toStartOf="@+id/leftBorderImageView"
+        app:layout_constraintTop_toBottomOf="@+id/leftBorderImageView" />
+
+    <ImageView
+        android:id="@+id/topBorderImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:src="@drawable/baseline_border_horizontal_24"
+        app:layout_constraintStart_toEndOf="@+id/imageFilterView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewHeight"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:itemCount="5"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+        app:layout_constraintEnd_toEndOf="@+id/topBorderImageView"
+        app:layout_constraintStart_toStartOf="@+id/topBorderImageView"
+        app:layout_constraintTop_toBottomOf="@+id/topBorderImageView" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/imageFilterView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:src="@drawable/x_24"
+        app:layout_constraintBottom_toBottomOf="@id/recyclerViewWidth"
+        app:layout_constraintStart_toEndOf="@+id/leftBorderImageView"
+        app:layout_constraintTop_toTopOf="@id/recyclerViewWidth" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

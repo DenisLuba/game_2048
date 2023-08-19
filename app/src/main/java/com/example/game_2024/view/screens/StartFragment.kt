@@ -9,16 +9,15 @@ import androidx.core.os.bundleOf
 import com.example.game_2024.R
 import com.example.game_2024.databinding.FragmentStartBinding
 import com.example.game_2024.view.MainActivity
-import com.example.game_2024.view.dialogs.ResetFragment
-import com.example.game_2024.view.dialogs.SelectFieldFragment
+import com.example.game_2024.view.dialogs.selectDimensions.SelectFieldFragment
 
 class StartFragment : Fragment() {
 
     private lateinit var binding: FragmentStartBinding
 
-    private val maxHeight = 26
-    private val maxWidth = 20
-    private var dimensions = intArrayOf(4, 4)
+    val maxHeight = 26
+    val maxWidth = 20
+    var dimensions = intArrayOf(4, 4)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
