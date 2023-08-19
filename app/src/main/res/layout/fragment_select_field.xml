@@ -7,56 +7,98 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.dialogs.selectDimensions.SelectFieldFragment">
 
-    <ImageView
-        android:id="@+id/leftBorderImageView"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutForPickers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:src="@drawable/baseline_border_vertical_24"
+        app:layout_constraintStart_toStartOf="@id/linearLayoutForButton"
+        app:layout_constraintEnd_toEndOf="@id/linearLayoutForButton"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/leftBorderImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/baseline_border_vertical_24"
+
+            app:layout_constraintStart_toStartOf="@id/numberPickerHeight"
+            app:layout_constraintEnd_toEndOf="@id/numberPickerHeight"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerHeight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:itemCount="5"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:theme="@style/NumberPickerTheme"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/leftBorderImageView" />
+
+        <ImageView
+            android:id="@+id/topBorderImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/baseline_border_horizontal_24"
+
+            app:layout_constraintEnd_toEndOf="@+id/numberPickerWidth"
+            app:layout_constraintStart_toStartOf="@+id/numberPickerWidth"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerWidth"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/NumberPickerTheme"
+
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+            app:layout_constraintStart_toEndOf="@+id/xImageView"
+            app:layout_constraintTop_toBottomOf="@+id/topBorderImageView" />
+
+        <ImageView
+            android:id="@+id/xImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/x_24"
+
+            app:layout_constraintBottom_toBottomOf="@id/numberPickerHeight"
+            app:layout_constraintStart_toEndOf="@+id/numberPickerHeight"
+            app:layout_constraintTop_toTopOf="@id/numberPickerHeight" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutForButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayoutForPickers">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewWidth"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:itemCount="5"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/okSelectDimensions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok_button" />
 
-        app:layout_constraintEnd_toEndOf="@+id/leftBorderImageView"
-        app:layout_constraintStart_toStartOf="@+id/leftBorderImageView"
-        app:layout_constraintTop_toBottomOf="@+id/leftBorderImageView" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancelSelectDimensions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="@string/cancel_button" />
 
-    <ImageView
-        android:id="@+id/topBorderImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    </LinearLayout>
 
-        android:src="@drawable/baseline_border_horizontal_24"
-        app:layout_constraintStart_toEndOf="@+id/imageFilterView"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewHeight"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:itemCount="5"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
-        app:layout_constraintEnd_toEndOf="@+id/topBorderImageView"
-        app:layout_constraintStart_toStartOf="@+id/topBorderImageView"
-        app:layout_constraintTop_toBottomOf="@+id/topBorderImageView" />
-
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/imageFilterView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:src="@drawable/x_24"
-        app:layout_constraintBottom_toBottomOf="@id/recyclerViewWidth"
-        app:layout_constraintStart_toEndOf="@+id/leftBorderImageView"
-        app:layout_constraintTop_toTopOf="@id/recyclerViewWidth" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

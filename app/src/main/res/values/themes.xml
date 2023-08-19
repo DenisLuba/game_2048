@@ -18,4 +18,10 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <style name="NumberPickerTheme" parent="Theme.Material3.DayNight">
+        <item name="colorAccent">@color/font_4</item>
+        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="android:textColorPrimary">@color/font_16</item>
+        <item name="android:textSize">32dp</item>
+    </style>
 </resources>

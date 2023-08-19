@@ -23,4 +23,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="choose_the_size_of_the_playing_field">Choose the size of the playing field</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="ok_button">Ok</string>
 </resources>

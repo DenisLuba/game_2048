@@ -7,20 +7,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.game_2024.databinding.ItemSelectFieldBinding
 import com.example.game_2024.view.screens.StartFragment
 
-class AdapterForSelectFieldFragment(
-    private val startFragment: StartFragment,
-    private val isHeight: Boolean,
-    private val list: List<Int>
-) :
+class AdapterForSelectFieldFragment(private val list: List<Int>) :
     RecyclerView.Adapter<AdapterForSelectFieldFragment.SelectFieldViewHolder>() {
+
+    var size = 4
 
     override fun getItemCount() = Integer.MAX_VALUE
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectFieldViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemSelectFieldBinding.inflate(inflater, parent, false)
+        if (binding.root.isFocusable) size =
+            binding.itemSelectTextView.toString().toIntOrNull() ?: 4
 
-        return SelectFieldViewHolder(binding, startFragment, isHeight)
+        return SelectFieldViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: SelectFieldViewHolder, position: Int) {
@@ -30,21 +30,7 @@ class AdapterForSelectFieldFragment(
 
     class SelectFieldViewHolder(
         binding: ItemSelectFieldBinding,
-        startFragment: StartFragment,
-        isHeight: Boolean
     ) : RecyclerView.ViewHolder(binding.root) {
-
         val dimension = binding.itemSelectTextView
-
-        init {
-            binding.root.setOnClickListener {
-                if (isHeight) {
-                    startFragment.dimensions[0] =
-                        binding.itemSelectTextView.text.toString().toIntOrNull() ?: 4
-                } else
-                    startFragment.dimensions[1] =
-                        binding.itemSelectTextView.text.toString().toIntOrNull() ?: 4
-            }
-        }
     }
 }
