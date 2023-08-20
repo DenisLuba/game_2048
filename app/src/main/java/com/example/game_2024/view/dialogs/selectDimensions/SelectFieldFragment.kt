@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -25,17 +26,30 @@ class SelectFieldFragment() : DialogFragment() {
     private var maxHeight = 4
     private var maxWidth = 4
 
-    private val listWidth: List<Int> get() = (1..maxWidth).toList()
-    private val listHeight: List<Int> get() = (1..maxHeight).toList()
+    private var width = 4
+    private var height = 4
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dimensions = savedInstanceState?.getIntArray(RESULT) ?: intArrayOf(4, 4)
-        maxHeight = savedInstanceState?.getIntArray(SIZE_LIMITS)?.get(0) ?: 4
-        maxWidth = savedInstanceState?.getIntArray(SIZE_LIMITS)?.get(1) ?: 4
 
-        maxHeight = arguments?.getIntArray(SIZE_LIMITS)?.get(0) ?: 4
-        maxWidth = arguments?.getIntArray(SIZE_LIMITS)?.get(1) ?: 4
+        if (arguments != null && !requireArguments().isEmpty) {
+            height = requireArguments().getIntArray(VALUES)?.get(0) ?: 4
+            width = requireArguments().getIntArray(VALUES)?.get(1) ?: 4
+            maxHeight = requireArguments().getIntArray(VALUES)?.get(2) ?: 4
+            maxWidth = requireArguments().getIntArray(VALUES)?.get(3) ?: 4
+        }
+
+        Log.d("MyTAG", "onCreate(1): height = $height, width = $width, maxHeight = $maxHeight, maxWidth = $maxWidth")
+
+        if ((savedInstanceState != null) && !savedInstanceState.isEmpty) {
+            height = savedInstanceState.getIntArray(VALUES)?.get(0) ?: 4
+            width = savedInstanceState.getIntArray(VALUES)?.get(1) ?: 4
+            maxHeight = savedInstanceState.getIntArray(VALUES)?.get(2) ?: 4
+            maxWidth = savedInstanceState.getIntArray(VALUES)?.get(3) ?: 4
+        }
+
+
+        Log.d("MyTAG", "onCreate(2): height = $height, width = $width, maxHeight = $maxHeight, maxWidth = $maxWidth")
     }
 
 
@@ -51,6 +65,9 @@ class SelectFieldFragment() : DialogFragment() {
                 numberPickerHeight.maxValue = maxHeight
                 numberPickerWidth.minValue = 1
                 numberPickerWidth.maxValue = maxWidth
+
+                numberPickerHeight.value = height
+                numberPickerWidth.value = width
 
                 okSelectDimensions.setOnClickListener {
                     dimensions[0] = numberPickerHeight.value
@@ -73,9 +90,11 @@ class SelectFieldFragment() : DialogFragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+
+        Log.d("MyTAG", "onSaveInstanceState: height = $height, width = $width, maxHeight = $maxHeight, maxWidth = $maxWidth")
+
         super.onSaveInstanceState(outState)
-        outState.putIntArray(RESULT, dimensions)
-        outState.putIntArray(SIZE_LIMITS, intArrayOf(maxHeight, maxWidth))
+        outState.putIntArray(VALUES, intArrayOf(binding.numberPickerHeight.value, binding.numberPickerWidth.value, maxHeight, maxWidth))
     }
 
     private fun sendDimensions(dimensions: IntArray) {
@@ -88,8 +107,7 @@ class SelectFieldFragment() : DialogFragment() {
     companion object {
         const val REQUEST_KEY = "REQUEST_KEY"
         const val RESULT = "RESULT"
-
-        const val SIZE_LIMITS = "SIZE LIMITS"
+        const val VALUES = "VALUES"
 
         fun setupListener(
             manager: FragmentManager,

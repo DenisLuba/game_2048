@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.GestureDetector
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -63,6 +64,7 @@ class GameFieldFragment : Fragment() {
         LayoutParams.MATCH_PARENT,
         1.0f
     )
+    private lateinit var textViews: Array<Array<TextView>>
 
     //    for gestures
     private lateinit var gestureDetector: GestureDetector
@@ -81,28 +83,35 @@ class GameFieldFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         dimensions = arguments?.getIntArray(MainActivity.DIMENSIONS) ?: intArrayOf(4, 4)
+
         viewModel = ViewModelProvider(
             this,
             ModelFactory(requireActivity().application, dimensions)
-        )[ViewModel2024::class.java].apply {
-            liveDataField.observe(this@GameFieldFragment, fieldObserver)
-            liveDataWinner.observe(this@GameFieldFragment, isWinnerObserver)
-            liveDataLost.observe(this@GameFieldFragment, isLostObserver)
-            liveDataScore.observe(this@GameFieldFragment, scoreObserver)
-        }
+        )[ViewModel2024::class.java]
+            .apply {
+                liveDataField.observe(this@GameFieldFragment, fieldObserver)
+                liveDataWinner.observe(this@GameFieldFragment, isWinnerObserver)
+                liveDataLost.observe(this@GameFieldFragment, isLostObserver)
+                liveDataScore.observe(this@GameFieldFragment, scoreObserver)
+            }
 
-        gameField =
-            List(dimensions[0]) { MutableList(dimensions[1]) { Tile(requireContext()) } } // initializing the playing field with zeros
+        gameField = List(dimensions.component1()) {
+            MutableList(dimensions.component2()) { Tile(requireContext()) }
+        } // initializing the playing field with zeros
 
-        val displaySize =
-            Resources.getSystem().displayMetrics.widthPixels // width of display on pixels
+        val displaySize = Resources
+            .getSystem()
+            .displayMetrics
+            .widthPixels // width of display on pixels
         val widthOfFrame = displaySize * widthRelativeToScreen
         val heightOfFrame = displaySize * heightRelativeToScreen
 
         tileSize =
-            if ((dimensions[0].toDouble() / dimensions[1].toDouble()) > 1.3) // width of one Tile
-                (heightOfFrame * 20) / (dimensions[0] * 22)
-            else (widthOfFrame * 20) / (dimensions[1] * 22)
+            if ((dimensions.component1().toDouble() / dimensions.component2()
+                    .toDouble()) > 1.3
+            ) // width of one Tile
+                (heightOfFrame * 20) / (dimensions.component1() * 22)
+            else (widthOfFrame * 20) / (dimensions.component2() * 22)
 
         fontSize = tileSize / 6
         margin = if (tileSize >= 40) (tileSize / 40).toInt() else 4 // margin between Tiles
@@ -118,6 +127,22 @@ class GameFieldFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+        textViews = Array(dimensions.component1()) {
+            Array(dimensions.component2()) {
+                TextView(requireContext()).apply {
+                    gravity = Gravity.CENTER
+                    textSize = fontSize.toFloat()
+                    width = tileSize.toInt()
+                    height = tileSize.toInt()
+
+                    layoutParams = params.apply {
+                        requestLayout()
+                        setMargins(margin, margin, margin, margin)
+                    }
+                }
+            }
+        }
+
         binding = FragmentGameFieldBinding.inflate(inflater, container, false).apply {
 
             undoButton.setOnClickListener { rollback() }
@@ -129,6 +154,7 @@ class GameFieldFragment : Fragment() {
         }
         gestureDetector = GestureDetector(requireContext(), GestureListener(this))
         setFieldView()
+        setTextViews()
 
         return binding.root
     }
@@ -152,8 +178,10 @@ class GameFieldFragment : Fragment() {
     //    OBSERVERS FOR LIVEDATA
 
     private val fieldObserver: Observer<List<MutableList<Int>>> = Observer { field ->
+
         gameField.mapIndexed { i, list -> list.mapIndexed { j, tile -> tile.value = field[i][j] } }
-        setFieldView()
+//        setFieldView()
+        setTextViews()
     }
 
     private val isWinnerObserver: Observer<Boolean> = Observer {
@@ -219,32 +247,26 @@ class GameFieldFragment : Fragment() {
                 }
             }
             for (j in 0 until widthOfField) {
-                textView = getTextView(gameField[i][j])
-                linearLayout.addView(textView)
+//                textView = getTextView(gameField[i][j])
+                linearLayout.addView(textViews[i][j])
             }
             linearLayoutBase.addView(linearLayout)
         }
         binding.gameField.addView(linearLayoutBase)
     }
 
-
-    private fun getTextView(tile: Tile): TextView = TextView(context).apply {
-        if (tile.value != 0) {
-            text = tile.value.toString()
-        }
-        gravity = Gravity.CENTER
-        textSize = fontSize.toFloat()
-        width = tileSize.toInt()
-        height = tileSize.toInt()
-        setTextColor(tile.getFontColor())
-        background =
-            ResourcesCompat.getDrawable(resources, R.drawable.tile, null).apply {
-                this?.overrideColor(tile.getTileColor())
+    private fun setTextViews() {
+        gameField.forEachIndexed { i, list ->
+            list.forEachIndexed { j, tile ->
+                with(textViews[i][j]) {
+                    text = if (tile.value != 0) tile.value.toString() else ""
+                    setTextColor(tile.getFontColor())
+                    background =
+                        ResourcesCompat.getDrawable(resources, R.drawable.tile, null).apply {
+                            this?.overrideColor(tile.getTileColor())
+                        }
+                }
             }
-
-        layoutParams = params.apply {
-            requestLayout()
-            setMargins(margin, margin, margin, margin)
         }
     }
 

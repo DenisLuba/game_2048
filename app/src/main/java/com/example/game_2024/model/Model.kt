@@ -1,5 +1,8 @@
 package com.example.game_2024.model
 
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.random.Random
 
@@ -17,10 +20,17 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
         @Volatile
         private var instance: Model? = null
 
-        fun getInstance(height: Int = 4, width: Int = 4) =
-            instance ?: synchronized(this) {
-                instance ?: Model(height, width).also { instance = it }
+        fun getInstance(height: Int = 4, width: Int = 4): Model {
+            if (instance != null) {
+                synchronized(this) {
+                    return if (instance != null && instance!!.height == height && instance!!.width == width) instance!!
+                    else Model(height, width).also { instance = it }
+                }
+            } else synchronized(this) {
+                return Model(height, width).also { instance = it }
             }
+        }
+
     }
 
 //    **********************************************************************************************
@@ -72,7 +82,9 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
         }.flatten().filterNotNull()
 
     //    **********************************************************************************************
+
     fun resetGameTiles() {
+
         for (list in gameField)
             for (i in list.indices)
                 list[i] = 0
@@ -100,6 +112,7 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
     fun left() {
         if (gameField[0].size <= 1) return
         if (isSaveNeeded) saveState(gameField)
+
         var isChanged = false
         var i: Int
         var j: Int
@@ -138,6 +151,7 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
     fun right() {
         if (gameField[0].size <= 1) return
         if (isSaveNeeded) saveState(gameField)
+
         var isChanged = false
         var i: Int
         var j: Int
@@ -176,6 +190,7 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
     fun down() {
         if (gameField.size <= 1) return
         if (isSaveNeeded) saveState(gameField)
+
         var isChanged = false
         var y: Int
         var j: Int
@@ -214,6 +229,7 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
     fun up() {
         if (gameField.size <= 1) return
         if (isSaveNeeded) saveState(gameField)
+
         var isChanged = false
         var y: Int
         var j: Int

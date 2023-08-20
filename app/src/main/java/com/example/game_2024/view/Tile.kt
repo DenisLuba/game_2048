@@ -48,4 +48,8 @@ data class Tile(val context: Context, var value: Int = 0) {
             null
         )
     }
+
+    override fun toString(): String {
+        return "Tile.value = $value"
+    }
 }
