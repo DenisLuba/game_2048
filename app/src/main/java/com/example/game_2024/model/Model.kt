@@ -20,7 +20,10 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
         @Volatile
         private var instance: Model? = null
 
-        fun getInstance(height: Int = 4, width: Int = 4): Model {
+        fun getInstance(height: Int = 4, width: Int = 4, maxHeight: Int = 4): Model {
+
+            // TODO request to the DB for maxHeight
+
             if (instance != null) {
                 synchronized(this) {
                     return if (instance != null && instance!!.height == height && instance!!.width == width) instance!!

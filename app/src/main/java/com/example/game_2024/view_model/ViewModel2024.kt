@@ -7,10 +7,10 @@ import com.example.game_2024.model.Model
 
 typealias move = () -> Unit
 
-class ViewModel2024(application: Application, dimensions: IntArray) :
+class ViewModel2024(application: Application, args: IntArray) :
     AndroidViewModel(application) {
 
-    private val model = Model.getInstance(dimensions.component1(), dimensions.component2())
+    private val model = Model.getInstance(args.component1(), args.component2(), args.component3())
 
 //    **********************************************************************************************
 

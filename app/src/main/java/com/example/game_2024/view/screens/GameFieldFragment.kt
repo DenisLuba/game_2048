@@ -47,7 +47,9 @@ class GameFieldFragment : Fragment() {
     private var score = 0
 
     //    ( height, width ) of the game field
-    private var dimensions = intArrayOf()
+    private var dimensions = IntArray(2) { 4 }
+
+    private var maxHeight = 4
 
     //    for the drawing of the field
     private val widthRelativeToScreen = 0.84
@@ -58,7 +60,6 @@ class GameFieldFragment : Fragment() {
 
     private lateinit var linearLayout: LinearLayout
     private lateinit var linearLayoutBase: LinearLayout
-    private lateinit var textView: TextView
     private val params = LinearLayout.LayoutParams(
         LayoutParams.MATCH_PARENT,
         LayoutParams.MATCH_PARENT,
@@ -82,11 +83,15 @@ class GameFieldFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        dimensions = arguments?.getIntArray(MainActivity.DIMENSIONS) ?: intArrayOf(4, 4)
+        val args = arguments?.getIntArray(MainActivity.DIMENSIONS) ?: intArrayOf(4, 4, 4)
+
+        dimensions[0] = args[0]
+        dimensions[1] = args[1]
+        maxHeight = args[2]
 
         viewModel = ViewModelProvider(
             this,
-            ModelFactory(requireActivity().application, dimensions)
+            ModelFactory(requireActivity().application, args)
         )[ViewModel2024::class.java]
             .apply {
                 liveDataField.observe(this@GameFieldFragment, fieldObserver)

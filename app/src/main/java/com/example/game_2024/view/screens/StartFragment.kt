@@ -1,7 +1,6 @@
 package com.example.game_2024.view.screens
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +15,6 @@ class StartFragment : Fragment() {
 
     private lateinit var binding: FragmentStartBinding
 
-    private val maxHeight = 26
-    private val maxWidth = 20
     private var dimensions = intArrayOf(4, 4)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +33,7 @@ class StartFragment : Fragment() {
         binding = FragmentStartBinding.inflate(inflater, container, false).apply {
 
             startButton.setOnClickListener {
-                val bundle = bundleOf(MainActivity.DIMENSIONS to dimensions)
-                Log.d("MyTag", "START: dimensions[0] = ${dimensions[0]}, dimensions[1] = ${dimensions[1]}")
+                val bundle = bundleOf(MainActivity.DIMENSIONS to intArrayOf(dimensions.component1(), dimensions.component2(), maxHeight))
 
                 (activity as MainActivity)
                     .navController
@@ -63,5 +59,7 @@ class StartFragment : Fragment() {
 
     companion object{
         private const val DIMENSIONS = "DIMENSIONS"
+        private const val maxHeight = 26
+        private const val maxWidth = 20
     }
 }
