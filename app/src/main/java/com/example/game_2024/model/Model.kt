@@ -20,27 +20,35 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
         @Volatile
         private var instance: Model? = null
 
-        fun getInstance(height: Int = 4, width: Int = 4, maxHeight: Int = 4): Model {
+        fun getInstance(height: Int = 4, width: Int = 4, _id: Int): Model {
 
             // TODO request to the DB for maxHeight
+//            id = maxHeight * (width - 1) + height
 
             if (instance != null) {
                 synchronized(this) {
                     return if (instance != null && instance!!.height == height && instance!!.width == width) instance!!
-                    else Model(height, width).also { instance = it }
+                    else Model(height, width).apply {
+                        id = _id
+                        instance = this
+                    }
                 }
             } else synchronized(this) {
                 return Model(height, width).also { instance = it }
             }
         }
-
     }
 
 //    **********************************************************************************************
 
 //    Variables
 
+    var id = -1
+
     var score: Int = 0
+    var maxScore: Int = 0
+        get() = if (score > field) score else field
+
     var maxTile: Int = 0
     private var isSaveNeeded = true
 
@@ -295,113 +303,6 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
         previousScores.push(score)
         isSaveNeeded = false
     }
-}
-
-
-fun main() {
-    val model = Model.getInstance(3, 4)
-    model.gameField = listOf(
-        mutableListOf(0, 0, 4),
-        mutableListOf(4, 2, 4),
-        mutableListOf(2, 0, 2),
-        mutableListOf(4, 2, 2)
-    )
-
-    println("ARRAY")
-    model.gameField.forEach(::println)
-    println()
-    println("score = ${model.score}")
-    println("maxTile = ${model.maxTile}")
-
-    println()
-    model.left()
-    println("LEFT")
-    model.gameField.forEach(::println)
-    println()
-    println("score = ${model.score}")
-    println("maxTile = ${model.maxTile}")
-
-//    model.gameField = listOf(
-//        mutableListOf(4, 0, 4),
-//        mutableListOf(4, 2, 4),
-//        mutableListOf(4, 0, 2),
-//        mutableListOf(4, 2, 0)
-//    )
-//
-//    println("ARRAY")
-//    model.gameField.forEach(::println)
-//    println()
-
-    println()
-    model.right()
-    println("RIGHT")
-    model.gameField.forEach(::println)
-    println()
-    println("score = ${model.score}")
-    println("maxTile = ${model.maxTile}")
-
-//    model.gameField = listOf(
-//        mutableListOf(4, 0, 4),
-//        mutableListOf(4, 2, 4),
-//        mutableListOf(4, 0, 2),
-//        mutableListOf(4, 2, 0)
-//    )
-//
-//    println("ARRAY")
-//    model.gameField.forEach(::println)
-//    println()
-
-    println()
-    model.down()
-    println("DOWN")
-    model.gameField.forEach(::println)
-    println()
-    println("score = ${model.score}")
-    println("maxTile = ${model.maxTile}")
-
-//    model.gameField = listOf(
-//        mutableListOf(4, 0, 0),
-//        mutableListOf(4, 2, 4),
-//        mutableListOf(4, 0, 2),
-//        mutableListOf(4, 2, 2)
-//    )
-//
-//    println("ARRAY")
-//    model.gameField.forEach(::println)
-//    println()
-
-    println()
-    model.up()
-    println("UP")
-    model.gameField.forEach(::println)
-    println()
-    println("score = ${model.score}")
-    println("maxTile = ${model.maxTile}")
-
-    println()
-
-    val list1 = listOf(
-        mutableListOf(0, 0, 4),
-        mutableListOf(4, 2, 4),
-        mutableListOf(2, 0, 2),
-        mutableListOf(4, 2, 2)
-    )
-
-    val list2 = list1.map { it.toMutableList() }.toList()
-
-    println(list1 == list2)
-    println(list1 === list2)
-
-    list1.forEach(::println)
-    println()
-    list2.forEach(::println)
-    println()
-
-    list2[1][1] = 1000
-    list1.forEach(::println)
-    println()
-    list2.forEach(::println)
-    println()
 }
 
 

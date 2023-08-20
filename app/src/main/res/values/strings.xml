@@ -10,6 +10,7 @@
     <string name="scope_0">Score: 8</string>
     <string name="high_scope_0">High score: 0</string>
     <string name="score">Score: %1$d</string>
+    <string name="high_score">High score: %1$d</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

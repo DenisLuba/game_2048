@@ -45,6 +45,7 @@ class GameFieldFragment : Fragment() {
     private var isGameLost = false
 
     private var score = 0
+    private var maxScore = 0
 
     //    ( height, width ) of the game field
     private var dimensions = IntArray(2) { 4 }
@@ -98,6 +99,7 @@ class GameFieldFragment : Fragment() {
                 liveDataWinner.observe(this@GameFieldFragment, isWinnerObserver)
                 liveDataLost.observe(this@GameFieldFragment, isLostObserver)
                 liveDataScore.observe(this@GameFieldFragment, scoreObserver)
+                liveDataMaxScore.observe(this@GameFieldFragment, maxScoreObserver)
             }
 
         gameField = List(dimensions.component1()) {
@@ -200,6 +202,11 @@ class GameFieldFragment : Fragment() {
     private val scoreObserver: Observer<Int> = Observer {
         score = it
         binding.score.text = getString(R.string.score, score)
+    }
+
+    private val maxScoreObserver: Observer<Int> = Observer {
+        maxScore = it
+        binding.highScore.text = getString(R.string.high_score, maxScore)
     }
 
 //    **********************************************************************************************
