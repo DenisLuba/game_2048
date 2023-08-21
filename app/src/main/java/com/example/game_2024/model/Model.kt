@@ -10,8 +10,12 @@ inline fun <T> arrayDequeOf(vararg elements: T) = ArrayDeque(elements.toList())
 inline fun <T> ArrayDeque<T>.push(element: T) = addLast(element) // returns Unit
 inline fun <T> ArrayDeque<T>.pop() = removeLastOrNull() // returns T?
 
-class Model private constructor(val height: Int = 4, val width: Int = 4) {
-
+//class Model private constructor(val height: Int = 4, val width: Int = 4) {
+class Model private constructor(
+    var score: Int,
+    var id: Int,
+    var gameField: List<MutableList<Int>>
+) {
 //    **********************************************************************************************
 
 //    SINGLETON
@@ -20,21 +24,32 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
         @Volatile
         private var instance: Model? = null
 
-        fun getInstance(height: Int = 4, width: Int = 4, _id: Int): Model {
-
-            // TODO request to the DB for maxHeight
-//            id = maxHeight * (width - 1) + height
+        //        fun getInstance(height: Int = 4, width: Int = 4, _id: Int): Model {
+        fun getInstance(
+            _score: Int,
+            _maxScore: Int,
+            _id: Int,
+            gameField: List<MutableList<Int>>
+        ): Model {
 
             if (instance != null) {
                 synchronized(this) {
-                    return if (instance != null && instance!!.height == height && instance!!.width == width) instance!!
-                    else Model(height, width).apply {
-                        id = _id
+//                    return if (instance != null && instance!!.height == height && instance!!.width == width) instance!!
+                    return if (instance != null && instance!!.id == _id) instance!!
+                    else Model(_score, _id, gameField).apply {
                         instance = this
+//                        score = _score
+                        maxScore = _maxScore
+//                        id = _id
                     }
                 }
             } else synchronized(this) {
-                return Model(height, width).also { instance = it }
+                return Model(_score, _id, gameField).apply {
+                    instance = this
+//                    score = _score
+                    maxScore = _maxScore
+//                    id = _id
+                }
             }
         }
     }
@@ -43,16 +58,17 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
 
 //    Variables
 
-    var id = -1
-
-    var score: Int = 0
+    //    var id = -1
+//
+//    var score: Int = 0
     var maxScore: Int = 0
-        get() = if (score > field) score else field
+
+//        get() = if (score > field) score else field
 
     var maxTile: Int = 0
     private var isSaveNeeded = true
 
-    var gameField: List<MutableList<Int>> = List(height) { MutableList(width) { 0 } }
+//    var gameField: List<MutableList<Int>> = List(height) { MutableList(width) { 0 } }
 
     private val previousStates: ArrayDeque<List<MutableList<Int>>> = arrayDequeOf()
     private val previousScores: ArrayDeque<Int> = arrayDequeOf()
@@ -62,8 +78,20 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
 //    Constructor
 
     init {
-        resetGameTiles()
+        if (fieldIsEmpty(gameField)) {
+            repeat(2) { addRandomTile(gameField) }
+        }
     }
+
+//    method checks if the gameField is Empty to then add random tiles
+
+    private fun fieldIsEmpty(field: List<MutableList<Int>>) =
+        field.all { list -> list.all { it == 0 } }
+
+
+//    init {
+//        resetGameTiles()
+//    }
 
 //    Methods
 
@@ -156,6 +184,7 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
         if (isChanged) { // if there were changes, then add a random tile and save the state
             addRandomTile(gameField)
             isSaveNeeded = true
+            maxScore = max(maxScore, score)
         }
     }
 
@@ -195,6 +224,7 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
         if (isChanged) { // if there were changes, then add a random tile and save the state
             addRandomTile(gameField)
             isSaveNeeded = true
+            maxScore = max(maxScore, score)
         }
     }
 
@@ -234,6 +264,7 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
         if (isChanged) { // if there were changes, then add a random tile and save the state
             addRandomTile(gameField)
             isSaveNeeded = true
+            maxScore = max(maxScore, score)
         }
     }
 
@@ -273,6 +304,7 @@ class Model private constructor(val height: Int = 4, val width: Int = 4) {
         if (isChanged) { // if there were changes, then add a random tile and save the state
             addRandomTile(gameField)
             isSaveNeeded = true
+            maxScore = max(maxScore, score)
         }
     }
 

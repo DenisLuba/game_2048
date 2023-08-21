@@ -1,26 +1,27 @@
 package com.example.game_2024.view_model
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.game_2024.model.Model
 import com.example.game_2024.model.Repository
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 typealias move = () -> Unit
 
 class ViewModel2024(application: Application, private val args: IntArray) :
     AndroidViewModel(application) {
 
-    private val id get() = args[2] * (args[1] - 1) + args[0]
+    private val repository = Repository.getInstance(application.applicationContext, args.component3())
+    private val model = repository.getModel(args.component1(), args.component2())
 
-
-    //    private val model = Model.getInstance(args.component1(), args.component2(), id)
-    private val repository: Repository = Repository.getInstance(application.applicationContext)
-    private var model = repository.getModel(args.component1(), args.component2(), id)
+//    init {
+//        repository = Repository.getInstance(application.applicationContext, args.component3())
+//        model = repository.getModel(args.component1(), args.component2())
+//    }
 
 //    **********************************************************************************************
 
@@ -58,27 +59,26 @@ class ViewModel2024(application: Application, private val args: IntArray) :
 
     private fun action(direction: move) {
         direction.invoke()
-        saveFieldStateInDB()
+
+        viewModelScope.launch {
+            repository.saveModel(model)
+        }
+
         liveDataField.value = model.gameField
         liveDataScore.value = model.score
         liveDataMaxScore.value = model.maxScore
         liveDataWinner.value = model.maxTile == WINNING_TILE
         liveDataLost.value = !model.canMove()
-    }
 
-    private fun saveFieldStateInDB() {
-        viewModelScope.launch {
-            repository.saveField(model)
-        }
-    }
+        Log.d("FieldTag", "${logField(model.gameField)}\n")
 
-    private fun setModel() {
-        viewModelScope.launch {
-            model = repository.getModel(args.component1(), args.component2(), id)
-        }
     }
 
     companion object {
         private const val WINNING_TILE = 2048
+    }
+
+    private fun logField(list: List<MutableList<Int>>): String {
+        return list.map { list -> list.map { String.format("%4d", it) }.joinToString(", ") }.joinToString("\n")
     }
 }
