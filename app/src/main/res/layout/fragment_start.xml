@@ -8,17 +8,84 @@
     android:background="@drawable/wood_background_start"
     tools:context=".view.screens.StartFragment">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/chooseSizeButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutForPickers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/choose_the_size_of_the_playing_field"
 
-        android:layout_marginTop="160dp"
-
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/startButton">
+
+        <ImageView
+            android:id="@+id/leftBorderImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/baseline_border_vertical_24"
+
+            app:layout_constraintStart_toStartOf="@id/numberPickerHeight"
+            app:layout_constraintEnd_toEndOf="@id/numberPickerHeight"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerHeight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:itemCount="5"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:theme="@style/NumberPickerTheme"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/leftBorderImageView" />
+
+        <ImageView
+            android:id="@+id/topBorderImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/baseline_border_horizontal_24"
+
+            app:layout_constraintEnd_toEndOf="@+id/numberPickerWidth"
+            app:layout_constraintStart_toStartOf="@+id/numberPickerWidth"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerWidth"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/NumberPickerTheme"
+
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+            app:layout_constraintStart_toEndOf="@+id/xImageView"
+            app:layout_constraintTop_toBottomOf="@+id/topBorderImageView" />
+
+        <ImageView
+            android:id="@+id/xImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/x_24"
+
+            app:layout_constraintBottom_toBottomOf="@id/numberPickerHeight"
+            app:layout_constraintStart_toEndOf="@+id/numberPickerHeight"
+            app:layout_constraintTop_toTopOf="@id/numberPickerHeight" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/chooseSizeButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/choose_the_size_of_the_playing_field"-->
+
+<!--        android:layout_marginTop="160dp"-->
+
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
 
 

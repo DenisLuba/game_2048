@@ -193,6 +193,9 @@ class GameFieldFragment : Fragment() {
 
     private val isWinnerObserver: Observer<Boolean> = Observer {
         isGameWon = it
+
+// TODO: Implement the winning code
+
     }
 
     private val isLostObserver: Observer<Boolean> = Observer {
