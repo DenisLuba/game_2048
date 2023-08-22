@@ -8,6 +8,7 @@ class Repository private constructor(private val applicationContext: Context) {
 
     companion object {
         private const val PREFERENCES_FIELD = "SHARED_PREFERENCES_FIELD"
+
         @Volatile
         private var instance: Repository? = null
 
@@ -32,7 +33,8 @@ class Repository private constructor(private val applicationContext: Context) {
 
     private fun init(_maxHeight: Int) {
         maxHeight = _maxHeight
-        preferences = applicationContext.getSharedPreferences(PREFERENCES_FIELD, Context.MODE_PRIVATE)
+        preferences =
+            applicationContext.getSharedPreferences(PREFERENCES_FIELD, Context.MODE_PRIVATE)
     }
 
     fun getModel(height: Int, width: Int): Model {
@@ -40,18 +42,17 @@ class Repository private constructor(private val applicationContext: Context) {
         val gsonFieldObject: String? = preferences.getString(id.toString(), null)
 
         val fieldObject: Field = if (gsonFieldObject != null) gsonToFieldObject(gsonFieldObject)
-            else Field(
-                score = 0,
-                maxScore = 0,
-                field = getField(height, width)
-            )
+        else Field(
+            score = 0,
+            maxScore = 0,
+            field = getField(height, width)
+        )
 
         val score: Int = fieldObject.score
         val maxScore: Int = fieldObject.maxScore
         val field: List<MutableList<Int>> = fieldObject.field
 
-        val model = Model.getInstance(score, maxScore, id, field)
-        return model
+        return Model.getInstance(score, maxScore, id, field)
     }
 
     fun saveModel(model: Model) {
@@ -76,33 +77,6 @@ class Repository private constructor(private val applicationContext: Context) {
     private fun gsonToFieldObject(value: String): Field = Gson().fromJson(value, Field::class.java)
 
     private fun fieldObjectToGson(field: Field): String = Gson().toJson(field)
-
-//    private val appDatabase: AppDataBase by lazy {
-//        Room.databaseBuilder(applicationContext, AppDataBase::class.java, "database.db")
-//            .createFromAsset("room_article.db")
-//            .build()
-//    }
-//    private val dao: AppDao by lazy {
-//        appDatabase.getAppDao()
-//    }
-//    private val roomDBRepository: RoomDBRepository by lazy {
-//        RoomDBRepository(dao, Dispatchers.IO)
-//    }
-//    private suspend fun setModel(height: Int, with: Int, id: Int) {
-//        model = roomDBRepository.getModelById(id) ?: Model.getInstance(height, with, id).apply {
-//            saveField(this)
-//        }
-//    }
-//
-//    suspend fun saveField(model: Model) {
-//        roomDBRepository.saveGameField(model)
-//    }
-//
-//    fun getModel(height: Int, with: Int, id: Int): Model = runBlocking<Model> {
-//        setModel(height, with, id)
-//        model
-//    }
-
 }
 
 

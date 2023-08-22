@@ -1,8 +1,5 @@
 package com.example.game_2024.model
 
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.random.Random
 
@@ -10,7 +7,7 @@ inline fun <T> arrayDequeOf(vararg elements: T) = ArrayDeque(elements.toList())
 inline fun <T> ArrayDeque<T>.push(element: T) = addLast(element) // returns Unit
 inline fun <T> ArrayDeque<T>.pop() = removeLastOrNull() // returns T?
 
-//class Model private constructor(val height: Int = 4, val width: Int = 4) {
+
 class Model private constructor(
     var score: Int,
     var id: Int,
@@ -34,21 +31,16 @@ class Model private constructor(
 
             if (instance != null) {
                 synchronized(this) {
-//                    return if (instance != null && instance!!.height == height && instance!!.width == width) instance!!
                     return if (instance != null && instance!!.id == _id) instance!!
                     else Model(_score, _id, gameField).apply {
                         instance = this
-//                        score = _score
                         maxScore = _maxScore
-//                        id = _id
                     }
                 }
             } else synchronized(this) {
                 return Model(_score, _id, gameField).apply {
                     instance = this
-//                    score = _score
                     maxScore = _maxScore
-//                    id = _id
                 }
             }
         }
@@ -58,24 +50,16 @@ class Model private constructor(
 
 //    Variables
 
-    //    var id = -1
-//
-//    var score: Int = 0
     var maxScore: Int = 0
-
-//        get() = if (score > field) score else field
-
     var maxTile: Int = 0
     private var isSaveNeeded = true
-
-//    var gameField: List<MutableList<Int>> = List(height) { MutableList(width) { 0 } }
 
     private val previousStates: ArrayDeque<List<MutableList<Int>>> = arrayDequeOf()
     private val previousScores: ArrayDeque<Int> = arrayDequeOf()
 
 //    **********************************************************************************************
 
-//    Constructor
+//    Init block
 
     init {
         if (fieldIsEmpty(gameField)) {
@@ -87,11 +71,6 @@ class Model private constructor(
 
     private fun fieldIsEmpty(field: List<MutableList<Int>>) =
         field.all { list -> list.all { it == 0 } }
-
-
-//    init {
-//        resetGameTiles()
-//    }
 
 //    Methods
 
@@ -139,7 +118,6 @@ class Model private constructor(
 
 //    **********************************************************************************************
 
-    //    **********************************************************************************************
     fun rollback() {
         if (previousScores.isEmpty() || previousStates.isEmpty()) return
         gameField = previousStates.pop() ?: gameField

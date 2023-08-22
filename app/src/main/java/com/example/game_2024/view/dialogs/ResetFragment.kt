@@ -5,12 +5,9 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.widget.LinearLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentResultListener
-import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.LifecycleOwner
 import com.example.game_2024.databinding.FragmentResetBinding
 

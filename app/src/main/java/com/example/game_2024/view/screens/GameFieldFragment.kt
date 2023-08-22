@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.GestureDetector
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -20,7 +19,6 @@ import android.widget.TableLayout.LayoutParams
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.game_2024.view_model.ModelFactory
@@ -29,6 +27,7 @@ import com.example.game_2024.view_model.ViewModel2024
 import com.example.game_2024.databinding.FragmentGameFieldBinding
 import com.example.game_2024.view.MainActivity
 import com.example.game_2024.view.Tile
+import com.example.game_2024.view.dialogs.GameOverFragment
 import com.example.game_2024.view.dialogs.ResetFragment
 import kotlin.math.abs
 
@@ -124,6 +123,7 @@ class GameFieldFragment : Fragment() {
         margin = if (tileSize >= 40) (tileSize / 40).toInt() else 4 // margin between Tiles
 
         ResetFragment.setupListener(childFragmentManager, this) { reset() }
+        GameOverFragment.setupListener(childFragmentManager, this) { gameOver() }
     }
 
 //    **********************************************************************************************
@@ -187,19 +187,17 @@ class GameFieldFragment : Fragment() {
     private val fieldObserver: Observer<List<MutableList<Int>>> = Observer { field ->
 
         gameField.mapIndexed { i, list -> list.mapIndexed { j, tile -> tile.value = field[i][j] } }
-//        setFieldView()
         setTextViews()
     }
 
     private val isWinnerObserver: Observer<Boolean> = Observer {
         isGameWon = it
-
-// TODO: Implement the winning code
-
+        GameOverFragment.show(childFragmentManager, GAME_OVER)
     }
 
     private val isLostObserver: Observer<Boolean> = Observer {
         isGameLost = it
+        GameOverFragment.show(childFragmentManager, WIN)
     }
 
     private val scoreObserver: Observer<Int> = Observer {
@@ -210,6 +208,12 @@ class GameFieldFragment : Fragment() {
     private val maxScoreObserver: Observer<Int> = Observer {
         maxScore = it
         binding.highScore.text = getString(R.string.high_score, maxScore)
+    }
+
+//    **********************************************************************************************
+
+    private fun gameOver() {
+
     }
 
 //    **********************************************************************************************
@@ -262,7 +266,6 @@ class GameFieldFragment : Fragment() {
                 }
             }
             for (j in 0 until widthOfField) {
-//                textView = getTextView(gameField[i][j])
                 linearLayout.addView(textViews[i][j])
             }
             linearLayoutBase.addView(linearLayout)
@@ -329,5 +332,7 @@ class GameFieldFragment : Fragment() {
     companion object {
         private const val SWIPE_MIN_DISTANCE = 100
         private const val SWIPE_THRESHOLD_VELOCITY = 100
+        private const val GAME_OVER = "GAME_OVER"
+        private const val WIN = "WIN"
     }
 }

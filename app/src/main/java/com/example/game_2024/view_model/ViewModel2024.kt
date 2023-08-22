@@ -1,37 +1,28 @@
 package com.example.game_2024.view_model
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.game_2024.model.Model
 import com.example.game_2024.model.Repository
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 typealias move = () -> Unit
 
 class ViewModel2024(application: Application, private val args: IntArray) :
     AndroidViewModel(application) {
 
-    private val repository = Repository.getInstance(application.applicationContext, args.component3())
-    private val model = repository.getModel(args.component1(), args.component2())
-
-//    init {
-//        repository = Repository.getInstance(application.applicationContext, args.component3())
-//        model = repository.getModel(args.component1(), args.component2())
-//    }
+    private val repository =
+        Repository.getInstance(application.applicationContext, args.component3())
+    private val model: Model = repository.getModel(args.component1(), args.component2())
 
 //    **********************************************************************************************
 
 //    LIVEDATA
 
 
-    val liveDataField = MutableLiveData<List<MutableList<Int>>>().apply {
-        value = model.gameField
-    }
-
+    val liveDataField = MutableLiveData<List<MutableList<Int>>>().apply { value = model.gameField }
     val liveDataWinner = MutableLiveData<Boolean>().apply { value = model.maxTile == WINNING_TILE }
     val liveDataLost = MutableLiveData<Boolean>().apply { value = !model.canMove() }
     val liveDataScore = MutableLiveData<Int>().apply { value = model.score }
@@ -69,16 +60,9 @@ class ViewModel2024(application: Application, private val args: IntArray) :
         liveDataMaxScore.value = model.maxScore
         liveDataWinner.value = model.maxTile == WINNING_TILE
         liveDataLost.value = !model.canMove()
-
-        Log.d("FieldTag", "${logField(model.gameField)}\n")
-
     }
 
     companion object {
         private const val WINNING_TILE = 2048
-    }
-
-    private fun logField(list: List<MutableList<Int>>): String {
-        return list.map { list -> list.map { String.format("%4d", it) }.joinToString(", ") }.joinToString("\n")
     }
 }
