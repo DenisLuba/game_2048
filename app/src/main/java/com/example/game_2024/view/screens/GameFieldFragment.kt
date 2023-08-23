@@ -27,7 +27,7 @@ import com.example.game_2024.view_model.ViewModel2024
 import com.example.game_2024.databinding.FragmentGameFieldBinding
 import com.example.game_2024.view.MainActivity
 import com.example.game_2024.view.Tile
-import com.example.game_2024.view.dialogs.GameOverFragment
+import com.example.game_2024.view.dialogs.GameOverDialog
 import com.example.game_2024.view.dialogs.ResetFragment
 import kotlin.math.abs
 
@@ -93,13 +93,6 @@ class GameFieldFragment : Fragment() {
             this,
             ModelFactory(requireActivity().application, args)
         )[ViewModel2024::class.java]
-            .apply {
-                liveDataField.observe(this@GameFieldFragment, fieldObserver)
-                liveDataWinner.observe(this@GameFieldFragment, isWinnerObserver)
-                liveDataLost.observe(this@GameFieldFragment, isLostObserver)
-                liveDataScore.observe(this@GameFieldFragment, scoreObserver)
-                liveDataMaxScore.observe(this@GameFieldFragment, maxScoreObserver)
-            }
 
         gameField = List(dimensions.component1()) {
             MutableList(dimensions.component2()) { Tile(requireContext()) }
@@ -123,7 +116,6 @@ class GameFieldFragment : Fragment() {
         margin = if (tileSize >= 40) (tileSize / 40).toInt() else 4 // margin between Tiles
 
         ResetFragment.setupListener(childFragmentManager, this) { reset() }
-        GameOverFragment.setupListener(childFragmentManager, this) { gameOver() }
     }
 
 //    **********************************************************************************************
@@ -133,6 +125,14 @@ class GameFieldFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        with(viewModel) {
+            liveDataField.observe(viewLifecycleOwner, fieldObserver)
+            liveDataScore.observe(viewLifecycleOwner, scoreObserver)
+            liveDataMaxScore.observe(viewLifecycleOwner, maxScoreObserver)
+            liveDataWinner.observe(viewLifecycleOwner, isWinnerObserver)
+            liveDataLost.observe(viewLifecycleOwner, isLostObserver)
+        }
 
         textViews = Array(dimensions.component1()) {
             Array(dimensions.component2()) {
@@ -192,12 +192,15 @@ class GameFieldFragment : Fragment() {
 
     private val isWinnerObserver: Observer<Boolean> = Observer {
         isGameWon = it
-        GameOverFragment.show(childFragmentManager, GAME_OVER)
+        if (isGameWon) {
+            gameOver(WIN)
+            reset()
+        }
     }
 
     private val isLostObserver: Observer<Boolean> = Observer {
         isGameLost = it
-        GameOverFragment.show(childFragmentManager, WIN)
+        if (isGameLost) gameOver(GAME_OVER)
     }
 
     private val scoreObserver: Observer<Int> = Observer {
@@ -212,8 +215,8 @@ class GameFieldFragment : Fragment() {
 
 //    **********************************************************************************************
 
-    private fun gameOver() {
-
+    private fun gameOver(text: String) {
+        GameOverDialog.showGameOver(requireActivity().supportFragmentManager, text)
     }
 
 //    **********************************************************************************************
