@@ -9,14 +9,14 @@
 
     style="@style/AppDialogTheme"
     android:background="#00000000"
-    tools:context=".view.dialogs.ResetDialog">
+    tools:context=".view.dialogs.ExitDialog">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:text="@string/dialog_restart"
+        android:text="@string/dialog_exit"
         android:textColor="@color/font_4"
         android:textSize="40sp"
 
@@ -37,7 +37,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/yesRestartButton"
+            android:id="@+id/yesExitButton"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:layout_marginEnd="40dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/noRestartButton"
+            android:id="@+id/noExitButton"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,8 +65,5 @@
             app:cornerRadius="50dp" />
 
     </LinearLayout>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,16 +6,16 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.example.game_2024.databinding.FragmentGameOverBinding
+import com.example.game_2024.databinding.FragmentGameOverDialogBinding
 import com.example.game_2024.view.screens.GameFieldFragment
 
 class GameOverDialog : DialogFragment() {
 
-    private lateinit var binding: FragmentGameOverBinding
+    private lateinit var binding: FragmentGameOverDialogBinding
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            binding = FragmentGameOverBinding.inflate(layoutInflater).apply {
+            binding = FragmentGameOverDialogBinding.inflate(layoutInflater).apply {
                 gaveOverTextView.text = endText
                 root.setOnClickListener{
                     when (endText) {

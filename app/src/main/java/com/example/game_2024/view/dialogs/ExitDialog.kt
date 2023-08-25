@@ -8,24 +8,24 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.example.game_2024.databinding.FragmentResetDialogBinding
-import com.example.game_2024.view.screens.GameFieldFragment
+import com.example.game_2024.databinding.FragmentExitDialogBinding
+import com.example.game_2024.view.screens.StartFragment
 
-class ResetDialog : DialogFragment() {
+class ExitDialog : DialogFragment() {
 
-    private lateinit var binding: FragmentResetDialogBinding
+    private lateinit var binding: FragmentExitDialogBinding
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            binding = FragmentResetDialogBinding.inflate(layoutInflater).apply {
-                yesRestartButton.setOnClickListener {
-                    resetClick(YES)
+            binding = FragmentExitDialogBinding.inflate(layoutInflater).apply {
+                yesExitButton.setOnClickListener {
+                    exitClick(YES)
                     dismiss()
                 }
-                noRestartButton.setOnClickListener {
-                    resetClick(NO)
+                noExitButton.setOnClickListener {
+                    exitClick(NO)
                     dismiss()
                 }
             }
@@ -40,10 +40,10 @@ class ResetDialog : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-    private fun resetClick(reply: String) {
+    private fun exitClick(getOut: String) {
         parentFragmentManager.setFragmentResult(
-            GameFieldFragment.REQUEST_KEY,
-            bundleOf(GameFieldFragment.RESULT to reply)
+            StartFragment.REQUEST_KEY_EXIT,
+            bundleOf(StartFragment.RESULT_EXIT to getOut)
         )
     }
 
@@ -51,8 +51,9 @@ class ResetDialog : DialogFragment() {
         const val YES = "YES"
         const val NO = "NO"
 
-        private fun newInstance() = ResetDialog()
+        private fun newInstance() = ExitDialog()
 
-        fun show(manager: FragmentManager) = newInstance().show(manager, GameFieldFragment.REQUEST_KEY)
+        fun show(manager: FragmentManager) =
+            newInstance().show(manager, StartFragment.REQUEST_KEY_EXIT)
     }
 }

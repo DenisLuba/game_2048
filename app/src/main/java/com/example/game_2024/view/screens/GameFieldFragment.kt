@@ -117,7 +117,6 @@ class GameFieldFragment : Fragment() {
         fontSize = tileSize / 6
         margin = if (tileSize >= 40) (tileSize / 40).toInt() else 4 // margin between Tiles
 
-//        ResetDialog.setupListener(childFragmentManager, this) { reset() }
         setupListener(childFragmentManager, this) { reset() }
     }
 

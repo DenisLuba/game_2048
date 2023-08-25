@@ -13,13 +13,23 @@ import androidx.lifecycle.LifecycleOwner
 import com.example.game_2024.R
 import com.example.game_2024.databinding.FragmentStartBinding
 import com.example.game_2024.view.MainActivity
+import com.example.game_2024.view.dialogs.ExitDialog
 import com.google.gson.Gson
+import kotlin.system.exitProcess
 
 class StartFragment : Fragment() {
 
     private lateinit var binding: FragmentStartBinding
     private lateinit var preferences: SharedPreferences
     private var dimensions = IntArray(2) { 4 }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupListener(childFragmentManager, this) {
+            requireActivity().finish()
+            exitProcess(0)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +51,8 @@ class StartFragment : Fragment() {
             numberPickerWidth.value = dimensions[1]
 
             startButton.setOnClickListener { startButtonOnClick() }
+
+            exitButton.setOnClickListener { ExitDialog.show(childFragmentManager) }
         }
 
         return binding.root
@@ -72,5 +84,21 @@ class StartFragment : Fragment() {
         private const val DIMENSIONS_PREFERENCES = "DIMENSIONS_PREFERENCES"
         private const val maxHeight = 26
         private const val maxWidth = 20
+
+        const val RESULT_EXIT = "RESULT"
+        const val REQUEST_KEY_EXIT = "REQUEST_KEY"
+
+        fun setupListener(
+            manager: FragmentManager,
+            lifecycleOwner: LifecycleOwner,
+            listener: () -> Unit
+        ) {
+            manager.setFragmentResultListener(REQUEST_KEY_EXIT, lifecycleOwner) { _, bundle ->
+                when (bundle.getString(RESULT_EXIT)) {
+                    ExitDialog.YES -> listener.invoke()
+//                  ExitDialog.NO -> nothing
+                }
+            }
+        }
     }
 }

@@ -28,4 +28,5 @@
     <string name="ok_button">Ok</string>
     <string name="win">You win!</string>
     <string name="game_over">Game over...</string>
+    <string name="dialog_exit">Exit?</string>
 </resources>
