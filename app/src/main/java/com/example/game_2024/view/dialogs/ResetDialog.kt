@@ -10,8 +10,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.example.game_2024.databinding.FragmentResetBinding
+import com.example.game_2024.view.screens.GameFieldFragment
 
-class ResetFragment : DialogFragment() {
+class ResetDialog : DialogFragment() {
 
     private lateinit var binding: FragmentResetBinding
 
@@ -42,30 +43,18 @@ class ResetFragment : DialogFragment() {
 
     private fun resetClick(reply: String) {
         parentFragmentManager.setFragmentResult(
-            REQUEST_KEY,
-            bundleOf(RESULT to reply)
+            GameFieldFragment.REQUEST_KEY,
+            bundleOf(GameFieldFragment.RESULT to reply)
         )
     }
 
     companion object {
-        @JvmStatic val REQUEST_KEY = "REQUEST_KEY"
-        @JvmStatic val RESULT = "RESULT"
-        @JvmStatic val YES = "YES"
-        @JvmStatic val NO = "NO"
+        const val YES = "YES"
+        const val NO = "NO"
 
-        @JvmStatic
-        fun newInstance() = ResetFragment()
+        private fun newInstance() = ResetDialog()
 
-        fun show(manager: FragmentManager) = newInstance().show(manager, REQUEST_KEY)
-
-        fun setupListener(manager: FragmentManager, lifecycleOwner: LifecycleOwner, listener: () -> Unit) {
-            manager.setFragmentResultListener(REQUEST_KEY, lifecycleOwner) { _, bundle ->
-                when (bundle.getString(RESULT)) {
-                    YES -> listener.invoke()
-//                    NO -> nothing
-                }
-            }
-        }
+        fun show(manager: FragmentManager) = newInstance().show(manager, GameFieldFragment.REQUEST_KEY)
     }
 
 }

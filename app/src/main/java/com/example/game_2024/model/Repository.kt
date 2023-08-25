@@ -37,23 +37,23 @@ class Repository private constructor(private val applicationContext: Context) {
             applicationContext.getSharedPreferences(PREFERENCES_FIELD, Context.MODE_PRIVATE)
     }
 
-//    fun getModel(height: Int, width: Int): Model {
-//        val id = getId(height, width)
-//        val gsonFieldObject: String? = preferences.getString(id.toString(), null)
-//
-//        val fieldObject: Field = if (gsonFieldObject != null) gsonToFieldObject(gsonFieldObject)
-//        else Field(
-//            score = 0,
-//            maxScore = 0,
-//            field = getField(height, width)
-//        )
-//
-//        val score: Int = fieldObject.score
-//        val maxScore: Int = fieldObject.maxScore
-//        val field: List<MutableList<Int>> = fieldObject.field
-//
-//        return Model.getInstance(score, maxScore, id, field)
-//    }
+    fun getModel(height: Int, width: Int): Model {
+        val id = getId(height, width)
+        val gsonFieldObject: String? = preferences.getString(id.toString(), null)
+
+        val fieldObject: Field = if (gsonFieldObject != null) gsonToFieldObject(gsonFieldObject)
+        else Field(
+            score = 0,
+            maxScore = 0,
+            field = getField(height, width)
+        )
+
+        val score: Int = fieldObject.score
+        val maxScore: Int = fieldObject.maxScore
+        val field: List<MutableList<Int>> = fieldObject.field
+
+        return Model.getInstance(score, maxScore, id, field)
+    }
 
     fun saveModel(model: Model) {
         val score: Int = model.score
@@ -106,26 +106,26 @@ class Repository private constructor(private val applicationContext: Context) {
 
 //    Win
 
-    fun getModel(height: Int, width: Int): Model {
-        val id = getId(height, width)
-
-        val fieldObject = Field(
-            score = 0,
-            maxScore = 0,
-            field = listOf(
-                mutableListOf(16, 32, 16, 32),
-                mutableListOf(64, 128, 64, 128),
-                mutableListOf(16, 32, 1024, 1024),
-                mutableListOf(64, 128, 64, 0)
-            )
-        )
-
-        val score: Int = fieldObject.score
-        val maxScore: Int = fieldObject.maxScore
-        val field: List<MutableList<Int>> = fieldObject.field
-
-        return Model.getInstance(score, maxScore, id, field)
-    }
+//    fun getModel(height: Int, width: Int): Model {
+//        val id = getId(height, width)
+//
+//        val fieldObject = Field(
+//            score = 0,
+//            maxScore = 0,
+//            field = listOf(
+//                mutableListOf(16, 32, 16, 32),
+//                mutableListOf(64, 128, 64, 128),
+//                mutableListOf(16, 32, 1024, 1024),
+//                mutableListOf(64, 128, 64, 0)
+//            )
+//        )
+//
+//        val score: Int = fieldObject.score
+//        val maxScore: Int = fieldObject.maxScore
+//        val field: List<MutableList<Int>> = fieldObject.field
+//
+//        return Model.getInstance(score, maxScore, id, field)
+//    }
 }
 
 

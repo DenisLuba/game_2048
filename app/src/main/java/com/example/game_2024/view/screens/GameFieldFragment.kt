@@ -19,6 +19,8 @@ import android.widget.TableLayout.LayoutParams
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.game_2024.view_model.ModelFactory
@@ -28,7 +30,7 @@ import com.example.game_2024.databinding.FragmentGameFieldBinding
 import com.example.game_2024.view.MainActivity
 import com.example.game_2024.view.Tile
 import com.example.game_2024.view.dialogs.GameOverDialog
-import com.example.game_2024.view.dialogs.ResetFragment
+import com.example.game_2024.view.dialogs.ResetDialog
 import kotlin.math.abs
 
 class GameFieldFragment : Fragment() {
@@ -115,7 +117,8 @@ class GameFieldFragment : Fragment() {
         fontSize = tileSize / 6
         margin = if (tileSize >= 40) (tileSize / 40).toInt() else 4 // margin between Tiles
 
-        ResetFragment.setupListener(childFragmentManager, this) { reset() }
+//        ResetDialog.setupListener(childFragmentManager, this) { reset() }
+        setupListener(childFragmentManager, this) { reset() }
     }
 
 //    **********************************************************************************************
@@ -157,7 +160,7 @@ class GameFieldFragment : Fragment() {
             homeButton.setOnClickListener {
                 (activity as MainActivity).navController.navigate(R.id.action_gameFieldFragment_to_startFragment)
             }
-            restartButton.setOnClickListener { ResetFragment.show(childFragmentManager) }
+            restartButton.setOnClickListener { ResetDialog.show(childFragmentManager) }
         }
         gestureDetector = GestureDetector(requireContext(), GestureListener(this))
         setFieldView()
@@ -194,7 +197,6 @@ class GameFieldFragment : Fragment() {
         isGameWon = it
         if (isGameWon) {
             gameOver(WIN)
-            reset()
         }
     }
 
@@ -216,7 +218,7 @@ class GameFieldFragment : Fragment() {
 //    **********************************************************************************************
 
     private fun gameOver(text: String) {
-        GameOverDialog.showGameOver(requireActivity().supportFragmentManager, text)
+        GameOverDialog.showGameOver(childFragmentManager, text)
     }
 
 //    **********************************************************************************************
@@ -335,7 +337,25 @@ class GameFieldFragment : Fragment() {
     companion object {
         private const val SWIPE_MIN_DISTANCE = 100
         private const val SWIPE_THRESHOLD_VELOCITY = 100
-        private const val GAME_OVER = "GAME_OVER"
-        private const val WIN = "WIN"
+        const val GAME_OVER = "Game over..."
+        const val WIN = "You win!!!"
+
+        const val REQUEST_KEY = "REQUEST_KEY"
+        const val RESULT = "RESULT"
+
+        fun setupListener(
+            manager: FragmentManager,
+            lifecycleOwner: LifecycleOwner,
+            listener: () -> Unit
+        ) {
+            manager.setFragmentResultListener(REQUEST_KEY, lifecycleOwner) { _, bundle ->
+                when (bundle.getString(RESULT)) {
+                    GameOverDialog.WIN_KEY -> listener.invoke()
+//                  GameOverDialog.GAME_OVER_KEY -> nothing
+                    ResetDialog.YES -> listener.invoke()
+//                  ResetDialog.NO -> nothing
+                }
+            }
+        }
     }
 }

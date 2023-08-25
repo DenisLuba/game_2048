@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
 import com.example.game_2024.R
 import com.example.game_2024.databinding.FragmentStartBinding
 import com.example.game_2024.view.MainActivity
