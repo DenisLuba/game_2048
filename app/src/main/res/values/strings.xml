@@ -29,4 +29,6 @@
     <string name="win">You win!</string>
     <string name="game_over">Game over...</string>
     <string name="dialog_exit">Exit?</string>
+    <string name="exit">exit</string>
+    <string name="sound">sound</string>
 </resources>

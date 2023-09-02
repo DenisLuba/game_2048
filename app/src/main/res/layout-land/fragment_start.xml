@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_start"
+    android:background="@drawable/background_start_landscape"
     tools:context=".view.screens.StartFragment">
 
 
@@ -13,8 +13,8 @@
         android:id="@+id/numberPickerHeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="252dp"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="132dp"
         android:theme="@style/NumberPickerTheme"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
@@ -37,13 +37,14 @@
         android:layout_width="142dp"
         android:layout_height="144dp"
         android:background="@drawable/button_start"
+        android:contentDescription="@string/start"
 
-        android:layout_marginTop="550dp"
+        android:layout_marginStart="480dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/start" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/exitButton"

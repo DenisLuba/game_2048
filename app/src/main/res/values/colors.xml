@@ -8,9 +8,9 @@
     <!--    Panels    -->
     <color name="primary">#4B7778</color>
     <color name="primary_dark">#00000000</color>
-    <color name="text_color_primary">#EEFFF7</color>
+    <color name="text_color_primary">#3E2228</color>
     <color name="navigation_bar_color">#00000000</color>9b1a46
-    <color name="window_background">#EEFFF7</color>
+    <color name="window_background">#3E2228</color>
 
     <!--    Background window colors    -->
     <color name="wood_texture_color_window">#7D69A1</color>
@@ -33,6 +33,7 @@
     <color name="wood_texture_color_start">#21A2B8</color>
     <color name="light_wood_color_start">#EBCBEE</color>
     <color name="dark_wood_color_start">#E6BBD3</color>
+    <color name="number_picker_text_color">#3E2228</color>
 
 
     <!--    GameFieldFragment    -->
@@ -81,5 +82,9 @@
     <color name="font_1024">#FFBA08</color>
     <color name="font_2048">#FFFB92</color>
 
+    <!--    Dialogs    -->
+
+    <color name="dialog">#23090F</color>
+    <color name="background_dialog_exit_and_restart">#C4CAF7E0</color>
 
 </resources>
