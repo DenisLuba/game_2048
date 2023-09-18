@@ -1,100 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/wood_background_game"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.screens.GameFieldFragment">
+    android:background="@color/green">
 
-    <TextView
-        android:id="@+id/score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@string/scope_0"
-        android:textSize="@dimen/score_font"
+    <View
+        android:id="@+id/background2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/background2"
 
-        app:layout_constraintVertical_bias="0.85"
-        app:layout_constraintHorizontal_bias="0.8"
-
-        app:layout_constraintBottom_toTopOf="@+id/homeButton"
-        app:layout_constraintEnd_toStartOf="@+id/high_score"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.85"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.761" />
 
-    <TextView
-        android:id="@+id/high_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/high_scope_0"
-        android:textSize="@dimen/score_font"
+    <View
+        android:id="@+id/pit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.3"
+        app:layout_constraintHeight_percent="0.054"
+        android:background="@drawable/pit"
 
-        app:layout_constraintBottom_toBottomOf="@+id/score"
-        app:layout_constraintEnd_toEndOf="@+id/frameGameField"
-        app:layout_constraintTop_toTopOf="@+id/score" />
+        app:layout_constraintHorizontal_bias="0.05"
+        android:layout_marginTop="-1dp"
 
-    <ImageView
-        android:id="@+id/homeButton"
-        android:layout_width="@dimen/icons_size"
-        android:layout_height="@dimen/icons_size"
-        android:padding="8dp"
-        android:layout_marginStart="-8dp"
-        android:src="@drawable/home_button_selector"
-        android:contentDescription="@string/home"
-        android:clickable="true"
-        android:focusable="true"
+        app:layout_constraintTop_toTopOf="@id/background2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        app:layout_constraintVertical_bias="0.96"
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/game_field_shadow"
+        app:layout_constraintBottom_toBottomOf="@id/frameGameField"
+        app:layout_constraintDimensionRatio="W,1"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintEnd_toEndOf="@id/frameGameField"
+        app:layout_constraintStart_toStartOf="@id/frameGameField"
+        app:layout_constraintTop_toTopOf="@id/frameGameField"
 
-        app:layout_constraintBottom_toTopOf="@+id/frameGameField"
-        app:layout_constraintStart_toStartOf="@+id/frameGameField"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintWidth_percent="0.96" />
 
-    <ImageView
-        android:id="@+id/undoButton"
-        android:layout_width="@dimen/icons_size"
-        android:layout_height="@dimen/icons_size"
-        android:padding="8dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/undo_button_selector"
-        android:contentDescription="@string/undo"
-        android:clickable="true"
-        android:focusable="true"
 
-        app:layout_constraintBottom_toBottomOf="@+id/homeButton"
-        app:layout_constraintEnd_toStartOf="@+id/restartButton"
-        app:layout_constraintTop_toTopOf="@+id/homeButton" />
-
-    <ImageView
-        android:id="@+id/restartButton"
-        android:layout_width="@dimen/icons_size"
-        android:layout_height="@dimen/icons_size"
-        android:padding="9dp"
-        android:layout_marginEnd="-8dp"
-        android:src="@drawable/restart_button_selector"
-        android:contentDescription="@string/restart"
-        android:clickable="true"
-        android:focusable="true"
-
-        app:layout_constraintBottom_toBottomOf="@+id/homeButton"
-        app:layout_constraintEnd_toEndOf="@+id/frameGameField"
-        app:layout_constraintTop_toTopOf="@+id/homeButton" />
 
     <FrameLayout
         android:id="@+id/frameGameField"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:contentDescription="@string/game_field"
-
-        app:layout_constraintWidth_percent="0.84"
-        app:layout_constraintDimensionRatio="H,1.3"
-        app:layout_constraintVertical_bias="0.8"
-
+        android:background="@drawable/game_field"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="W,1"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:layout_constraintVertical_bias="0.175"
+        app:layout_constraintWidth_percent="0.95">
 
         <LinearLayout
             android:id="@+id/gameField"
@@ -104,6 +73,226 @@
             android:layout_gravity="center_horizontal">
 
         </LinearLayout>
+
     </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/exitButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintWidth_percent="0.1"
+
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageExit"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.7"
+            app:layout_constraintWidth_percent="0.6"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/exit"
+            android:contentDescription="@string/exit"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/soundButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintWidth_percent="0.1"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageSound"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.7"
+            app:layout_constraintWidth_percent="0.6"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/music"
+            android:contentDescription="@string/music"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/score_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/dela_gothic_one"
+        android:text="@string/score_text"
+        android:textColor="@color/green"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/high_score_text"
+        app:layout_constraintHorizontal_bias="0.839"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.229" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/dela_gothic_one"
+        tools:text="2048"
+        android:textSize="20sp"
+        android:textColor="@color/green"
+        app:layout_constraintStart_toStartOf="@id/score_text"
+        app:layout_constraintEnd_toEndOf="@id/score_text"
+        app:layout_constraintTop_toBottomOf="@id/score_text" />
+
+    <TextView
+        android:id="@+id/high_score_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/dela_gothic_one"
+        android:text="@string/high_score_text"
+        android:textColor="@color/green"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/score_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.912"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/score_text" />
+
+    <TextView
+        android:id="@+id/high_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/dela_gothic_one"
+        tools:text="2048"
+        android:textSize="20sp"
+        android:textColor="@color/green"
+        app:layout_constraintStart_toStartOf="@id/high_score_text"
+        app:layout_constraintEnd_toEndOf="@id/high_score_text"
+        app:layout_constraintTop_toBottomOf="@id/high_score_text" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/homeButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintHorizontal_bias="0.115"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintWidth_percent="0.18">
+
+        <ImageView
+            android:id="@+id/imageHome"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/home"
+            android:contentDescription="@string/home"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.777" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/undoButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="@id/homeButton"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintHorizontal_bias="0.682"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/homeButton"
+
+        app:layout_constraintWidth_percent="0.18">
+
+        <ImageView
+            android:id="@+id/imageUndo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/undo"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/undo"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintHeight_percent="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.6">
+
+        </ImageView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/restartButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="@id/homeButton"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintHorizontal_bias="0.92"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/homeButton"
+
+        app:layout_constraintWidth_percent="0.18">
+
+        <ImageView
+            android:id="@+id/imageReset"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/reset"
+            app:layout_constraintHeight_percent="0.6"
+            app:layout_constraintWidth_percent="0.5"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/restart"
+
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

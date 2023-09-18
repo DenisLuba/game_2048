@@ -2,15 +2,15 @@
     <string name="app_name">game_2024</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="undo">Undo</string>
+
     <string name="restart">restart</string>
-    <string name="home">home</string>
+
     <string name="start">start</string>
     <string name="game_field">Game field</string>
     <string name="scope_0">Score: 8</string>
     <string name="high_scope_0">High score: 0</string>
-    <string name="score">Score: %1$d</string>
-    <string name="high_score">High score: %1$d</string>
+    <string name="score">%1$d</string>
+    <string name="high_score">%1$d</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -29,6 +29,15 @@
     <string name="win">You win!</string>
     <string name="game_over">Game over...</string>
     <string name="dialog_exit">Exit?</string>
-    <string name="exit">exit</string>
+
     <string name="sound">sound</string>
+
+
+    <string name="reset">reset</string>
+    <string name="undo">undo</string>
+    <string name="home">home</string>
+    <string name="exit">exit</string>
+    <string name="music">music</string>
+    <string name="high_score_text">HIGH SCORE</string>
+    <string name="score_text">SCORE</string>
 </resources>

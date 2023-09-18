@@ -27,11 +27,14 @@ import com.example.game_2024.view_model.ModelFactory
 import com.example.game_2024.R
 import com.example.game_2024.view_model.ViewModel2024
 import com.example.game_2024.databinding.FragmentGameFieldBinding
+import com.example.game_2024.view.ButtonsAnimation
 import com.example.game_2024.view.MainActivity
 import com.example.game_2024.view.Tile
+import com.example.game_2024.view.dialogs.ExitDialog
 import com.example.game_2024.view.dialogs.GameOverDialog
 import com.example.game_2024.view.dialogs.ResetDialog
 import kotlin.math.abs
+import kotlin.system.exitProcess
 
 class GameFieldFragment : Fragment() {
 
@@ -117,7 +120,7 @@ class GameFieldFragment : Fragment() {
         fontSize = tileSize / 6
         margin = if (tileSize >= 40) (tileSize / 40).toInt() else 4 // margin between Tiles
 
-        setupListener(childFragmentManager, this) { reset() }
+        setupGameOverListener(childFragmentManager, this) { reset() }
     }
 
 //    **********************************************************************************************
@@ -154,12 +157,54 @@ class GameFieldFragment : Fragment() {
 
         binding = FragmentGameFieldBinding.inflate(inflater, container, false).apply {
 
-            undoButton.setOnClickListener { rollback() }
+            ButtonsAnimation.start(requireActivity(), homeButton, true)
+            ButtonsAnimation.start(requireActivity(), undoButton, false)
+            ButtonsAnimation.start(requireActivity(), restartButton, false)
+
+            exitButton?.setOnClickListener {
+                ExitDialog.show(childFragmentManager)
+            }
+
+            undoButton.setOnClickListener {
+
+                ButtonsAnimation.animationShift(
+                    requireActivity(),
+                    homeButton,
+                    undoButton,
+                    restartButton,
+                    pit!!,
+                    ButtonsAnimation.undo
+                )
+
+                rollback()
+            }
             frameGameField.setOnTouchListener(touchListener)
             homeButton.setOnClickListener {
+
+                ButtonsAnimation.animationShift(
+                    requireActivity(),
+                    homeButton,
+                    undoButton,
+                    restartButton,
+                    pit!!,
+                    ButtonsAnimation.home
+                )
+
                 (activity as MainActivity).navController.navigate(R.id.action_gameFieldFragment_to_startFragment)
             }
-            restartButton.setOnClickListener { ResetDialog.show(childFragmentManager) }
+            restartButton.setOnClickListener {
+
+                ButtonsAnimation.animationShift(
+                    requireActivity(),
+                    homeButton,
+                    undoButton,
+                    restartButton,
+                    pit!!,
+                    ButtonsAnimation.reset
+                )
+
+                ResetDialog.show(childFragmentManager)
+            }
         }
         gestureDetector = GestureDetector(requireContext(), GestureListener(this))
         setFieldView()
@@ -342,7 +387,7 @@ class GameFieldFragment : Fragment() {
         const val REQUEST_KEY = "REQUEST_KEY"
         const val RESULT = "RESULT"
 
-        fun setupListener(
+        fun setupGameOverListener(
             manager: FragmentManager,
             lifecycleOwner: LifecycleOwner,
             listener: () -> Unit

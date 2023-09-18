@@ -23,14 +23,6 @@ class StartFragment : Fragment() {
     private lateinit var preferences: SharedPreferences
     private var dimensions = IntArray(2) { 4 }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupListener(childFragmentManager, this) {
-            requireActivity().finish()
-            exitProcess(0)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,8 +57,10 @@ class StartFragment : Fragment() {
         val gsonDimensions: String = dimensionsToGson(dimensions)
         preferences.edit().putString(DIMENSIONS_PREFERENCES, gsonDimensions).apply()
 
-        val bundle = bundleOf(MainActivity.DIMENSIONS to
-                intArrayOf(dimensions.component1(), dimensions.component2(), maxHeight))
+        val bundle = bundleOf(
+            MainActivity.DIMENSIONS to
+                    intArrayOf(dimensions.component1(), dimensions.component2(), maxHeight)
+        )
 
 //        navigate to GameFieldFragment
         (activity as MainActivity)
@@ -74,31 +68,16 @@ class StartFragment : Fragment() {
             .navigate(R.id.action_startFragment_to_gameFieldFragment, bundle)
     }
 
-//    Additional methods
-    private fun gsonToDimensions(value: String): IntArray = Gson().fromJson(value, IntArray::class.java)
+    //    Additional methods
+    private fun gsonToDimensions(value: String): IntArray =
+        Gson().fromJson(value, IntArray::class.java)
 
     private fun dimensionsToGson(array: IntArray): String = Gson().toJson(array)
 
-    companion object{
+    companion object {
         private const val START_PREFERENCES = "START_PREFERENCES"
         private const val DIMENSIONS_PREFERENCES = "DIMENSIONS_PREFERENCES"
         private const val maxHeight = 26
         private const val maxWidth = 20
-
-        const val RESULT_EXIT = "RESULT"
-        const val REQUEST_KEY_EXIT = "REQUEST_KEY"
-
-        fun setupListener(
-            manager: FragmentManager,
-            lifecycleOwner: LifecycleOwner,
-            listener: () -> Unit
-        ) {
-            manager.setFragmentResultListener(REQUEST_KEY_EXIT, lifecycleOwner) { _, bundle ->
-                when (bundle.getString(RESULT_EXIT)) {
-                    ExitDialog.YES -> listener.invoke()
-//                  ExitDialog.NO -> nothing
-                }
-            }
-        }
     }
 }

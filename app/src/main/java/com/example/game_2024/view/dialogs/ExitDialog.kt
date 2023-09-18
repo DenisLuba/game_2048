@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.example.game_2024.databinding.FragmentExitDialogBinding
 import com.example.game_2024.view.screens.StartFragment
+import kotlin.system.exitProcess
 
 class ExitDialog : DialogFragment() {
 
@@ -21,11 +22,10 @@ class ExitDialog : DialogFragment() {
             val builder = AlertDialog.Builder(it)
             binding = FragmentExitDialogBinding.inflate(layoutInflater).apply {
                 yesExitButton.setOnClickListener {
-                    exitClick(YES)
-                    dismiss()
+                    requireActivity().finish()
+                    exitProcess(0)
                 }
                 noExitButton.setOnClickListener {
-                    exitClick(NO)
                     dismiss()
                 }
             }
@@ -40,20 +40,12 @@ class ExitDialog : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-    private fun exitClick(getOut: String) {
-        parentFragmentManager.setFragmentResult(
-            StartFragment.REQUEST_KEY_EXIT,
-            bundleOf(StartFragment.RESULT_EXIT to getOut)
-        )
-    }
-
     companion object {
-        const val YES = "YES"
-        const val NO = "NO"
 
+        private const val REQUEST_KEY_EXIT = "REQUEST_KEY"
         private fun newInstance() = ExitDialog()
 
         fun show(manager: FragmentManager) =
-            newInstance().show(manager, StartFragment.REQUEST_KEY_EXIT)
+            newInstance().show(manager, REQUEST_KEY_EXIT)
     }
 }
