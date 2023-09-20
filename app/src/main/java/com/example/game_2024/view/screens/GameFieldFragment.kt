@@ -1,10 +1,12 @@
 package com.example.game_2024.view.screens
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
 import android.view.GestureDetector
@@ -34,7 +36,6 @@ import com.example.game_2024.view.dialogs.ExitDialog
 import com.example.game_2024.view.dialogs.GameOverDialog
 import com.example.game_2024.view.dialogs.ResetDialog
 import kotlin.math.abs
-import kotlin.system.exitProcess
 
 class GameFieldFragment : Fragment() {
 
@@ -57,10 +58,9 @@ class GameFieldFragment : Fragment() {
     private var maxHeight = 4
 
     //    for the drawing of the field
-    private val widthRelativeToScreen = 0.84
-    private val heightRelativeToScreen = 1.092
+    private val relativeToScreen = 0.95
     private var tileSize = 0.0
-    private var fontSize = 0.0
+    private var fontSize = 0.0f
     private var margin = 0
 
     private lateinit var linearLayout: LinearLayout
@@ -103,21 +103,31 @@ class GameFieldFragment : Fragment() {
             MutableList(dimensions.component2()) { Tile(requireContext()) }
         } // initializing the playing field with zeros
 
-        val displaySize = Resources
-            .getSystem()
-            .displayMetrics
-            .widthPixels // width of display on pixels
-        val widthOfFrame = displaySize * widthRelativeToScreen
-        val heightOfFrame = displaySize * heightRelativeToScreen
+        val displaySize =
+            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                Resources
+                    .getSystem()
+                    .displayMetrics
+                    .widthPixels
+            } else {
+                Resources
+                    .getSystem()
+                    .displayMetrics
+                    .heightPixels
+            } // width of display on pixels
 
-        tileSize =
-            if ((dimensions.component1().toDouble() / dimensions.component2()
-                    .toDouble()) > 1.3
-            ) // width of one Tile
-                (heightOfFrame * 20) / (dimensions.component1() * 22)
-            else (widthOfFrame * 20) / (dimensions.component2() * 22)
+        tileSize = (displaySize * relativeToScreen * 20) / (22 *
+                if (dimensions.component1() > dimensions.component2())
+                    dimensions.component1()
+                else dimensions.component2()
+                )
 
-        fontSize = tileSize / 6
+        fontSize =
+            (64 /
+                    if (dimensions.component1() > dimensions.component2()) dimensions.component1()
+                    else dimensions.component2()
+                    ).toFloat()
+
         margin = if (tileSize >= 40) (tileSize / 40).toInt() else 4 // margin between Tiles
 
         setupGameOverListener(childFragmentManager, this) { reset() }
@@ -161,7 +171,7 @@ class GameFieldFragment : Fragment() {
             ButtonsAnimation.start(requireActivity(), undoButton, false)
             ButtonsAnimation.start(requireActivity(), restartButton, false)
 
-            exitButton?.setOnClickListener {
+            exitButton.setOnClickListener {
                 ExitDialog.show(childFragmentManager)
             }
 
@@ -172,7 +182,7 @@ class GameFieldFragment : Fragment() {
                     homeButton,
                     undoButton,
                     restartButton,
-                    pit!!,
+                    pit,
                     ButtonsAnimation.undo
                 )
 
@@ -186,7 +196,7 @@ class GameFieldFragment : Fragment() {
                     homeButton,
                     undoButton,
                     restartButton,
-                    pit!!,
+                    pit,
                     ButtonsAnimation.home
                 )
 
@@ -199,7 +209,7 @@ class GameFieldFragment : Fragment() {
                     homeButton,
                     undoButton,
                     restartButton,
-                    pit!!,
+                    pit,
                     ButtonsAnimation.reset
                 )
 
@@ -300,6 +310,7 @@ class GameFieldFragment : Fragment() {
             orientation = LinearLayout.VERTICAL
             weightSum = dimensions.component1().toFloat()
             foregroundGravity = Gravity.CENTER
+            background = ResourcesCompat.getDrawable(resources, R.drawable.game_field, null)
 
             layoutParams = LinearLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT,
@@ -328,9 +339,18 @@ class GameFieldFragment : Fragment() {
                 with(textViews[i][j]) {
                     text = if (tile.value != 0) tile.value.toString() else ""
                     setTextColor(tile.getFontColor())
+                    textSize = fontSize
+
+                    typeface = ResourcesCompat.getFont(requireContext(), R.font.dela_gothic_one)
+
+                    val tileColor: Int = tile.getTileColor()
+                    gravity = Gravity.CENTER
                     background =
                         ResourcesCompat.getDrawable(resources, R.drawable.tile, null).apply {
                             this?.overrideColor(tile.getTileColor())
+                            ((this as LayerDrawable).findDrawableByLayerId(R.id.tile) as GradientDrawable).setColor(
+                                tileColor
+                            )
                         }
                 }
             }

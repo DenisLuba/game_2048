@@ -9,7 +9,7 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="android:textColorPrimary">@color/text_color_primary</item>
-        <item name="android:windowBackground">@drawable/background_window</item>
+        <item name="android:windowBackground">@color/gray</item>
         <item name="android:navigationBarColor">@color/navigation_bar_color</item>
     </style>
 
@@ -22,6 +22,10 @@
         <item name="colorControlNormal">@android:color/transparent</item>
         <item name="android:textColorPrimary">@color/number_picker_text_color</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">36dp</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="TileColor" parent="Widget.Material3.DrawerLayout">
+        <item name="android:color">#000000</item>
     </style>
 </resources>

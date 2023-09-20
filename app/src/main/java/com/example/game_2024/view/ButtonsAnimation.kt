@@ -145,7 +145,7 @@ object ButtonsAnimation {
             ratio = sizeChangeFactor
         } else {
             distance = distanceForButtons
-            targetColor = R.color.green
+            targetColor = R.color.gray
             ratio = 1 / sizeChangeFactor
         }
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green">
+    android:background="@color/gray">
 
     <View
         android:id="@+id/background2"
@@ -35,44 +35,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/game_field_shadow"
-        app:layout_constraintBottom_toBottomOf="@id/frameGameField"
-        app:layout_constraintDimensionRatio="W,1"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        app:layout_constraintEnd_toEndOf="@id/frameGameField"
-        app:layout_constraintStart_toStartOf="@id/frameGameField"
-        app:layout_constraintTop_toTopOf="@id/frameGameField"
+<!--    <View-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:background="@drawable/game_field_shadow"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/frameGameField"-->
+<!--        app:layout_constraintDimensionRatio="W,1"-->
+<!--        android:layout_marginEnd="12dp"-->
+<!--        android:layout_marginBottom="12dp"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/frameGameField"-->
+<!--        app:layout_constraintStart_toStartOf="@id/frameGameField"-->
+<!--        app:layout_constraintTop_toTopOf="@id/frameGameField"-->
 
-        app:layout_constraintWidth_percent="0.96" />
-
+<!--        app:layout_constraintWidth_percent="0.96" />-->
 
 
     <FrameLayout
         android:id="@+id/frameGameField"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/game_field"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="W,1"
+
+        app:layout_constraintBottom_toBottomOf="@+id/background2"
+
 
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/score"
-        app:layout_constraintVertical_bias="0.175"
+        app:layout_constraintVertical_bias="0.218"
         app:layout_constraintWidth_percent="0.95">
 
         <LinearLayout
             android:id="@+id/gameField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center"
 
-        </LinearLayout>
+            android:orientation="vertical" />
 
     </FrameLayout>
 
@@ -143,7 +142,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/dela_gothic_one"
         android:text="@string/score_text"
-        android:textColor="@color/green"
+        android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/high_score_text"
@@ -159,7 +158,7 @@
         android:fontFamily="@font/dela_gothic_one"
         tools:text="2048"
         android:textSize="20sp"
-        android:textColor="@color/green"
+        android:textColor="@color/gray"
         app:layout_constraintStart_toStartOf="@id/score_text"
         app:layout_constraintEnd_toEndOf="@id/score_text"
         app:layout_constraintTop_toBottomOf="@id/score_text" />
@@ -170,7 +169,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/dela_gothic_one"
         android:text="@string/high_score_text"
-        android:textColor="@color/green"
+        android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/score_text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -185,7 +184,7 @@
         android:fontFamily="@font/dela_gothic_one"
         tools:text="2048"
         android:textSize="20sp"
-        android:textColor="@color/green"
+        android:textColor="@color/gray"
         app:layout_constraintStart_toStartOf="@id/high_score_text"
         app:layout_constraintEnd_toEndOf="@id/high_score_text"
         app:layout_constraintTop_toBottomOf="@id/high_score_text" />

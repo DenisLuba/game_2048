@@ -34,9 +34,9 @@ class StartFragment : Fragment() {
 
         binding = FragmentStartBinding.inflate(inflater, container, false).apply {
 
-            numberPickerHeight.minValue = 1
+            numberPickerHeight.minValue = 2
             numberPickerHeight.maxValue = maxHeight
-            numberPickerWidth.minValue = 1
+            numberPickerWidth.minValue = 2
             numberPickerWidth.maxValue = maxWidth
 
             numberPickerHeight.value = dimensions[0]
@@ -77,7 +77,7 @@ class StartFragment : Fragment() {
     companion object {
         private const val START_PREFERENCES = "START_PREFERENCES"
         private const val DIMENSIONS_PREFERENCES = "DIMENSIONS_PREFERENCES"
-        private const val maxHeight = 26
-        private const val maxWidth = 20
+        private const val maxHeight = 10
+        private const val maxWidth = 10
     }
 }
