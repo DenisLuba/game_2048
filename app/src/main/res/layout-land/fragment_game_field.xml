@@ -42,11 +42,11 @@
         app:layout_constraintEnd_toEndOf="@+id/background2"
 
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.6"
+        app:layout_constraintWidth_percent="@dimen/vertical_relative_to_screen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/high_score_text"
         app:layout_constraintHorizontal_bias="0.218"
-        app:layout_constraintHeight_percent="0.95">
+        app:layout_constraintHeight_percent="@dimen/horizontal_relative_to_screen">
 
         <LinearLayout
             android:id="@+id/gameField"

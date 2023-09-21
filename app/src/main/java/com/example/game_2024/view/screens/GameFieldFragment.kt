@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -58,16 +59,19 @@ class GameFieldFragment : Fragment() {
     private var maxHeight = 4
 
     //    for the drawing of the field
-    private val relativeToScreen = 0.95
-    private var tileSize = 0.0
+    private var verticalRelativeToScreen: Float = .0f
+    private var horizontalRelativeToScreen: Float = .0f
+    private var tileSize = 0.0f
     private var fontSize = 0.0f
     private var margin = 0
+    private var portrait = true
+    private var landscape = false
 
     private lateinit var linearLayout: LinearLayout
     private lateinit var linearLayoutBase: LinearLayout
     private val params = LinearLayout.LayoutParams(
-        LayoutParams.MATCH_PARENT,
-        LayoutParams.MATCH_PARENT,
+        LayoutParams.WRAP_CONTENT,
+        LayoutParams.WRAP_CONTENT,
         1.0f
     )
     private lateinit var textViews: Array<Array<TextView>>
@@ -93,6 +97,41 @@ class GameFieldFragment : Fragment() {
         dimensions[0] = args[0]
         dimensions[1] = args[1]
         maxHeight = args[2]
+        val verticalTiles = dimensions[0]
+        val horizontalTiles = dimensions[1]
+
+        val outVerticalValue = TypedValue()
+        val outHorizontalValue = TypedValue()
+        resources.getValue(R.dimen.vertical_relative_to_screen, outVerticalValue, true)
+        verticalRelativeToScreen = outVerticalValue.float
+        resources.getValue(R.dimen.horizontal_relative_to_screen, outHorizontalValue, true)
+        horizontalRelativeToScreen = outHorizontalValue.float
+
+        portrait = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+        landscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+        val gameFieldWidth = if (portrait)
+            Resources.getSystem().displayMetrics.widthPixels * horizontalRelativeToScreen
+        else Resources.getSystem().displayMetrics.heightPixels * horizontalRelativeToScreen
+
+        val gameFieldHeight = if (portrait)
+            Resources.getSystem().displayMetrics.heightPixels * verticalRelativeToScreen
+        else Resources.getSystem().displayMetrics.widthPixels * verticalRelativeToScreen
+
+        tileSize = if (landscape && gameFieldWidth / verticalTiles <= gameFieldHeight / horizontalTiles)
+            (gameFieldWidth * 8) / (9 * verticalTiles)
+        else if (landscape && gameFieldWidth / verticalTiles > gameFieldHeight / horizontalTiles)
+            (gameFieldHeight * 8) / (9 * horizontalTiles)
+        else if (portrait && gameFieldHeight / verticalTiles <= gameFieldWidth / horizontalTiles)
+            (gameFieldHeight * 8) / (9 * verticalTiles)
+        else (gameFieldWidth * 8) / (9 * horizontalTiles)
+
+        margin = (tileSize / 40).toInt() // margin between Tiles
+
+        fontSize = (65 /
+                    if (dimensions.component1() > dimensions.component2()) dimensions.component1()
+                    else dimensions.component2()
+                    ).toFloat()
 
         viewModel = ViewModelProvider(
             this,
@@ -102,33 +141,6 @@ class GameFieldFragment : Fragment() {
         gameField = List(dimensions.component1()) {
             MutableList(dimensions.component2()) { Tile(requireContext()) }
         } // initializing the playing field with zeros
-
-        val displaySize =
-            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                Resources
-                    .getSystem()
-                    .displayMetrics
-                    .widthPixels
-            } else {
-                Resources
-                    .getSystem()
-                    .displayMetrics
-                    .heightPixels
-            } // width of display on pixels
-
-        tileSize = (displaySize * relativeToScreen * 20) / (22 *
-                if (dimensions.component1() > dimensions.component2())
-                    dimensions.component1()
-                else dimensions.component2()
-                )
-
-        fontSize =
-            (64 /
-                    if (dimensions.component1() > dimensions.component2()) dimensions.component1()
-                    else dimensions.component2()
-                    ).toFloat()
-
-        margin = if (tileSize >= 40) (tileSize / 40).toInt() else 4 // margin between Tiles
 
         setupGameOverListener(childFragmentManager, this) { reset() }
     }
@@ -153,7 +165,7 @@ class GameFieldFragment : Fragment() {
             Array(dimensions.component2()) {
                 TextView(requireContext()).apply {
                     gravity = Gravity.CENTER
-                    textSize = fontSize.toFloat()
+                    textSize = fontSize
                     width = tileSize.toInt()
                     height = tileSize.toInt()
 
@@ -303,29 +315,27 @@ class GameFieldFragment : Fragment() {
 
         binding.gameField.removeAllViews()
 
-        val heightOfField = dimensions.component1()
-        val widthOfField = dimensions.component2()
+        val verticalTiles = dimensions.component1()
+        val horizontalTiles = dimensions.component2()
 
         linearLayoutBase = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            weightSum = dimensions.component1().toFloat()
+            weightSum = verticalTiles.toFloat()
             foregroundGravity = Gravity.CENTER
             background = ResourcesCompat.getDrawable(resources, R.drawable.game_field, null)
 
-            layoutParams = LinearLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT
-            )
+            layoutParams = params
         }
 
-        for (i in 0 until heightOfField) {
+        for (i in 0 until verticalTiles) {
             linearLayout = LinearLayout(context).apply {
-                weightSum = widthOfField.toFloat()
+                orientation = LinearLayout.HORIZONTAL
+                weightSum = horizontalTiles.toFloat()
                 layoutParams = params.apply {
                     gravity = Gravity.CENTER
                 }
             }
-            for (j in 0 until widthOfField) {
+            for (j in 0 until horizontalTiles) {
                 linearLayout.addView(textViews[i][j])
             }
             linearLayoutBase.addView(linearLayout)
@@ -339,18 +349,19 @@ class GameFieldFragment : Fragment() {
                 with(textViews[i][j]) {
                     text = if (tile.value != 0) tile.value.toString() else ""
                     setTextColor(tile.getFontColor())
-                    textSize = fontSize
 
                     typeface = ResourcesCompat.getFont(requireContext(), R.font.dela_gothic_one)
 
                     val tileColor: Int = tile.getTileColor()
-                    gravity = Gravity.CENTER
                     background =
                         ResourcesCompat.getDrawable(resources, R.drawable.tile, null).apply {
-                            this?.overrideColor(tile.getTileColor())
-                            ((this as LayerDrawable).findDrawableByLayerId(R.id.tile) as GradientDrawable).setColor(
-                                tileColor
-                            )
+
+                            ((this as LayerDrawable).findDrawableByLayerId(R.id.tile) as GradientDrawable).apply {
+                                setColor(tileColor)
+                                val size =
+                                    if (dimensions[0] > dimensions[1]) dimensions[0] else dimensions[1]
+                                if (size > 7) cornerRadius = 8f
+                            }
                         }
                 }
             }

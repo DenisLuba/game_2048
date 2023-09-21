@@ -8,17 +8,18 @@
     android:layout_height="match_parent"
 
     style="@style/AppDialogTheme"
-    android:background="#00000000"
-    tools:context=".view.dialogs.ResetDialog">
+    android:background="@drawable/background_dialog_exit_and_restart"
+    tools:context=".view.dialogs.ExitDialog">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
-        android:fontFamily="sans-serif-smallcaps"
+        android:fontFamily="@font/dela_gothic_one"
         android:text="@string/dialog_restart"
-        android:textColor="@color/font_4"
-        android:textSize="40sp"
+        android:textColor="@color/dialog"
+        android:textSize="44sp"
+        android:elevation="8dp"
 
         app:layout_constraintBottom_toTopOf="@+id/buttons"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,11 +43,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:fontFamily="sans-serif-smallcaps"
+            android:fontFamily="@font/dela_gothic_one"
             android:text="@string/yes"
-            android:textColor="@color/font_4"
+            android:textColor="@color/dialog"
             android:background="#00000000"
-            android:textSize="40sp"
+            android:textSize="36sp"
             app:cornerRadius="50dp"
 
             android:layout_marginEnd="40dp" />
@@ -57,11 +58,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:fontFamily="sans-serif-smallcaps"
+            android:fontFamily="@font/dela_gothic_one"
             android:text="@string/no"
-            android:textColor="@color/font_4"
+            android:textColor="@color/dialog"
             android:background="#00000000"
-            android:textSize="40sp"
+            android:textSize="36sp"
             app:cornerRadius="50dp" />
 
     </LinearLayout>

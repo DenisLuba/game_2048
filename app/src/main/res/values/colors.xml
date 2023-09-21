@@ -58,36 +58,36 @@
     <color name="frame_game_field_color">#886C0429</color>
 
     <!--    Tiles    -->
-    <color name="tile_0">#FFF3F5B8</color>
-    <color name="tile_2">#FFD9ED92</color>
-    <color name="tile_4">#B5E48C</color>
-    <color name="tile_8">#99D98C</color>
-    <color name="tile_16">#76C893</color>
-    <color name="tile_32">#52B69A</color>
-    <color name="tile_64">#34A0A4</color>
-    <color name="tile_128">#168AAD</color>
-    <color name="tile_256">#1A759F</color>
-    <color name="tile_512">#1E6091</color>
-    <color name="tile_1024">#184E77</color>
-    <color name="tile_2048">#051A4C</color>
+    <color name="tile_0">#F6FEC7</color>
+    <color name="tile_2">#EFE4A7</color>
+    <color name="tile_4">#DAC57B</color>
+    <color name="tile_8">#DB9E72</color>
+    <color name="tile_16">#E47C65</color>
+    <color name="tile_32">#FF5B5B</color>
+    <color name="tile_64">#E36684</color>
+    <color name="tile_128">#B66093</color>
+    <color name="tile_256">#9B58A6</color>
+    <color name="tile_512">#7250B8</color>
+    <color name="tile_1024">#483B97</color>
+    <color name="tile_2048">#413EC2</color>
 
     <!--    Fonts of tiles    -->
-    <color name="font_0">#001217</color>
-    <color name="font_2">#03071E</color>
-    <color name="font_4">#370617</color>
-    <color name="font_8">#6A040F</color>
-    <color name="font_16">#9D0208</color>
-    <color name="font_32">#D00000</color>
-    <color name="font_64">#DC2F02</color>
-    <color name="font_128">#E85D04</color>
-    <color name="font_256">#F48C06</color>
-    <color name="font_512">#FAA307</color>
-    <color name="font_1024">#FFBA08</color>
-    <color name="font_2048">#FFFB92</color>
+    <color name="font_0">#000000</color>
+    <color name="font_2">#604E72</color>
+    <color name="font_4">#5A4E72</color>
+    <color name="font_8">#3D5289</color>
+    <color name="font_16">#426478</color>
+    <color name="font_32">#42615B</color>
+    <color name="font_64">#405749</color>
+    <color name="font_128">#465237</color>
+    <color name="font_256">#AAAC56</color>
+    <color name="font_512">#AEAF5F</color>
+    <color name="font_1024">#9C923B</color>
+    <color name="font_2048">#D1A057</color>
 
     <!--    Dialogs    -->
 
-    <color name="dialog">#23090F</color>
-    <color name="background_dialog_exit_and_restart">#C4CAF7E0</color>
+    <color name="dialog">#FBCA7F</color>
+    <color name="background_dialog_exit_and_restart">#C48091AB</color>
 
 </resources>

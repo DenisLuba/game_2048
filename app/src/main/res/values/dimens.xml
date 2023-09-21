@@ -10,6 +10,9 @@
     <dimen name="padding_for_item_select_field">24dp</dimen>
     <dimen name="text_size_for_item_select_field">40sp</dimen>
 
+    <item name="vertical_relative_to_screen" type="dimen" format="float">0.6f</item>
+    <item name="horizontal_relative_to_screen" type="dimen" format="float">0.95f</item>
+
     <!-- for animation -->
     <dimen name="undo_position">47%p</dimen>
     <dimen name="undo_position_land">-47%p</dimen>
@@ -17,4 +20,5 @@
     <dimen name="reset_position_land">-65.5%p</dimen>
     <dimen name="vertical_moving_of_buttons">10%p</dimen>
     <dimen name="vertical_moving_of_buttons_land">-10%p</dimen>
+
 </resources>
