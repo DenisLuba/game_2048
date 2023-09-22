@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray">
+    android:background="@color/color_background_1">
 
     <View
         android:id="@+id/background2"
@@ -107,7 +107,7 @@
             app:layout_constraintHeight_percent="0.7"
             app:layout_constraintWidth_percent="0.6"
             android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/music"
+            android:src="@drawable/music_default"
             android:contentDescription="@string/music"
 
             app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +124,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/dela_gothic_one"
         android:text="@string/score_text"
-        android:textColor="@color/gray"
+        android:textColor="@color/color_background_1"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -140,7 +140,7 @@
         android:fontFamily="@font/dela_gothic_one"
         tools:text="2048"
         android:textSize="20sp"
-        android:textColor="@color/gray"
+        android:textColor="@color/color_background_1"
         app:layout_constraintStart_toStartOf="@id/score_text"
         app:layout_constraintEnd_toEndOf="@id/score_text"
         app:layout_constraintTop_toBottomOf="@id/score_text" />
@@ -151,7 +151,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/dela_gothic_one"
         android:text="@string/high_score_text"
-        android:textColor="@color/gray"
+        android:textColor="@color/color_background_1"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/score_text"
@@ -165,7 +165,7 @@
         android:fontFamily="@font/dela_gothic_one"
         tools:text="2048"
         android:textSize="20sp"
-        android:textColor="@color/gray"
+        android:textColor="@color/color_background_1"
         app:layout_constraintStart_toStartOf="@id/high_score_text"
         app:layout_constraintEnd_toEndOf="@id/high_score_text"
         app:layout_constraintTop_toBottomOf="@id/high_score_text" />

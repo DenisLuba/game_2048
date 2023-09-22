@@ -141,11 +141,11 @@ object ButtonsAnimation {
         val ratio: Float
         if (up) {
             distance = -distanceForButtons
-            targetColor = R.color.yellow
+            targetColor = R.color.color_background_2
             ratio = sizeChangeFactor
         } else {
             distance = distanceForButtons
-            targetColor = R.color.gray
+            targetColor = R.color.color_background_1
             ratio = 1 / sizeChangeFactor
         }
 

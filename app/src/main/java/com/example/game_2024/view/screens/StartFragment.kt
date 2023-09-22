@@ -7,15 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.LifecycleOwner
 import com.example.game_2024.R
 import com.example.game_2024.databinding.FragmentStartBinding
 import com.example.game_2024.view.MainActivity
 import com.example.game_2024.view.dialogs.ExitDialog
 import com.google.gson.Gson
-import kotlin.system.exitProcess
 
 class StartFragment : Fragment() {
 
@@ -43,11 +43,27 @@ class StartFragment : Fragment() {
             numberPickerWidth.value = dimensions[1]
 
             startButton.setOnClickListener { startButtonOnClick() }
-
             exitButton.setOnClickListener { ExitDialog.show(childFragmentManager) }
+
+            changeMusicState(soundButton)
+            soundButton.setOnClickListener {
+                MainActivity.musicOn = !MainActivity.musicOn
+                changeMusicState(it as ConstraintLayout)
+            }
         }
 
         return binding.root
+    }
+
+    private fun changeMusicState(view: ConstraintLayout) {
+        if (MainActivity.musicOn) {
+            ((view as ViewGroup).getChildAt(0) as ImageView).setImageDrawable(
+                ResourcesCompat.getDrawable(resources, R.drawable.music_default, null)
+            )
+        } else ((view as ViewGroup).getChildAt(0) as ImageView).setImageDrawable(
+            ResourcesCompat.getDrawable(resources, R.drawable.no_music, null)
+        )
+        MainActivity.startStopMusic()
     }
 
     private fun startButtonOnClick() {

@@ -3,11 +3,8 @@ package com.example.game_2024.view.screens
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.ShapeDrawable
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.GestureDetector
@@ -17,10 +14,11 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TableLayout.LayoutParams
 import android.widget.TextView
-import androidx.annotation.ColorInt
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
@@ -37,6 +35,7 @@ import com.example.game_2024.view.dialogs.ExitDialog
 import com.example.game_2024.view.dialogs.GameOverDialog
 import com.example.game_2024.view.dialogs.ResetDialog
 import kotlin.math.abs
+import kotlin.random.Random
 
 class GameFieldFragment : Fragment() {
 
@@ -128,11 +127,6 @@ class GameFieldFragment : Fragment() {
 
         margin = (tileSize / 40).toInt() // margin between Tiles
 
-        fontSize = (65 /
-                    if (dimensions.component1() > dimensions.component2()) dimensions.component1()
-                    else dimensions.component2()
-                    ).toFloat()
-
         viewModel = ViewModelProvider(
             this,
             ModelFactory(requireActivity().application, args)
@@ -165,7 +159,6 @@ class GameFieldFragment : Fragment() {
             Array(dimensions.component2()) {
                 TextView(requireContext()).apply {
                     gravity = Gravity.CENTER
-                    textSize = fontSize
                     width = tileSize.toInt()
                     height = tileSize.toInt()
 
@@ -227,7 +220,14 @@ class GameFieldFragment : Fragment() {
 
                 ResetDialog.show(childFragmentManager)
             }
+
+            changeMusicState(soundButton)
+            soundButton.setOnClickListener {
+                MainActivity.musicOn = !MainActivity.musicOn
+                changeMusicState(it as ConstraintLayout)
+            }
         }
+
         gestureDetector = GestureDetector(requireContext(), GestureListener(this))
         setFieldView()
         setTextViews()
@@ -308,6 +308,17 @@ class GameFieldFragment : Fragment() {
         direction.invoke()
     }
 
+    private fun changeMusicState(view: ConstraintLayout) {
+        if (MainActivity.musicOn) {
+            ((view as ViewGroup).getChildAt(0) as ImageView).setImageDrawable(
+                ResourcesCompat.getDrawable(resources, R.drawable.music_default, null)
+            )
+        } else ((view as ViewGroup).getChildAt(0) as ImageView).setImageDrawable(
+            ResourcesCompat.getDrawable(resources, R.drawable.no_music, null)
+        )
+        MainActivity.startStopMusic()
+    }
+
 //    **********************************************************************************************
 
     //    Creating and rendering a tile table
@@ -347,10 +358,40 @@ class GameFieldFragment : Fragment() {
         gameField.forEachIndexed { i, list ->
             list.forEachIndexed { j, tile ->
                 with(textViews[i][j]) {
+
                     text = if (tile.value != 0) tile.value.toString() else ""
+
+//                    val value: Int = when(Random.nextInt(0, 11)) {
+//                        0 -> 2
+//                        1 -> 4
+//                        2 -> 8
+//                        3 -> 16
+//                        4 -> 32
+//                        5 -> 64
+//                        6 -> 128
+//                        7 -> 256
+//                        8 -> 512
+//                        9 -> 1024
+//                        else -> 2048
+//                    }
+//                    text = value.toString()
+
                     setTextColor(tile.getFontColor())
 
+                    val ratio: Int = when (tile.value) {
+                        2, 4, 8 -> 130
+                        16, 32, 64 -> 110
+                        128, 256, 512 -> 86
+                        else -> 64
+                    }
+
+                    fontSize = (ratio /
+                            if (dimensions.component1() > dimensions.component2()) dimensions.component1()
+                            else dimensions.component2()
+                            ).toFloat()
+
                     typeface = ResourcesCompat.getFont(requireContext(), R.font.dela_gothic_one)
+                    textSize = fontSize
 
                     val tileColor: Int = tile.getTileColor()
                     background =
@@ -365,18 +406,6 @@ class GameFieldFragment : Fragment() {
                         }
                 }
             }
-        }
-    }
-
-//    **********************************************************************************************
-
-    //    Drawable extension to set the background color of tiles
-    private fun Drawable.overrideColor(@ColorInt colorInt: Int) {
-        mutate()
-        when (this) {
-            is GradientDrawable -> setColor(colorInt)
-            is ShapeDrawable -> paint.color = colorInt
-            is ColorDrawable -> color = colorInt
         }
     }
 

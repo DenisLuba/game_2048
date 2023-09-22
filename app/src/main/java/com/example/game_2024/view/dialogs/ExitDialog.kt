@@ -8,6 +8,7 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import com.example.game_2024.R
 import com.example.game_2024.databinding.FragmentExitDialogBinding
 import com.example.game_2024.view.screens.StartFragment
 import kotlin.system.exitProcess
@@ -21,11 +22,12 @@ class ExitDialog : DialogFragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             binding = FragmentExitDialogBinding.inflate(layoutInflater).apply {
-                yesExitButton.setOnClickListener {
+                exitOrRestartTextView.text = resources.getText(R.string.dialog_exit)
+                yesButton.setOnClickListener {
                     requireActivity().finish()
                     exitProcess(0)
                 }
-                noExitButton.setOnClickListener {
+                noButton.setOnClickListener {
                     dismiss()
                 }
             }

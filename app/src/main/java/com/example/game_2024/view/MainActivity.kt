@@ -9,7 +9,7 @@ import com.example.game_2024.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var navHostFragment: NavHostFragment
+    private lateinit var navHostFragment: NavHostFragment
     lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
 
@@ -17,11 +17,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.navigationHost) as NavHostFragment
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.navigationHost) as NavHostFragment
         navController = navHostFragment.navController
     }
 
-    companion object{
+    companion object {
         const val DIMENSIONS = "DIMENSIONS"
+
+        var musicOn = true
+
+        fun startStopMusic() {
+            if (musicOn) {
+
+            } else {
+
+            }
+        }
     }
 }

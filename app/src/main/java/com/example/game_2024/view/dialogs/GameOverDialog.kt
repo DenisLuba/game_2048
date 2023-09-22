@@ -2,6 +2,8 @@ package com.example.game_2024.view.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
@@ -16,7 +18,7 @@ class GameOverDialog : DialogFragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             binding = FragmentGameOverDialogBinding.inflate(layoutInflater).apply {
-                gaveOverTextView.text = endText
+                gameOverTextView.text = endText
                 root.setOnClickListener{
                     when (endText) {
                         GameFieldFragment.WIN -> resetAfterWinning(WIN_KEY)
@@ -36,6 +38,11 @@ class GameOverDialog : DialogFragment() {
             GameFieldFragment.REQUEST_KEY,
             bundleOf(GameFieldFragment.RESULT to requestTag)
         )
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     companion object {

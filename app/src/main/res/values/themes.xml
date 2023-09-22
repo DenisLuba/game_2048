@@ -9,7 +9,7 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="android:textColorPrimary">@color/text_color_primary</item>
-        <item name="android:windowBackground">@color/gray</item>
+        <item name="android:windowBackground">@color/color_background_1</item>
         <item name="android:navigationBarColor">@color/navigation_bar_color</item>
     </style>
 
@@ -18,12 +18,12 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="NumberPickerTheme" parent="Theme.Material3.DayNight">
+    <style name="NumberPickerTheme">
         <item name="colorControlNormal">@android:color/transparent</item>
-        <item name="android:textColorPrimary">@color/brown</item>
+        <item name="android:textColorPrimary">@color/color_background_1</item>
         <item name="android:fontFamily">@font/dela_gothic_one</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">36sp</item>
+        <item name="android:textSize">40sp</item>
     </style>
 
     <style name="TileColor" parent="Widget.Material3.DrawerLayout">

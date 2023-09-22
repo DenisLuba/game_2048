@@ -5,9 +5,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_start_landscape"
+    android:background="@color/color_background_1"
     tools:context=".view.screens.StartFragment">
 
+    <View
+        android:id="@+id/background2Start"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="@drawable/background_2_start"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHeight_percent="0.9"
+        app:layout_constraintHorizontal_bias="0.274"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.45" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/vertical_dimension"
+
+        app:layout_constraintBottom_toBottomOf="@id/background2Start"
+        app:layout_constraintDimensionRatio="H,2.8"
+
+        app:layout_constraintEnd_toEndOf="@id/background2Start"
+        app:layout_constraintWidth_percent="0.028"
+        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintStart_toStartOf="@id/background2Start"
+        app:layout_constraintTop_toTopOf="@id/background2Start"
+        app:layout_constraintVertical_bias="0.101" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/horizontal_dimension"
+
+        app:layout_constraintBottom_toBottomOf="@id/background2Start"
+        app:layout_constraintDimensionRatio="H,0.31"
+
+        app:layout_constraintEnd_toEndOf="@id/background2Start"
+        app:layout_constraintWidth_percent="0.09"
+        app:layout_constraintHorizontal_bias="0.725"
+        app:layout_constraintStart_toStartOf="@id/background2Start"
+        app:layout_constraintTop_toTopOf="@id/background2Start"
+        app:layout_constraintVertical_bias="0.155" />
 
     <NumberPicker
         android:id="@+id/numberPickerHeight"
@@ -18,10 +63,10 @@
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintHorizontal_bias="0.279"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.582" />
+        app:layout_constraintVertical_bias="0.694" />
 
     <NumberPicker
         android:id="@+id/numberPickerWidth"
@@ -101,7 +146,7 @@
             app:layout_constraintHeight_percent="0.7"
             app:layout_constraintWidth_percent="0.6"
             android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/music"
+            android:src="@drawable/music_default"
             android:contentDescription="@string/music"
 
             app:layout_constraintStart_toStartOf="parent"

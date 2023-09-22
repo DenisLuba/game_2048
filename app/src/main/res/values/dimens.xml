@@ -11,7 +11,7 @@
     <dimen name="text_size_for_item_select_field">40sp</dimen>
 
     <item name="vertical_relative_to_screen" type="dimen" format="float">0.6f</item>
-    <item name="horizontal_relative_to_screen" type="dimen" format="float">0.95f</item>
+    <item name="horizontal_relative_to_screen" type="dimen" format="float">0.98f</item>
 
     <!-- for animation -->
     <dimen name="undo_position">47%p</dimen>

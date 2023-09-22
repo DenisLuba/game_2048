@@ -8,23 +8,25 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.example.game_2024.databinding.FragmentResetDialogBinding
+import com.example.game_2024.R
+import com.example.game_2024.databinding.FragmentExitDialogBinding
 import com.example.game_2024.view.screens.GameFieldFragment
 
 class ResetDialog : DialogFragment() {
 
-    private lateinit var binding: FragmentResetDialogBinding
+    private lateinit var binding: FragmentExitDialogBinding
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            binding = FragmentResetDialogBinding.inflate(layoutInflater).apply {
-                yesRestartButton.setOnClickListener {
+            binding = FragmentExitDialogBinding.inflate(layoutInflater).apply {
+                exitOrRestartTextView.text = resources.getText(R.string.dialog_restart)
+                yesButton.setOnClickListener {
                     resetClick(YES)
                     dismiss()
                 }
-                noRestartButton.setOnClickListener {
+                noButton.setOnClickListener {
                     resetClick(NO)
                     dismiss()
                 }

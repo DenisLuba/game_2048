@@ -4,7 +4,7 @@
     <item>
         <shape android:shape="rectangle">
 
-            <solid android:color="#1D1A0E07" />
+            <solid android:color="@color/tile_shadow" />
 
             <padding
                 android:left="1dp"
@@ -21,7 +21,7 @@
     <item>
         <shape android:shape="rectangle">
 
-            <solid android:color="#1D1A0E07" />
+            <solid android:color="@color/tile_shadow" />
 
             <padding
                 android:left="1dp"
@@ -38,7 +38,7 @@
     <item>
         <shape android:shape="rectangle">
 
-            <solid android:color="#1D1A0E07" />
+            <solid android:color="@color/tile_shadow" />
 
             <padding
                 android:left="1dp"
@@ -55,7 +55,7 @@
     <item>
         <shape android:shape="rectangle">
 
-            <solid android:color="#1D1A0E07" />
+            <solid android:color="@color/tile_shadow" />
 
             <padding
                 android:left="1dp"
@@ -72,7 +72,7 @@
     <item>
         <shape android:shape="rectangle">
 
-            <solid android:color="#1D1A0E07" />
+            <solid android:color="@color/tile_shadow" />
 
             <padding
                 android:left="1dp"
@@ -89,7 +89,7 @@
     <item>
         <shape android:shape="rectangle">
 
-            <solid android:color="#1D1A0E07" />
+            <solid android:color="@color/tile_shadow" />
 
             <padding
                 android:left="1dp"
@@ -106,7 +106,7 @@
     <item>
         <shape android:shape="rectangle">
 
-            <solid android:color="#1D1A0E07" />
+            <solid android:color="@color/tile_shadow" />
 
             <padding
                 android:left="1dp"
@@ -123,7 +123,7 @@
     <item>
         <shape android:shape="rectangle">
 
-            <solid android:color="#1D1A0E07" />
+            <solid android:color="@color/tile_shadow" />
 
             <padding
                 android:left="1dp"

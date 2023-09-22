@@ -3,9 +3,34 @@
     <color name="black">#00000000</color>
     <color name="white">#00FFFFFF</color>
 
-    <color name="gray">#8091AB</color>
+    <color name="color_background_1">#828AA6</color>
+    <color name="color_background_2">#FFCB45</color>
+
     <color name="brown">#9F6B4E</color>
-    <color name="yellow">#E7BC4B</color>
+
+    <!--    Dialogs    -->
+    <color name="dialog">#FBCA7F</color>
+    <color name="background_dialog_exit_and_restart">#C4828AA6</color>
+
+    <!--    Buttons    -->
+    <color name="exit_music_buttons">#979FBE</color>
+    <color name="exit_music_buttons_shadow">#242A33</color>
+
+    <color name="color_button_start_default">@color/color_background_2</color>
+    <color name="color_button_start_default_triangle">#9F6B4E</color>
+    <color name="color_button_start_default_triangle_shadow">#4F3A2F</color>
+    <color name="color_button_start_default_shadow">#4E5C73</color>
+
+    <color name="color_button_start_pressed">#AD8A2E</color>
+    <color name="color_button_start_pressed_triangle">#8F5738</color>
+    <color name="color_button_start_pressed_triangle_shadow">#4F3A2F</color>
+    <color name="color_button_start_pressed_shadow">#445166</color>
+
+    <!--    NumberPicker    -->
+    <color name="number_picker_text_color">@color/color_button_start_pressed_triangle</color>
+
+    <!--    Tile    -->
+    <color name="tile_shadow">#2F4E5C73</color>
 
     <!--    Panels    -->
     <color name="primary">#4B7778</color>
@@ -13,9 +38,6 @@
     <color name="text_color_primary">#3E2228</color>
     <color name="navigation_bar_color">#00000000</color>9b1a46
     <color name="window_background">#3E2228</color>
-
-
-    <color name="number_picker_text_color">#8E5737</color>
 
     <!--    Tiles    -->
     <color name="tile_0">#F6FEC7</color>
@@ -44,13 +66,5 @@
     <color name="font_512">#AEAF5F</color>
     <color name="font_1024">#9C923B</color>
     <color name="font_2048">#D1A057</color>
-
-    <!--    Dialogs    -->
-
-    <color name="dialog">#FBCA7F</color>
-    <color name="background_dialog_exit_and_restart">#C48091AB</color>
-
-
-    <color name="exit_music_buttons">#89A1C5</color>
 
 </resources>
