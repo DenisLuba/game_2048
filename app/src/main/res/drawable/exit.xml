@@ -69,5 +69,5 @@
       android:fillAlpha="0.02"/>
   <path
       android:pathData="M3,25.07L44,1.57V25.07V48.57L3,25.07Z"
-      android:fillColor="#99ADCA"/>
+      android:fillColor="@color/exit_music_buttons"/>
 </vector>

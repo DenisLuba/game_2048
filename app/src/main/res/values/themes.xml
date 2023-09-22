@@ -20,7 +20,8 @@
 
     <style name="NumberPickerTheme" parent="Theme.Material3.DayNight">
         <item name="colorControlNormal">@android:color/transparent</item>
-        <item name="android:textColorPrimary">@color/number_picker_text_color</item>
+        <item name="android:textColorPrimary">@color/brown</item>
+        <item name="android:fontFamily">@font/dela_gothic_one</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">36sp</item>
     </style>

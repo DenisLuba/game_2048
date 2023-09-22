@@ -142,7 +142,7 @@
     <item>
         <shape android:shape="rectangle">
 
-            <solid android:color="#9F6B4E" />
+            <solid android:color="@color/brown" />
 
             <corners
                 android:bottomLeftRadius="8dp"
