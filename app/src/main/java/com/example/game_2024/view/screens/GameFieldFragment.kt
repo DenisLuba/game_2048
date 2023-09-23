@@ -14,7 +14,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TableLayout.LayoutParams
 import android.widget.TextView
@@ -35,7 +34,6 @@ import com.example.game_2024.view.dialogs.ExitDialog
 import com.example.game_2024.view.dialogs.GameOverDialog
 import com.example.game_2024.view.dialogs.ResetDialog
 import kotlin.math.abs
-import kotlin.random.Random
 
 class GameFieldFragment : Fragment() {
 
@@ -221,11 +219,10 @@ class GameFieldFragment : Fragment() {
                 ResetDialog.show(childFragmentManager)
             }
 
-            changeMusicState(soundButton)
             soundButton.setOnClickListener {
-                MainActivity.musicOn = !MainActivity.musicOn
-                changeMusicState(it as ConstraintLayout)
+                MainActivity.musicSwitcher(requireActivity(), it as ConstraintLayout)
             }
+            MainActivity.changeMusicIconState(requireActivity(), soundButton)
         }
 
         gestureDetector = GestureDetector(requireContext(), GestureListener(this))
@@ -308,17 +305,6 @@ class GameFieldFragment : Fragment() {
         direction.invoke()
     }
 
-    private fun changeMusicState(view: ConstraintLayout) {
-        if (MainActivity.musicOn) {
-            ((view as ViewGroup).getChildAt(0) as ImageView).setImageDrawable(
-                ResourcesCompat.getDrawable(resources, R.drawable.music_default, null)
-            )
-        } else ((view as ViewGroup).getChildAt(0) as ImageView).setImageDrawable(
-            ResourcesCompat.getDrawable(resources, R.drawable.no_music, null)
-        )
-        MainActivity.startStopMusic()
-    }
-
 //    **********************************************************************************************
 
     //    Creating and rendering a tile table
@@ -360,21 +346,6 @@ class GameFieldFragment : Fragment() {
                 with(textViews[i][j]) {
 
                     text = if (tile.value != 0) tile.value.toString() else ""
-
-//                    val value: Int = when(Random.nextInt(0, 11)) {
-//                        0 -> 2
-//                        1 -> 4
-//                        2 -> 8
-//                        3 -> 16
-//                        4 -> 32
-//                        5 -> 64
-//                        6 -> 128
-//                        7 -> 256
-//                        8 -> 512
-//                        9 -> 1024
-//                        else -> 2048
-//                    }
-//                    text = value.toString()
 
                     setTextColor(tile.getFontColor())
 

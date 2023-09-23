@@ -7,10 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import com.example.game_2024.R
 import com.example.game_2024.databinding.FragmentStartBinding
@@ -45,28 +42,13 @@ class StartFragment : Fragment() {
 
             startButton.setOnClickListener { startButtonOnClick() }
             exitButton.setOnClickListener { ExitDialog.show(childFragmentManager) }
-
-            changeMusicState(soundButton)
             soundButton.setOnClickListener {
-                MainActivity.musicOn = !MainActivity.musicOn
-                changeMusicState(it as ConstraintLayout)
-
-
+                MainActivity.musicSwitcher(requireActivity(), it as ConstraintLayout)
             }
+            MainActivity.changeMusicIconState(requireActivity(), soundButton)
         }
 
         return binding.root
-    }
-
-    private fun changeMusicState(view: ConstraintLayout) {
-        if (MainActivity.musicOn) {
-            ((view as ViewGroup).getChildAt(0) as ImageView).setImageDrawable(
-                ResourcesCompat.getDrawable(resources, R.drawable.music_default, null)
-            )
-        } else ((view as ViewGroup).getChildAt(0) as ImageView).setImageDrawable(
-            ResourcesCompat.getDrawable(resources, R.drawable.no_music, null)
-        )
-        MainActivity.startStopMusic()
     }
 
     private fun startButtonOnClick() {
