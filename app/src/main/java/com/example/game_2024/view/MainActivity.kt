@@ -5,6 +5,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PowerManager
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -14,15 +15,12 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.game_2024.R
 import com.example.game_2024.databinding.ActivityMainBinding
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navHostFragment: NavHostFragment
     lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
-
-    var mainScope = MainScope()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,11 +30,23 @@ class MainActivity : AppCompatActivity() {
             musicOn = savedInstanceState.getBoolean(MUSIC_STATE)
         }
         player = getPlayer(this, R.raw.sound_butterfly)
-        player!!.startStopMusic(this, musicOn)
 
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navigationHost) as NavHostFragment
         navController = navHostFragment.navController
+    }
+
+    override fun onStart() {
+        super.onStart()
+        player!!.startStopMusic(musicOn)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+        if (!pm.isInteractive)
+            player!!.pause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -44,14 +54,11 @@ class MainActivity : AppCompatActivity() {
         outState.putBoolean(MUSIC_STATE, musicOn)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mainScope.cancel()
-    }
-
     companion object {
         const val DIMENSIONS = "DIMENSIONS"
         private const val MUSIC_STATE = "MUSIC"
+
+        val mainScope = MainScope()
 
         private var player: MediaPlayer? = null
         private var musicOn = true
@@ -70,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         fun musicSwitcher(activity: Activity, view: ConstraintLayout) {
             musicOn = !musicOn
             changeMusicIconState(activity, view)
-            player?.startStopMusic(activity, musicOn)
+            player?.startStopMusic(musicOn)
         }
 
         fun changeMusicIconState(activity: Activity, view: ConstraintLayout) {
@@ -85,11 +92,9 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-private fun MediaPlayer.startStopMusic(activity: Activity, musicOn: Boolean) {
-//    (activity as MainActivity).mainScope.launch {
-        if (musicOn && !isPlaying) start()
-        else if (!musicOn && isPlaying) pause()
-//    }
+private fun MediaPlayer.startStopMusic(musicOn: Boolean) {
+    if (musicOn && !isPlaying) start()
+    else if (!musicOn && isPlaying) pause()
 }
 
 

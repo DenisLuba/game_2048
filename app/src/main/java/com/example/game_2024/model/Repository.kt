@@ -12,17 +12,17 @@ class Repository private constructor(private val applicationContext: Context) {
         @Volatile
         private var instance: Repository? = null
 
-        fun getInstance(_applicationContext: Context, _maxHeight: Int): Repository {
+        fun getInstance(localApplicationContext: Context, localMaxHeight: Int): Repository {
             if (instance != null) {
                 synchronized(this) {
                     return if (instance != null) instance!!
-                    else Repository(_applicationContext).apply {
-                        init(_maxHeight)
+                    else Repository(localApplicationContext).apply {
+                        init(localMaxHeight)
                     }
                 }
             } else synchronized(this) {
-                return Repository(_applicationContext).apply {
-                    init(_maxHeight)
+                return Repository(localApplicationContext).apply {
+                    init(localMaxHeight)
                 }
             }
         }
@@ -31,8 +31,8 @@ class Repository private constructor(private val applicationContext: Context) {
     private lateinit var preferences: SharedPreferences
     private var maxHeight: Int = 0
 
-    private fun init(_maxHeight: Int) {
-        maxHeight = _maxHeight
+    private fun init(localMaxHeight: Int) {
+        maxHeight = localMaxHeight
         preferences =
             applicationContext.getSharedPreferences(PREFERENCES_FIELD, Context.MODE_PRIVATE)
     }

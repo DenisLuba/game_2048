@@ -11,7 +11,6 @@ import android.view.GestureDetector
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -28,12 +27,12 @@ import com.example.game_2024.R
 import com.example.game_2024.view_model.ViewModel2024
 import com.example.game_2024.databinding.FragmentGameFieldBinding
 import com.example.game_2024.view.ButtonsAnimation
+import com.example.game_2024.view.GestureListener
 import com.example.game_2024.view.MainActivity
 import com.example.game_2024.view.Tile
 import com.example.game_2024.view.dialogs.ExitDialog
 import com.example.game_2024.view.dialogs.GameOverDialog
 import com.example.game_2024.view.dialogs.ResetDialog
-import kotlin.math.abs
 
 class GameFieldFragment : Fragment() {
 
@@ -41,7 +40,7 @@ class GameFieldFragment : Fragment() {
 
     private lateinit var gameField: List<MutableList<Tile>>
 
-    private lateinit var viewModel: ViewModel2024
+    lateinit var viewModel: ViewModel2024
 
     //    is game finished?
     private var isGameWon = false
@@ -59,7 +58,6 @@ class GameFieldFragment : Fragment() {
     private var verticalRelativeToScreen: Float = .0f
     private var horizontalRelativeToScreen: Float = .0f
     private var tileSize = 0.0f
-    private var fontSize = 0.0f
     private var margin = 0
     private var portrait = true
     private var landscape = false
@@ -115,13 +113,14 @@ class GameFieldFragment : Fragment() {
             Resources.getSystem().displayMetrics.heightPixels * verticalRelativeToScreen
         else Resources.getSystem().displayMetrics.widthPixels * verticalRelativeToScreen
 
-        tileSize = if (landscape && gameFieldWidth / verticalTiles <= gameFieldHeight / horizontalTiles)
-            (gameFieldWidth * 8) / (9 * verticalTiles)
-        else if (landscape && gameFieldWidth / verticalTiles > gameFieldHeight / horizontalTiles)
-            (gameFieldHeight * 8) / (9 * horizontalTiles)
-        else if (portrait && gameFieldHeight / verticalTiles <= gameFieldWidth / horizontalTiles)
-            (gameFieldHeight * 8) / (9 * verticalTiles)
-        else (gameFieldWidth * 8) / (9 * horizontalTiles)
+        tileSize =
+            if (landscape && gameFieldWidth / verticalTiles <= gameFieldHeight / horizontalTiles)
+                (gameFieldWidth * 8) / (9 * verticalTiles)
+            else if (landscape && gameFieldWidth / verticalTiles > gameFieldHeight / horizontalTiles)
+                (gameFieldHeight * 8) / (9 * horizontalTiles)
+            else if (portrait && gameFieldHeight / verticalTiles <= gameFieldWidth / horizontalTiles)
+                (gameFieldHeight * 8) / (9 * verticalTiles)
+            else (gameFieldWidth * 8) / (9 * horizontalTiles)
 
         margin = (tileSize / 40).toInt() // margin between Tiles
 
@@ -153,12 +152,20 @@ class GameFieldFragment : Fragment() {
             liveDataLost.observe(viewLifecycleOwner, isLostObserver)
         }
 
+        val size = if (dimensions[0] > dimensions[1]) dimensions[0] else dimensions[1]
+
         textViews = Array(dimensions.component1()) {
             Array(dimensions.component2()) {
                 TextView(requireContext()).apply {
                     gravity = Gravity.CENTER
                     width = tileSize.toInt()
                     height = tileSize.toInt()
+                    typeface = ResourcesCompat.getFont(requireContext(), R.font.dela_gothic_one)
+                    background = ResourcesCompat.getDrawable(resources, R.drawable.tile, null)
+
+                    if (size > 7)
+                        ((background as LayerDrawable).findDrawableByLayerId(R.id.tile) as GradientDrawable)
+                            .cornerRadius = 8f
 
                     layoutParams = params.apply {
                         requestLayout()
@@ -225,7 +232,7 @@ class GameFieldFragment : Fragment() {
             MainActivity.changeMusicIconState(requireActivity(), soundButton)
         }
 
-        gestureDetector = GestureDetector(requireContext(), GestureListener(this))
+        gestureDetector = GestureDetector(requireContext(), GestureListener.getInstance(this))
         setFieldView()
         setTextViews()
 
@@ -300,7 +307,7 @@ class GameFieldFragment : Fragment() {
         isGameWon = false
     }
 
-    private fun move(direction: () -> Unit) {
+    fun move(direction: () -> Unit) {
         if (isGameLost || isGameWon) return
         direction.invoke()
     }
@@ -341,13 +348,15 @@ class GameFieldFragment : Fragment() {
     }
 
     private fun setTextViews() {
+        val divisor = if (dimensions.component1() > dimensions.component2())
+            dimensions.component1()
+        else dimensions.component2()
+
         gameField.forEachIndexed { i, list ->
             list.forEachIndexed { j, tile ->
                 with(textViews[i][j]) {
 
                     text = if (tile.value != 0) tile.value.toString() else ""
-
-                    setTextColor(tile.getFontColor())
 
                     val ratio: Int = when (tile.value) {
                         2, 4, 8 -> 130
@@ -355,26 +364,10 @@ class GameFieldFragment : Fragment() {
                         128, 256, 512 -> 86
                         else -> 64
                     }
-
-                    fontSize = (ratio /
-                            if (dimensions.component1() > dimensions.component2()) dimensions.component1()
-                            else dimensions.component2()
-                            ).toFloat()
-
-                    typeface = ResourcesCompat.getFont(requireContext(), R.font.dela_gothic_one)
-                    textSize = fontSize
-
-                    val tileColor: Int = tile.getTileColor()
-                    background =
-                        ResourcesCompat.getDrawable(resources, R.drawable.tile, null).apply {
-
-                            ((this as LayerDrawable).findDrawableByLayerId(R.id.tile) as GradientDrawable).apply {
-                                setColor(tileColor)
-                                val size =
-                                    if (dimensions[0] > dimensions[1]) dimensions[0] else dimensions[1]
-                                if (size > 7) cornerRadius = 8f
-                            }
-                        }
+                    textSize = (ratio / divisor).toFloat()
+                    setTextColor(tile.getFontColor())
+                    ((background as LayerDrawable).findDrawableByLayerId(R.id.tile) as GradientDrawable)
+                        .setColor(tile.getTileColor())
                 }
             }
         }
@@ -382,36 +375,7 @@ class GameFieldFragment : Fragment() {
 
 //    **********************************************************************************************
 
-    //    for gestures
-    private class GestureListener(val fragment: GameFieldFragment) :
-        GestureDetector.SimpleOnGestureListener() {
-
-        override fun onDown(e: MotionEvent) = true
-
-        override fun onFling(
-            event1: MotionEvent,
-            event2: MotionEvent,
-            velocityX: Float,
-            velocityY: Float
-        ): Boolean {
-            if (event1.x - event2.x > SWIPE_MIN_DISTANCE && abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
-                fragment.move { fragment.viewModel.left() }
-            else if (event2.x - event1.x > SWIPE_MIN_DISTANCE && abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
-                fragment.move { fragment.viewModel.right() }
-            else if (event1.y - event2.y > SWIPE_MIN_DISTANCE && abs(velocityY) > SWIPE_THRESHOLD_VELOCITY)
-                fragment.move { fragment.viewModel.up() }
-            else if (event2.y - event1.y > SWIPE_MIN_DISTANCE && abs(velocityY) > SWIPE_THRESHOLD_VELOCITY)
-                fragment.move { fragment.viewModel.down() }
-
-            return false
-        }
-    }
-
-//    **********************************************************************************************
-
     companion object {
-        private const val SWIPE_MIN_DISTANCE = 100
-        private const val SWIPE_THRESHOLD_VELOCITY = 100
         const val GAME_OVER = "Game over..."
         const val WIN = "You win!!!"
 

@@ -11,6 +11,8 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import com.example.game_2024.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object ButtonsAnimation {
 
@@ -40,8 +42,6 @@ object ButtonsAnimation {
     const val reset = "reset"
 
     init {
-
-
         displayHeight = Resources
             .getSystem()
             .displayMetrics
@@ -59,7 +59,9 @@ object ButtonsAnimation {
     }
 
     fun start(activity: Activity, view: View, up: Boolean) {
-        view.verticalShift(up, time = 0, activity)
+        MainActivity.mainScope.launch {
+            view.verticalShift(up, time = 0, activity)
+        }
     }
 
     fun animationShift(
@@ -71,41 +73,44 @@ object ButtonsAnimation {
         button: String
     ) {
 
-        when (button.trim().lowercase()) {
-            home -> {
-                if (pitUndo) {
-                    replacingButtons(buttonHome, buttonUndo, home, undo, activity)
-                    pit.horizontalShift(undo_to_home, activity)
-                } else if (pitReset) {
-                    replacingButtons(buttonHome, buttonReset, home, reset, activity)
-                    pit.horizontalShift(reset_to_home, activity)
-                }
+        MainActivity.mainScope.launch(Dispatchers.Main) {
+
+            when (button.trim().lowercase()) {
+                home -> {
+                    if (pitUndo) {
+                        replacingButtons(buttonHome, buttonUndo, home, undo, activity)
+                        pit.horizontalShift(undo_to_home, activity)
+                    } else if (pitReset) {
+                        replacingButtons(buttonHome, buttonReset, home, reset, activity)
+                        pit.horizontalShift(reset_to_home, activity)
+                    }
 
 //                home
-            }
-
-            undo -> {
-                if (pitHome) {
-                    replacingButtons(buttonUndo, buttonHome, undo, home, activity)
-                    pit.horizontalShift(home_to_undo, activity)
-                } else if (pitReset) {
-                    replacingButtons(buttonUndo, buttonReset, undo, reset, activity)
-                    pit.horizontalShift(reset_to_undo, activity)
                 }
+
+                undo -> {
+                    if (pitHome) {
+                        replacingButtons(buttonUndo, buttonHome, undo, home, activity)
+                        pit.horizontalShift(home_to_undo, activity)
+                    } else if (pitReset) {
+                        replacingButtons(buttonUndo, buttonReset, undo, reset, activity)
+                        pit.horizontalShift(reset_to_undo, activity)
+                    }
 
 //                undo
-            }
-
-            reset -> {
-                if (pitHome) {
-                    replacingButtons(buttonReset, buttonHome, reset, home, activity)
-                    pit.horizontalShift(home_to_reset, activity)
-                } else if (pitUndo) {
-                    replacingButtons(buttonReset, buttonUndo, reset, undo, activity)
-                    pit.horizontalShift(undo_to_reset, activity)
                 }
 
+                reset -> {
+                    if (pitHome) {
+                        replacingButtons(buttonReset, buttonHome, reset, home, activity)
+                        pit.horizontalShift(home_to_reset, activity)
+                    } else if (pitUndo) {
+                        replacingButtons(buttonReset, buttonUndo, reset, undo, activity)
+                        pit.horizontalShift(undo_to_reset, activity)
+                    }
+
 //                reset
+                }
             }
         }
     }

@@ -5,12 +5,10 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.example.game_2024.R
 import com.example.game_2024.databinding.FragmentExitDialogBinding
-import com.example.game_2024.view.screens.StartFragment
 import kotlin.system.exitProcess
 
 class ExitDialog : DialogFragment() {

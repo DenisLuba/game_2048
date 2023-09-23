@@ -3,9 +3,9 @@ package com.example.game_2024.model
 import kotlin.math.max
 import kotlin.random.Random
 
-inline fun <T> arrayDequeOf(vararg elements: T) = ArrayDeque(elements.toList())
-inline fun <T> ArrayDeque<T>.push(element: T) = addLast(element) // returns Unit
-inline fun <T> ArrayDeque<T>.pop() = removeLastOrNull() // returns T?
+fun <T> arrayDequeOf(vararg elements: T) = ArrayDeque(elements.toList())
+fun <T> ArrayDeque<T>.push(element: T) = addLast(element) // returns Unit
+fun <T> ArrayDeque<T>.pop() = removeLastOrNull() // returns T?
 
 
 class Model private constructor(
@@ -23,24 +23,24 @@ class Model private constructor(
 
         //        fun getInstance(height: Int = 4, width: Int = 4, _id: Int): Model {
         fun getInstance(
-            _score: Int,
-            _maxScore: Int,
-            _id: Int,
+            localScore: Int,
+            localMaxScore: Int,
+            localId: Int,
             gameField: List<MutableList<Int>>
         ): Model {
 
             if (instance != null) {
                 synchronized(this) {
-                    return if (instance != null && instance!!.id == _id) instance!!
-                    else Model(_score, _id, gameField).apply {
+                    return if (instance != null && instance!!.id == localId) instance!!
+                    else Model(localScore, localId, gameField).apply {
                         instance = this
-                        maxScore = _maxScore
+                        maxScore = localMaxScore
                     }
                 }
             } else synchronized(this) {
-                return Model(_score, _id, gameField).apply {
+                return Model(localScore, localId, gameField).apply {
                     instance = this
-                    maxScore = _maxScore
+                    maxScore = localMaxScore
                 }
             }
         }
