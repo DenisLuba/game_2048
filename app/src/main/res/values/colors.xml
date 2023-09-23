@@ -3,8 +3,8 @@
     <color name="black">#00000000</color>
     <color name="white">#00FFFFFF</color>
 
-    <color name="color_background_1">#828AA6</color>
-    <color name="color_background_2">#FFCB45</color>
+    <color name="color_background_1">#756892</color>
+    <color name="color_background_2">#FFD600</color>
 
     <color name="brown">#9F6B4E</color>
 
@@ -13,7 +13,7 @@
     <color name="background_dialog_exit_and_restart">#C4828AA6</color>
 
     <!--    Buttons    -->
-    <color name="exit_music_buttons">#979FBE</color>
+    <color name="exit_music_buttons">#8475A5</color>
     <color name="exit_music_buttons_shadow">#242A33</color>
 
     <color name="color_button_start_default">@color/color_background_2</color>
