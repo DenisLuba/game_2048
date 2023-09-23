@@ -14,7 +14,7 @@ import com.example.game_2024.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-object ButtonsAnimation {
+class ButtonsAnimation private constructor(){
 
     private var pitHome = true
     private var pitUndo = false
@@ -27,19 +27,33 @@ object ButtonsAnimation {
     private var displayHeight = 0f
     private var displayWidth = 0f
 
-    private const val sizeChangeFactor = 1.2f
-    private const val animationDuration = 800L
+    companion object {
 
-    private const val home_to_reset = "home_to_reset"
-    private const val reset_to_home = "reset_to_home"
-    private const val home_to_undo = "home_to_undo"
-    private const val undo_to_home = "undo_to_home"
-    private const val undo_to_reset = "undo_to_reset"
-    private const val reset_to_undo = "reset_to_undo"
+        private var instance: ButtonsAnimation? = null
 
-    const val home = "home"
-    const val undo = "undo"
-    const val reset = "reset"
+        fun getInstance() =
+            if (instance != null) {
+                synchronized(this) {
+                    if (instance != null) instance
+                    else ButtonsAnimation()
+                }
+            } else ButtonsAnimation()
+
+
+        private const val sizeChangeFactor = 1.2f
+        private const val animationDuration = 800L
+
+        private const val home_to_reset = "home_to_reset"
+        private const val reset_to_home = "reset_to_home"
+        private const val home_to_undo = "home_to_undo"
+        private const val undo_to_home = "undo_to_home"
+        private const val undo_to_reset = "undo_to_reset"
+        private const val reset_to_undo = "reset_to_undo"
+
+        const val home = "home"
+        const val undo = "undo"
+        const val reset = "reset"
+    }
 
     init {
         displayHeight = Resources

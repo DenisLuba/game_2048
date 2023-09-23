@@ -18,6 +18,7 @@ import android.widget.TableLayout.LayoutParams
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -61,6 +62,8 @@ class GameFieldFragment : Fragment() {
     private var margin = 0
     private var portrait = true
     private var landscape = false
+
+    private var buttonsAnimation: ButtonsAnimation? = null
 
     private lateinit var linearLayout: LinearLayout
     private lateinit var linearLayoutBase: LinearLayout
@@ -133,6 +136,8 @@ class GameFieldFragment : Fragment() {
             MutableList(dimensions.component2()) { Tile(requireContext()) }
         } // initializing the playing field with zeros
 
+        buttonsAnimation = ButtonsAnimation.getInstance()
+
         setupGameOverListener(childFragmentManager, this) { reset() }
     }
 
@@ -177,17 +182,16 @@ class GameFieldFragment : Fragment() {
 
         binding = FragmentGameFieldBinding.inflate(inflater, container, false).apply {
 
-            ButtonsAnimation.start(requireActivity(), homeButton, true)
-            ButtonsAnimation.start(requireActivity(), undoButton, false)
-            ButtonsAnimation.start(requireActivity(), restartButton, false)
+            buttonsAnimation?.start(requireActivity(), homeButton, true)
+            buttonsAnimation?.start(requireActivity(), undoButton, false)
+            buttonsAnimation?.start(requireActivity(), restartButton, false)
 
             exitButton.setOnClickListener {
                 ExitDialog.show(childFragmentManager)
             }
 
             undoButton.setOnClickListener {
-
-                ButtonsAnimation.animationShift(
+                buttonsAnimation?.animationShift(
                     requireActivity(),
                     homeButton,
                     undoButton,
@@ -198,10 +202,10 @@ class GameFieldFragment : Fragment() {
 
                 rollback()
             }
+
             frameGameField.setOnTouchListener(touchListener)
             homeButton.setOnClickListener {
-
-                ButtonsAnimation.animationShift(
+                buttonsAnimation?.animationShift(
                     requireActivity(),
                     homeButton,
                     undoButton,
@@ -212,9 +216,9 @@ class GameFieldFragment : Fragment() {
 
                 (activity as MainActivity).navController.navigate(R.id.action_gameFieldFragment_to_startFragment)
             }
-            restartButton.setOnClickListener {
 
-                ButtonsAnimation.animationShift(
+            restartButton.setOnClickListener {
+                buttonsAnimation?.animationShift(
                     requireActivity(),
                     homeButton,
                     undoButton,
@@ -376,6 +380,10 @@ class GameFieldFragment : Fragment() {
 //    **********************************************************************************************
 
     companion object {
+
+        private const val GAME_FIELD_OUT_STATE = "GAME_FIELD_OUT_STATE"
+        private const val GAME_FIELD = "GAME_FIELD"
+
         const val GAME_OVER = "Game over..."
         const val WIN = "You win!!!"
 
