@@ -21,7 +21,6 @@ class ViewModel2024(application: Application, private val args: IntArray) :
 
 //    LIVEDATA
 
-
     val liveDataField = MutableLiveData<List<MutableList<Int>>>().apply { value = model.gameField }
     val liveDataWinner = MutableLiveData<Boolean>().apply { value = model.maxTile == WINNING_TILE }
     val liveDataLost = MutableLiveData<Boolean>().apply { value = !model.canMove() }
@@ -37,11 +36,8 @@ class ViewModel2024(application: Application, private val args: IntArray) :
     fun rollback() = action { model.rollback() }
 
     fun left() = action { model.left() }
-
     fun right() = action { model.right() }
-
     fun up() = action { model.up() }
-
     fun down() = action { model.down() }
 
 //    **********************************************************************************************
@@ -49,20 +45,14 @@ class ViewModel2024(application: Application, private val args: IntArray) :
 //    Additional function
 
     private fun action(direction: move) {
-        direction.invoke()
-
-        viewModelScope.launch {
-            repository.saveModel(model)
-        }
-
-        liveDataField.value = model.gameField
-        liveDataScore.value = model.score
-        liveDataMaxScore.value = model.maxScore
-        liveDataWinner.value = model.maxTile == WINNING_TILE
-        liveDataLost.value = !model.canMove()
+        viewModelScope.launch { direction.invoke() }
+        viewModelScope.launch { repository.saveModel(model) }
+        viewModelScope.launch { liveDataField.value = model.gameField }
+        viewModelScope.launch { liveDataScore.value = model.score }
+        viewModelScope.launch { liveDataMaxScore.value = model.maxScore }
+        viewModelScope.launch { liveDataWinner.value = model.maxTile == WINNING_TILE }
+        viewModelScope.launch { liveDataLost.value = !model.canMove() }
     }
 
-    companion object {
-        private const val WINNING_TILE = 2048
-    }
+    companion object { private const val WINNING_TILE = 2048 }
 }

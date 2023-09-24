@@ -18,7 +18,6 @@ import android.widget.TableLayout.LayoutParams
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -352,6 +351,7 @@ class GameFieldFragment : Fragment() {
     }
 
     private fun setTextViews() {
+
         val divisor = if (dimensions.component1() > dimensions.component2())
             dimensions.component1()
         else dimensions.component2()
@@ -380,9 +380,6 @@ class GameFieldFragment : Fragment() {
 //    **********************************************************************************************
 
     companion object {
-
-        private const val GAME_FIELD_OUT_STATE = "GAME_FIELD_OUT_STATE"
-        private const val GAME_FIELD = "GAME_FIELD"
 
         const val GAME_OVER = "Game over..."
         const val WIN = "You win!!!"

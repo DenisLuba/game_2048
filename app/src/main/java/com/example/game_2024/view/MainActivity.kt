@@ -1,6 +1,8 @@
 package com.example.game_2024.view
 
 import android.app.Activity
+import android.app.ActivityManager
+import android.app.ActivityManager.RunningAppProcessInfo
 import android.content.Context
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navHostFragment: NavHostFragment
     lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
+    private lateinit var appProcessInfo: RunningAppProcessInfo
+    private lateinit var powerManager: PowerManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +34,8 @@ class MainActivity : AppCompatActivity() {
             musicOn = savedInstanceState.getBoolean(MUSIC_STATE)
         }
         player = getPlayer(this, R.raw.sound_butterfly)
+        appProcessInfo = RunningAppProcessInfo()
+        powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
 
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navigationHost) as NavHostFragment
@@ -43,9 +49,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-
-        val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
-        if (!pm.isInteractive)
+        ActivityManager.getMyMemoryState(appProcessInfo)
+        if (!powerManager.isInteractive
+            || appProcessInfo.importance != RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+        )
             player!!.pause()
     }
 
