@@ -5,8 +5,6 @@ import com.example.game_2024.R
 
 data class Tile(val context: Context, var value: Int = 0) {
 
-    fun isEmpty() = value == 0
-
     fun getFontColor(): Int {
         return context.resources.getColor(
             when (value) {

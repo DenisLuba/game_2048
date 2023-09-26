@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 typealias move = () -> Unit
 
-class ViewModel2024(application: Application, private val args: IntArray) :
+class ViewModel2024(application: Application, args: IntArray) :
     AndroidViewModel(application) {
 
     private val repository =

@@ -7,10 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import com.example.game_2024.R
 import com.example.game_2024.databinding.FragmentStartBinding
+import com.example.game_2024.view.CustomNumberPicker
 import com.example.game_2024.view.MainActivity
 import com.example.game_2024.view.dialogs.ExitDialog
 import com.google.gson.Gson
@@ -32,13 +35,15 @@ class StartFragment : Fragment() {
 
         binding = FragmentStartBinding.inflate(inflater, container, false).apply {
 
-            numberPickerHeight.minValue = 2
+            (numberPickerHeight as CustomNumberPicker).minValue = 2
             numberPickerHeight.maxValue = maxHeight
-            numberPickerWidth.minValue = 2
+            (numberPickerWidth as CustomNumberPicker).minValue = 2
             numberPickerWidth.maxValue = maxWidth
 
             numberPickerHeight.value = dimensions[0]
             numberPickerWidth.value = dimensions[1]
+
+            overrideFont(requireContext(), numberPickerHeight)
 
             startButton.setOnClickListener { startButtonOnClick() }
             exitButton.setOnClickListener { ExitDialog.show(childFragmentManager) }
@@ -52,8 +57,11 @@ class StartFragment : Fragment() {
     }
 
     private fun startButtonOnClick() {
-        dimensions[0] = binding.numberPickerHeight.value
-        dimensions[1] = binding.numberPickerWidth.value
+        with(binding) {
+            dimensions[0] = (numberPickerHeight as CustomNumberPicker).value
+            dimensions[1] = (numberPickerWidth as CustomNumberPicker).value
+        }
+
 
         val gsonDimensions: String = dimensionsToGson(dimensions)
         preferences.edit().putString(DIMENSIONS_PREFERENCES, gsonDimensions).apply()
@@ -74,6 +82,17 @@ class StartFragment : Fragment() {
         Gson().fromJson(value, IntArray::class.java)
 
     private fun dimensionsToGson(array: IntArray): String = Gson().toJson(array)
+
+    private fun overrideFont(context: Context, view: View?) {
+        if (view is ViewGroup) {
+            for (i in 0..view.childCount) {
+                val child: View? = view.getChildAt(i)
+                overrideFont(context, child)
+            }
+        } else if (view is EditText) {
+            view.typeface = ResourcesCompat.getFont(context, R.font.dela_gothic_one)
+        }
+    }
 
     companion object {
         private const val START_PREFERENCES = "START_PREFERENCES"

@@ -3,6 +3,7 @@
     <dimen name="icons_size">56dp</dimen>
     <dimen name="start_button_size">100dp</dimen>
     <dimen name="score_font">20sp</dimen>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="fragment_horizontal_margin">16dp</dimen>
     <dimen name="fragment_vertical_margin">16dp</dimen>
@@ -20,5 +21,8 @@
     <dimen name="reset_position_land">-65.5%p</dimen>
     <dimen name="vertical_moving_of_buttons">10%p</dimen>
     <dimen name="vertical_moving_of_buttons_land">-10%p</dimen>
+
+    <!-- CustomNumberPicker textSize -->
+    <dimen name="number_picker_text_size">40sp</dimen>
 
 </resources>

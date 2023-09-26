@@ -18,15 +18,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="NumberPickerTheme">
+    <style name="NumberPickerCustom" parent="Base.Theme.Game_2024">
         <item name="colorControlNormal">@android:color/transparent</item>
-        <item name="android:textColorPrimary">@color/color_background_1</item>
-        <item name="android:fontFamily">@font/dela_gothic_one</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">@dimen/number_picker_text_size</item>
     </style>
 
-    <style name="TileColor" parent="Widget.Material3.DrawerLayout">
-        <item name="android:color">#000000</item>
-    </style>
 </resources>

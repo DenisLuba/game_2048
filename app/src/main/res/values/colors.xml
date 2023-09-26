@@ -6,6 +6,8 @@
     <color name="color_background_1">#706588</color>
     <color name="color_background_2">#FFD600</color>
 
+    <color name="color_number_picker">@color/color_button_start_default_triangle</color>
+
     <color name="brown">#9F6B4E</color>
 
     <!--    Dialogs    -->

@@ -18,10 +18,13 @@ class GestureListener private constructor(val fragment: GameFieldFragment) :
     ): Boolean {
         if (event1.x - event2.x > SWIPE_MIN_DISTANCE && abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
             fragment.move { fragment.viewModel.left() }
+
         else if (event2.x - event1.x > SWIPE_MIN_DISTANCE && abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
             fragment.move { fragment.viewModel.right() }
+
         else if (event1.y - event2.y > SWIPE_MIN_DISTANCE && abs(velocityY) > SWIPE_THRESHOLD_VELOCITY)
             fragment.move { fragment.viewModel.up() }
+
         else if (event2.y - event1.y > SWIPE_MIN_DISTANCE && abs(velocityY) > SWIPE_THRESHOLD_VELOCITY)
             fragment.move { fragment.viewModel.down() }
 
