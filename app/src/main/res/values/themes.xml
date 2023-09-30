@@ -21,6 +21,7 @@
     <style name="NumberPickerCustom" parent="Base.Theme.Game_2024">
         <item name="colorControlNormal">@android:color/transparent</item>
         <item name="android:textSize">@dimen/number_picker_text_size</item>
+        <item name="android:fontFamily">@font/dela_gothic_one</item>
     </style>
 
 </resources>

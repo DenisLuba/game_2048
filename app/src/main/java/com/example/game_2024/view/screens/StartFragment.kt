@@ -8,12 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.NumberPicker
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import com.example.game_2024.R
 import com.example.game_2024.databinding.FragmentStartBinding
-import com.example.game_2024.view.CustomNumberPicker
 import com.example.game_2024.view.MainActivity
 import com.example.game_2024.view.dialogs.ExitDialog
 import com.google.gson.Gson
@@ -35,10 +35,10 @@ class StartFragment : Fragment() {
 
         binding = FragmentStartBinding.inflate(inflater, container, false).apply {
 
-            (numberPickerHeight as CustomNumberPicker).minValue = 2
-            numberPickerHeight.maxValue = maxHeight
-            (numberPickerWidth as CustomNumberPicker).minValue = 2
-            numberPickerWidth.maxValue = maxWidth
+            (numberPickerHeight as NumberPicker).minValue = 2
+            (numberPickerWidth as NumberPicker).minValue = 2
+            numberPickerHeight.maxValue = MAX_HEIGHT
+            numberPickerWidth.maxValue = MAX_WIDTH
 
             numberPickerHeight.value = dimensions[0]
             numberPickerWidth.value = dimensions[1]
@@ -58,8 +58,8 @@ class StartFragment : Fragment() {
 
     private fun startButtonOnClick() {
         with(binding) {
-            dimensions[0] = (numberPickerHeight as CustomNumberPicker).value
-            dimensions[1] = (numberPickerWidth as CustomNumberPicker).value
+            dimensions[0] = (numberPickerHeight as NumberPicker).value
+            dimensions[1] = (numberPickerWidth as NumberPicker).value
         }
 
 
@@ -68,7 +68,7 @@ class StartFragment : Fragment() {
 
         val bundle = bundleOf(
             MainActivity.DIMENSIONS to
-                    intArrayOf(dimensions.component1(), dimensions.component2(), maxHeight)
+                    intArrayOf(dimensions.component1(), dimensions.component2(), MAX_HEIGHT)
         )
 
 //        navigate to GameFieldFragment
@@ -97,7 +97,7 @@ class StartFragment : Fragment() {
     companion object {
         private const val START_PREFERENCES = "START_PREFERENCES"
         private const val DIMENSIONS_PREFERENCES = "DIMENSIONS_PREFERENCES"
-        private const val maxHeight = 10
-        private const val maxWidth = 10
+        private const val MAX_HEIGHT = 10
+        private const val MAX_WIDTH = 10
     }
 }

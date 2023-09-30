@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="@id/background2Start"
         app:layout_constraintVertical_bias="0.155" />
 
-    <NumberPicker
+    <com.example.game_2024.view.CustomNumberPicker
         android:id="@+id/numberPickerHeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.694" />
 
-    <NumberPicker
+    <com.example.game_2024.view.CustomNumberPicker
         android:id="@+id/numberPickerWidth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
