@@ -164,7 +164,7 @@ class GameFieldFragment : Fragment() {
                     gravity = Gravity.CENTER
                     width = tileSize.toInt()
                     height = tileSize.toInt()
-                    typeface = ResourcesCompat.getFont(requireContext(), R.font.dela_gothic_one)
+                    typeface = ResourcesCompat.getFont(requireContext(), R.font.default_font)
                     background = ResourcesCompat.getDrawable(resources, R.drawable.tile, null)
 
                     if (size > 7)

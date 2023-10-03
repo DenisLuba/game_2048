@@ -90,7 +90,7 @@ class StartFragment : Fragment() {
                 overrideFont(context, child)
             }
         } else if (view is EditText) {
-            view.typeface = ResourcesCompat.getFont(context, R.font.dela_gothic_one)
+            view.typeface = ResourcesCompat.getFont(context, R.font.default_font)
         }
     }
 

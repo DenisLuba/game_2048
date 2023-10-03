@@ -16,7 +16,7 @@ class CustomNumberPicker(
     private var type: Typeface?
 
     init {
-        type = ResourcesCompat.getFont(context, R.font.dela_gothic_one)
+        type = ResourcesCompat.getFont(context, R.font.default_font)
     }
 
     override fun addView(child: View?) {
@@ -43,7 +43,7 @@ class CustomNumberPicker(
 
     private fun updateView(view: View?) {
         if (view is EditText) {
-            view.typeface = ResourcesCompat.getFont(context, R.font.dela_gothic_one)
+            view.typeface = ResourcesCompat.getFont(context, R.font.default_font)
             view.setTextColor(resources.getColor(R.color.number_picker_text_color, null))
         }
     }

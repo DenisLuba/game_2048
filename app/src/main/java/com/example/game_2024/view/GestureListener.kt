@@ -11,11 +11,12 @@ class GestureListener private constructor(val fragment: GameFieldFragment) :
     override fun onDown(e: MotionEvent) = true
 
     override fun onFling(
-        event1: MotionEvent,
+        e1: MotionEvent?,
         event2: MotionEvent,
         velocityX: Float,
         velocityY: Float
     ): Boolean {
+        val event1: MotionEvent = e1 ?: event2
         if (event1.x - event2.x > SWIPE_MIN_DISTANCE && abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
             fragment.move { fragment.viewModel.left() }
 

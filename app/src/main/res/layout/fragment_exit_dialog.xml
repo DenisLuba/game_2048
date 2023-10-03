@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
-        android:fontFamily="@font/dela_gothic_one"
+        android:fontFamily="@font/default_font"
         tools:text="@string/dialog_exit"
         android:textColor="@color/dialog"
         android:textSize="44sp"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:fontFamily="@font/dela_gothic_one"
+            android:fontFamily="@font/default_font"
             android:text="@string/yes"
             android:textColor="@color/dialog"
             android:background="#00000000"
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:fontFamily="@font/dela_gothic_one"
+            android:fontFamily="@font/default_font"
             android:text="@string/no"
             android:textColor="@color/dialog"
             android:background="#00000000"
